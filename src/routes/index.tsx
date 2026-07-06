@@ -92,13 +92,24 @@ function SecondaryCTA({
 
 // --- Before/After slider -------------------------------------------------
 function HeroRevealCard({ onCTA }: { onCTA: () => void }) {
-  const [pos, setPos] = useState(52);
-  const [swept, setSwept] = useState(false);
+  const [pos, setPos] = useState(20);
   const wrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const t = setTimeout(() => setSwept(true), 300);
-    return () => clearTimeout(t);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) { setPos(52); return; }
+    const start = performance.now();
+    const dur = 2400;
+    let raf = 0;
+    const tick = (t: number) => {
+      const p = Math.min(1, (t - start) / dur);
+      // ease: 20 -> 80 -> 52
+      const eased = p < 0.5 ? 20 + (80 - 20) * (p / 0.5) : 80 + (52 - 80) * ((p - 0.5) / 0.5);
+      setPos(eased);
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   const move = (clientX: number) => {
@@ -128,7 +139,7 @@ function HeroRevealCard({ onCTA }: { onCTA: () => void }) {
         />
         {/* Before (clipped) */}
         <div
-          className={`absolute inset-0 ${swept ? "" : "animate-sweep-once"}`}
+          className="absolute inset-0"
           style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
         >
           <img
