@@ -244,14 +244,16 @@ function VibeCard({ vibe, selected, onClick }: { vibe: Vibe; selected: boolean; 
   );
 }
 
-function StepCard({ n, title, body }: { n: string; title: string; body: string }) {
+function StepCard({ n, total = "4", title, body, tone = "dark" }: { n: string; total?: string; title: string; body: string; tone?: "dark" | "lilac" }) {
+  const isLilac = tone === "lilac";
   return (
-    <div className="relative rounded-3xl bg-card p-5 ring-1 ring-white/10">
+    <div className={`relative rounded-3xl p-5 ring-1 ${isLilac ? "bg-gradient-to-br from-lilac/25 to-card ring-lilac/40" : "bg-card ring-white/10"}`}>
       <div className="mb-4 flex items-center gap-2">
-        <span className="grid h-8 w-8 place-items-center rounded-full bg-lime font-mono text-xs font-bold text-[#0F0F11]">
+        <span className={`grid h-8 w-8 place-items-center rounded-full font-mono text-xs font-bold text-[#0F0F11] ${isLilac ? "bg-lilac" : "bg-lime"}`}>
           {n}
         </span>
-        <span className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">step {n} / 3</span>
+        <span className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">step {n} / {total}</span>
+        {isLilac && <span className="ml-auto rounded-full bg-lilac px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#0F0F11]">the payoff</span>}
       </div>
       <div className="text-lg font-bold text-ink">{title}</div>
       <div className="mt-1 text-sm text-ink-muted">{body}</div>
