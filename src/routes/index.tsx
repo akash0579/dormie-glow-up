@@ -469,12 +469,13 @@ function HowItWorks({ onOpen }: { onOpen: () => void }) {
       <div className="mx-auto max-w-md">
         <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">how it works</p>
         <h2 className="mt-1 font-display text-3xl leading-tight font-extrabold lowercase">
-          three taps. then the reveal.
+          three taps. then the reveal. then the list.
         </h2>
         <div className="mt-6 space-y-3">
-          <StepCard n="1" title="drop the room pic" body="snap it, upload it, or use a demo room." />
-          <StepCard n="2" title="pick the energy" body="cozy szn, golden hour, locked in, soft era, old money, delulu — or type your own." />
-          <StepCard n="3" title="get the before/after" body="save it, remix it, share it, send it home." />
+          <StepCard n="1" title="drop the room pic" body="snap it, upload it, or use the demo room." />
+          <StepCard n="2" title="pick the energy" body="cozy szn, golden hour, locked in, soft era, or type your own." />
+          <StepCard n="3" title="see the glow-up" body="before/after reveal, edits, share card, roommate check." />
+          <StepCard n="4" tone="lilac" title="shop the look" body="set a budget, add your ZIP, and get real product links that can ship to you." />
         </div>
         <div className="mt-6 flex justify-center">
           <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "how" }); onOpen(); }}>
