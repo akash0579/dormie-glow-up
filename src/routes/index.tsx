@@ -401,6 +401,13 @@ function Hero({ onOpen }: { onOpen: () => void }) {
           one pic of your actual room → styled around the furniture you're stuck with. first design is free. no signup.
         </p>
 
+        <div className="mt-4 flex flex-wrap justify-center gap-1.5">
+          <StickerChip tone="lime">real product links</StickerChip>
+          <StickerChip tone="lilac">set your budget</StickerChip>
+          <StickerChip tone="peach">ship-to-ZIP aware</StickerChip>
+          <StickerChip tone="cream">shop the look</StickerChip>
+        </div>
+
         <div className="mt-6">
           <HeroRevealCard onCTA={onOpen} />
         </div>
@@ -413,7 +420,7 @@ function Hero({ onOpen }: { onOpen: () => void }) {
             no pic yet? use demo room
           </SecondaryCTA>
           <p className="text-center text-[11px] text-ink-dim">
-            takes 30 seconds. no app. no signup for the first design.
+            first design is free. then turn it into a budget-friendly shopping kit.
           </p>
         </div>
       </div>
