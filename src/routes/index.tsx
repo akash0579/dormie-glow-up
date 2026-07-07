@@ -940,6 +940,7 @@ function Landing() {
       <ProblemSection onOpen={open} />
       <HowItWorks onOpen={open} />
       <VibePicker onOpen={open} />
+      <ShoppingKitSection onOpen={open} />
       <ShareSection onOpen={open} />
       <RoommateSection onOpen={open} />
       <ParentSection onOpen={open} />
