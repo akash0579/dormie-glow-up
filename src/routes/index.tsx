@@ -808,8 +808,11 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
     <section className="px-4 py-14">
       <div className="mx-auto max-w-md">
         <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          try it free. go unlimited if you're actually moving in.
+          free gets you the look. <span className="text-lilac">pass gets you the plan.</span>
         </h2>
+        <p className="mt-2 text-[14px] text-ink-muted">
+          try it free. go pass if you're actually moving in.
+        </p>
         <div className="mt-6 grid gap-4">
           <FreeVsPassCard
             kind="free"
@@ -818,10 +821,9 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
             features={[
               "3 free designs",
               "first design without signup",
-              "demo room if you have no photo",
-              "watermarked share card",
-              "basic remix / edit",
-              "save after signup",
+              "basic share card",
+              "basic shopping preview",
+              "watermarked result",
             ]}
             ctaLabel="start free"
             onClick={() => { track("hero_cta_clicked", { section: "pricing-free" }); onOpen(); }}
@@ -834,9 +836,11 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
               "unlimited designs",
               "hd / no watermark",
               "real-product renders",
+              "full shopping kit 🔒",
+              "budget controls 🔒",
+              "ZIP-based product links 🔒",
+              "dupe finder 🔒",
               "extra angles",
-              "shopping kit + store links",
-              "dupe finder",
               "priority in the august rush",
               "restyles until sep 7",
               "no subscription · no auto-renew",
