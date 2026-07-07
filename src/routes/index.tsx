@@ -709,7 +709,7 @@ function ParentSection({ onOpen }: { onOpen: () => void }) {
           the version for whoever's paying.
         </h2>
         <p className="mt-2 text-[14px] text-ink-muted">
-          send home the practical view: the room, the budget, the list, and what the pass covers. no 19 random links. no mystery cart.
+          send home the practical view: the room, the budget, the ZIP-aware shopping kit, and the full list. no 19 random links. no mystery cart.
         </p>
 
         <div className="mt-5 rounded-3xl bg-cream p-5 text-[#0F0F11] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.7)]">
@@ -722,7 +722,9 @@ function ParentSection({ onOpen }: { onOpen: () => void }) {
           </div>
           <dl className="mt-4 divide-y divide-black/10 text-sm">
             {[
-              ["estimated budget", "$365"],
+              ["estimated total", "$365"],
+              ["budget selected", "$300–$400"],
+              ["ships to", "ZIP 78705 · prioritized"],
               ["shopping kit", "14 pieces, 3 stores"],
               ["subscription", "none"],
               ["auto-renew", "off"],
@@ -730,10 +732,13 @@ function ParentSection({ onOpen }: { onOpen: () => void }) {
             ].map(([k, v]) => (
               <div key={k} className="flex justify-between py-2">
                 <dt className="text-black/60">{k}</dt>
-                <dd className="font-semibold">{v}</dd>
+                <dd className="font-semibold text-right">{v}</dd>
               </div>
             ))}
           </dl>
+          <p className="mt-3 text-[10px] leading-relaxed text-black/50">
+            product links and shipping availability can change. always confirm final price and availability at the store.
+          </p>
         </div>
 
         <div className="mt-5 flex flex-col gap-2">
