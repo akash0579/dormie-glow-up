@@ -244,14 +244,16 @@ function VibeCard({ vibe, selected, onClick }: { vibe: Vibe; selected: boolean; 
   );
 }
 
-function StepCard({ n, title, body }: { n: string; title: string; body: string }) {
+function StepCard({ n, total = "4", title, body, tone = "dark" }: { n: string; total?: string; title: string; body: string; tone?: "dark" | "lilac" }) {
+  const isLilac = tone === "lilac";
   return (
-    <div className="relative rounded-3xl bg-card p-5 ring-1 ring-white/10">
+    <div className={`relative rounded-3xl p-5 ring-1 ${isLilac ? "bg-gradient-to-br from-lilac/25 to-card ring-lilac/40" : "bg-card ring-white/10"}`}>
       <div className="mb-4 flex items-center gap-2">
-        <span className="grid h-8 w-8 place-items-center rounded-full bg-lime font-mono text-xs font-bold text-[#0F0F11]">
+        <span className={`grid h-8 w-8 place-items-center rounded-full font-mono text-xs font-bold text-[#0F0F11] ${isLilac ? "bg-lilac" : "bg-lime"}`}>
           {n}
         </span>
-        <span className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">step {n} / 3</span>
+        <span className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">step {n} / {total}</span>
+        {isLilac && <span className="ml-auto rounded-full bg-lilac px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#0F0F11]">the payoff</span>}
       </div>
       <div className="text-lg font-bold text-ink">{title}</div>
       <div className="mt-1 text-sm text-ink-muted">{body}</div>
@@ -401,6 +403,13 @@ function Hero({ onOpen }: { onOpen: () => void }) {
           one pic of your actual room → styled around the furniture you're stuck with. first design is free. no signup.
         </p>
 
+        <div className="mt-4 flex flex-wrap justify-center gap-1.5">
+          <StickerChip tone="lime">real product links</StickerChip>
+          <StickerChip tone="lilac">set your budget</StickerChip>
+          <StickerChip tone="peach">ship-to-ZIP aware</StickerChip>
+          <StickerChip tone="cream">shop the look</StickerChip>
+        </div>
+
         <div className="mt-6">
           <HeroRevealCard onCTA={onOpen} />
         </div>
@@ -413,7 +422,7 @@ function Hero({ onOpen }: { onOpen: () => void }) {
             no pic yet? use demo room
           </SecondaryCTA>
           <p className="text-center text-[11px] text-ink-dim">
-            takes 30 seconds. no app. no signup for the first design.
+            first design is free. then turn it into a budget-friendly shopping kit.
           </p>
         </div>
       </div>
@@ -460,12 +469,13 @@ function HowItWorks({ onOpen }: { onOpen: () => void }) {
       <div className="mx-auto max-w-md">
         <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">how it works</p>
         <h2 className="mt-1 font-display text-3xl leading-tight font-extrabold lowercase">
-          three taps. then the reveal.
+          three taps. then the reveal. then the list.
         </h2>
         <div className="mt-6 space-y-3">
-          <StepCard n="1" title="drop the room pic" body="snap it, upload it, or use a demo room." />
-          <StepCard n="2" title="pick the energy" body="cozy szn, golden hour, locked in, soft era, old money, delulu — or type your own." />
-          <StepCard n="3" title="get the before/after" body="save it, remix it, share it, send it home." />
+          <StepCard n="1" title="drop the room pic" body="snap it, upload it, or use the demo room." />
+          <StepCard n="2" title="pick the energy" body="cozy szn, golden hour, locked in, soft era, or type your own." />
+          <StepCard n="3" title="see the glow-up" body="before/after reveal, edits, share card, roommate check." />
+          <StepCard n="4" tone="lilac" title="shop the look" body="set a budget, add your ZIP, and get real product links that can ship to you." />
         </div>
         <div className="mt-6 flex justify-center">
           <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "how" }); onOpen(); }}>
@@ -507,6 +517,110 @@ function VibePicker({ onOpen }: { onOpen: () => void }) {
             cook it →
           </PrimaryCTA>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function ShoppingKitSection({ onOpen }: { onOpen: () => void }) {
+  const budgets = ["$150", "$300", "$500", "custom"];
+  const [budget, setBudget] = useState("$300");
+  const [zip, setZip] = useState("78705");
+  const items = [
+    { t: "twin xl comforter", p: "$49", tag: "ships to your ZIP", tone: "lime" as const },
+    { t: "washable rug", p: "$55", tag: "dorm-safe", tone: "lilac" as const },
+    { t: "clip-on desk lamp", p: "$19", tag: "budget-friendly", tone: "peach" as const },
+    { t: "command strips", p: "$13", tag: "no nails", tone: "lime" as const },
+    { t: "under-bed bins", p: "$26", tag: "check stock before buying", tone: "cream" as const },
+  ];
+  const total = items.reduce((s, i) => s + parseInt(i.p.slice(1)), 0);
+  return (
+    <section className="px-4 py-14">
+      <div className="mx-auto max-w-md">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">the practical payoff</p>
+        <h2 className="mt-1 font-display text-3xl leading-tight font-extrabold lowercase">
+          pretty room. <span className="text-lime">real links.</span>
+        </h2>
+        <p className="mt-2 text-[14px] text-ink-muted">
+          dormie doesn't stop at the render. pick a budget, enter your ZIP, and turn the look into a shoppable dorm kit.
+        </p>
+
+        <div className="mt-5 rounded-3xl bg-card p-4 ring-1 ring-white/10">
+          {/* budget chips */}
+          <div className="flex items-center justify-between">
+            <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">budget</div>
+            <div className="rounded-full bg-lime/15 ring-1 ring-lime/40 px-2.5 py-0.5 text-[10px] font-bold text-lime">this look: ${total}</div>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {budgets.map((b) => (
+              <button
+                key={b}
+                onClick={() => { setBudget(b); track("budget_selected", { budget: b }); }}
+                className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition active:scale-[0.97] ${
+                  budget === b ? "bg-lime text-[#0F0F11]" : "bg-white/[0.05] ring-1 ring-white/15 text-ink hover:bg-white/[0.08]"
+                }`}
+              >
+                {b}
+              </button>
+            ))}
+          </div>
+
+          {/* ZIP */}
+          <div className="mt-4">
+            <label className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">ship to ZIP</label>
+            <div className="mt-1.5 flex items-center gap-2 rounded-full bg-white/[0.04] ring-1 ring-lime/40 focus-within:ring-lime px-4 py-2.5">
+              <span className="text-ink-dim text-sm">📍</span>
+              <input
+                value={zip}
+                onChange={(e) => setZip(e.target.value.replace(/[^0-9]/g, "").slice(0, 5))}
+                inputMode="numeric"
+                placeholder="78705"
+                className="flex-1 bg-transparent text-sm text-ink placeholder:text-ink-dim outline-none"
+              />
+              <span className="font-mono text-[10px] uppercase tracking-widest text-lime">ZIP-aware</span>
+            </div>
+          </div>
+
+          {/* product list */}
+          <div className="mt-4 space-y-2">
+            {items.map((i) => (
+              <div key={i.t} className="flex items-center gap-3 rounded-2xl bg-white/[0.03] ring-1 ring-white/10 p-3">
+                <div className="h-10 w-10 shrink-0 rounded-lg bg-gradient-to-br from-white/10 to-white/[0.02] ring-1 ring-white/10" />
+                <div className="min-w-0 flex-1">
+                  <div className="text-[13px] font-semibold text-ink truncate">{i.t}</div>
+                  <div className="mt-0.5">
+                    <StickerChip tone={i.tone} className="!px-2 !py-0.5 !text-[9px]">{i.tag}</StickerChip>
+                  </div>
+                </div>
+                <div className="font-mono text-[13px] font-bold text-ink">{i.p}</div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={() => { track("build_shopping_kit_clicked", { budget, zip }); onOpen(); }}
+            className="mt-4 w-full rounded-full bg-lime px-5 py-3.5 text-sm font-bold text-[#0F0F11] active:scale-[0.98] transition"
+          >
+            build my shopping kit →
+          </button>
+          <p className="mt-3 text-center text-[10px] leading-relaxed text-ink-dim">
+            we prioritize products that can ship to your ZIP. always confirm final availability at checkout.
+          </p>
+        </div>
+
+        {/* budget hook */}
+        <div className="mt-6 rounded-3xl bg-gradient-to-br from-peach/15 to-card ring-1 ring-peach/30 p-5">
+          <h3 className="font-display text-xl font-extrabold lowercase text-ink">
+            set the budget <span className="text-peach">before the cart gets scary.</span>
+          </h3>
+          <p className="mt-2 text-[13px] text-ink-muted">
+            pick a spend range and dormie builds the room around it. cute is good. financially chaotic is not.
+          </p>
+        </div>
+
+        <p className="mt-4 text-center text-[11px] text-ink-dim">
+          product links and shipping availability can change. dormie helps you plan faster — final price and availability are confirmed by the store.
+        </p>
       </div>
     </section>
   );
@@ -595,7 +709,7 @@ function ParentSection({ onOpen }: { onOpen: () => void }) {
           the version for whoever's paying.
         </h2>
         <p className="mt-2 text-[14px] text-ink-muted">
-          send home the practical view: the room, the budget, the list, and what the pass covers. no 19 random links. no mystery cart.
+          send home the practical view: the room, the budget, the ZIP-aware shopping kit, and the full list. no 19 random links. no mystery cart.
         </p>
 
         <div className="mt-5 rounded-3xl bg-cream p-5 text-[#0F0F11] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.7)]">
@@ -608,7 +722,9 @@ function ParentSection({ onOpen }: { onOpen: () => void }) {
           </div>
           <dl className="mt-4 divide-y divide-black/10 text-sm">
             {[
-              ["estimated budget", "$365"],
+              ["estimated total", "$365"],
+              ["budget selected", "$300–$400"],
+              ["ships to", "ZIP 78705 · prioritized"],
               ["shopping kit", "14 pieces, 3 stores"],
               ["subscription", "none"],
               ["auto-renew", "off"],
@@ -616,10 +732,13 @@ function ParentSection({ onOpen }: { onOpen: () => void }) {
             ].map(([k, v]) => (
               <div key={k} className="flex justify-between py-2">
                 <dt className="text-black/60">{k}</dt>
-                <dd className="font-semibold">{v}</dd>
+                <dd className="font-semibold text-right">{v}</dd>
               </div>
             ))}
           </dl>
+          <p className="mt-3 text-[10px] leading-relaxed text-black/50">
+            product links and shipping availability can change. always confirm final price and availability at the store.
+          </p>
         </div>
 
         <div className="mt-5 flex flex-col gap-2">
@@ -689,8 +808,11 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
     <section className="px-4 py-14">
       <div className="mx-auto max-w-md">
         <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          try it free. go unlimited if you're actually moving in.
+          free gets you the look. <span className="text-lilac">pass gets you the plan.</span>
         </h2>
+        <p className="mt-2 text-[14px] text-ink-muted">
+          try it free. go pass if you're actually moving in.
+        </p>
         <div className="mt-6 grid gap-4">
           <FreeVsPassCard
             kind="free"
@@ -699,10 +821,9 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
             features={[
               "3 free designs",
               "first design without signup",
-              "demo room if you have no photo",
-              "watermarked share card",
-              "basic remix / edit",
-              "save after signup",
+              "basic share card",
+              "basic shopping preview",
+              "watermarked result",
             ]}
             ctaLabel="start free"
             onClick={() => { track("hero_cta_clicked", { section: "pricing-free" }); onOpen(); }}
@@ -715,9 +836,11 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
               "unlimited designs",
               "hd / no watermark",
               "real-product renders",
+              "full shopping kit 🔒",
+              "budget controls 🔒",
+              "ZIP-based product links 🔒",
+              "dupe finder 🔒",
               "extra angles",
-              "shopping kit + store links",
-              "dupe finder",
               "priority in the august rush",
               "restyles until sep 7",
               "no subscription · no auto-renew",
@@ -735,7 +858,9 @@ function TrustSection({ onOpen }: { onOpen: () => void }) {
   const cards = [
     { t: "school furniture stays", b: "we design around what you can't remove." },
     { t: "damage-aware ideas", b: "no nails, no paint, renter/dorm-safe thinking." },
-    { t: "budget-aware", b: "see the look before buying random stuff." },
+    { t: "real products, not fantasy furniture", b: "turn the look into links you can actually buy, with budget and ZIP filters." },
+    { t: "budget first", b: "choose a spend range before the list gets out of hand." },
+    { t: "ZIP-aware", b: "add where you're moving and we'll prioritize products that can ship there." },
     { t: "no app install", b: "works on mobile web." },
     { t: "first design free", b: "no signup until after the first result." },
   ];
@@ -815,6 +940,7 @@ function Landing() {
       <ProblemSection onOpen={open} />
       <HowItWorks onOpen={open} />
       <VibePicker onOpen={open} />
+      <ShoppingKitSection onOpen={open} />
       <ShareSection onOpen={open} />
       <RoommateSection onOpen={open} />
       <ParentSection onOpen={open} />
