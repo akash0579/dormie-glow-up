@@ -522,7 +522,111 @@ function VibePicker({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-function ShareSection({ onOpen }: { onOpen: () => void }) {
+function ShoppingKitSection({ onOpen }: { onOpen: () => void }) {
+  const budgets = ["$150", "$300", "$500", "custom"];
+  const [budget, setBudget] = useState("$300");
+  const [zip, setZip] = useState("78705");
+  const items = [
+    { t: "twin xl comforter", p: "$49", tag: "ships to your ZIP", tone: "lime" as const },
+    { t: "washable rug", p: "$55", tag: "dorm-safe", tone: "lilac" as const },
+    { t: "clip-on desk lamp", p: "$19", tag: "budget-friendly", tone: "peach" as const },
+    { t: "command strips", p: "$13", tag: "no nails", tone: "lime" as const },
+    { t: "under-bed bins", p: "$26", tag: "check stock before buying", tone: "cream" as const },
+  ];
+  const total = items.reduce((s, i) => s + parseInt(i.p.slice(1)), 0);
+  return (
+    <section className="px-4 py-14">
+      <div className="mx-auto max-w-md">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">the practical payoff</p>
+        <h2 className="mt-1 font-display text-3xl leading-tight font-extrabold lowercase">
+          pretty room. <span className="text-lime">real links.</span>
+        </h2>
+        <p className="mt-2 text-[14px] text-ink-muted">
+          dormie doesn't stop at the render. pick a budget, enter your ZIP, and turn the look into a shoppable dorm kit.
+        </p>
+
+        <div className="mt-5 rounded-3xl bg-card p-4 ring-1 ring-white/10">
+          {/* budget chips */}
+          <div className="flex items-center justify-between">
+            <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">budget</div>
+            <div className="rounded-full bg-lime/15 ring-1 ring-lime/40 px-2.5 py-0.5 text-[10px] font-bold text-lime">this look: ${total}</div>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {budgets.map((b) => (
+              <button
+                key={b}
+                onClick={() => { setBudget(b); track("budget_selected", { budget: b }); }}
+                className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition active:scale-[0.97] ${
+                  budget === b ? "bg-lime text-[#0F0F11]" : "bg-white/[0.05] ring-1 ring-white/15 text-ink hover:bg-white/[0.08]"
+                }`}
+              >
+                {b}
+              </button>
+            ))}
+          </div>
+
+          {/* ZIP */}
+          <div className="mt-4">
+            <label className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">ship to ZIP</label>
+            <div className="mt-1.5 flex items-center gap-2 rounded-full bg-white/[0.04] ring-1 ring-lime/40 focus-within:ring-lime px-4 py-2.5">
+              <span className="text-ink-dim text-sm">📍</span>
+              <input
+                value={zip}
+                onChange={(e) => setZip(e.target.value.replace(/[^0-9]/g, "").slice(0, 5))}
+                inputMode="numeric"
+                placeholder="78705"
+                className="flex-1 bg-transparent text-sm text-ink placeholder:text-ink-dim outline-none"
+              />
+              <span className="font-mono text-[10px] uppercase tracking-widest text-lime">ZIP-aware</span>
+            </div>
+          </div>
+
+          {/* product list */}
+          <div className="mt-4 space-y-2">
+            {items.map((i) => (
+              <div key={i.t} className="flex items-center gap-3 rounded-2xl bg-white/[0.03] ring-1 ring-white/10 p-3">
+                <div className="h-10 w-10 shrink-0 rounded-lg bg-gradient-to-br from-white/10 to-white/[0.02] ring-1 ring-white/10" />
+                <div className="min-w-0 flex-1">
+                  <div className="text-[13px] font-semibold text-ink truncate">{i.t}</div>
+                  <div className="mt-0.5">
+                    <StickerChip tone={i.tone} className="!px-2 !py-0.5 !text-[9px]">{i.tag}</StickerChip>
+                  </div>
+                </div>
+                <div className="font-mono text-[13px] font-bold text-ink">{i.p}</div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={() => { track("build_shopping_kit_clicked", { budget, zip }); onOpen(); }}
+            className="mt-4 w-full rounded-full bg-lime px-5 py-3.5 text-sm font-bold text-[#0F0F11] active:scale-[0.98] transition"
+          >
+            build my shopping kit →
+          </button>
+          <p className="mt-3 text-center text-[10px] leading-relaxed text-ink-dim">
+            we prioritize products that can ship to your ZIP. always confirm final availability at checkout.
+          </p>
+        </div>
+
+        {/* budget hook */}
+        <div className="mt-6 rounded-3xl bg-gradient-to-br from-peach/15 to-card ring-1 ring-peach/30 p-5">
+          <h3 className="font-display text-xl font-extrabold lowercase text-ink">
+            set the budget <span className="text-peach">before the cart gets scary.</span>
+          </h3>
+          <p className="mt-2 text-[13px] text-ink-muted">
+            pick a spend range and dormie builds the room around it. cute is good. financially chaotic is not.
+          </p>
+        </div>
+
+        <p className="mt-4 text-center text-[11px] text-ink-dim">
+          product links and shipping availability can change. dormie helps you plan faster — final price and availability are confirmed by the store.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
   return (
     <section className="px-4 py-14">
       <div className="mx-auto max-w-md">
