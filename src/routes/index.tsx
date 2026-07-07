@@ -626,7 +626,7 @@ function ShoppingKitSection({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-
+function ShareSection({ onOpen }: { onOpen: () => void }) {
   return (
     <section className="px-4 py-14">
       <div className="mx-auto max-w-md">
