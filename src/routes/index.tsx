@@ -858,7 +858,9 @@ function TrustSection({ onOpen }: { onOpen: () => void }) {
   const cards = [
     { t: "school furniture stays", b: "we design around what you can't remove." },
     { t: "damage-aware ideas", b: "no nails, no paint, renter/dorm-safe thinking." },
-    { t: "budget-aware", b: "see the look before buying random stuff." },
+    { t: "real products, not fantasy furniture", b: "turn the look into links you can actually buy, with budget and ZIP filters." },
+    { t: "budget first", b: "choose a spend range before the list gets out of hand." },
+    { t: "ZIP-aware", b: "add where you're moving and we'll prioritize products that can ship there." },
     { t: "no app install", b: "works on mobile web." },
     { t: "first design free", b: "no signup until after the first result." },
   ];
