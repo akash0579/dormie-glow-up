@@ -447,7 +447,7 @@ function FiveHundredLook() {
           </section>
 
           {/* CTA */}
-          <section className="mt-11 rounded-2xl bg-lime p-8 text-bg">
+          <section className="mt-11 rounded-2xl bg-lime p-8 text-bg md:mx-auto md:max-w-2xl">
             <h2 className="font-display text-[clamp(26px,6vw,32px)] font-bold leading-tight">
               want to see this in <em className="italic">your</em> room first?
             </h2>
