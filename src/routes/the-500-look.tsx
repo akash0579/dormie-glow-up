@@ -218,7 +218,8 @@ function FiveHundredLook() {
 
   return (
     <div className="min-h-screen bg-bg text-ink font-sans">
-      <div className="mx-auto max-w-[640px] px-5">
+      <div className="mx-auto max-w-[640px] px-5 md:max-w-5xl md:px-8">
+
         <header className="pt-6">
           <Link
             to="/"
@@ -233,7 +234,7 @@ function FiveHundredLook() {
 
         <main>
           {/* HERO */}
-          <section className="pt-11 pb-3">
+          <section className="pt-11 pb-3 md:mx-auto md:max-w-2xl">
             <h1 className="font-display font-bold leading-[1.04] tracking-tight text-[clamp(38px,9vw,56px)]">
               the <em className="not-italic text-lime">$500</em> dorm look.
             </h1>
@@ -265,7 +266,7 @@ function FiveHundredLook() {
           </section>
 
           {/* RULES */}
-          <section className="mt-9 rounded-2xl border border-hairline bg-card p-6">
+          <section className="mt-9 rounded-2xl border border-hairline bg-card p-6 md:mx-auto md:max-w-2xl">
             <h2 className="font-display text-xl font-semibold mb-3">the rules we picked by</h2>
             {[
               [
@@ -295,64 +296,94 @@ function FiveHundredLook() {
           </section>
 
           {/* LIST */}
-          <p className="mt-10 mb-1.5 text-xs font-bold tracking-widest uppercase text-lime">
-            the list
-          </p>
-          <h2 className="font-display text-3xl font-semibold leading-tight mb-5">
-            nine pieces. the whole room, done.
-          </h2>
+          <div className="md:mx-auto md:max-w-2xl">
+            <p className="mt-10 mb-1.5 text-xs font-bold tracking-widest uppercase text-lime">
+              the list
+            </p>
+            <h2 className="font-display text-3xl font-semibold leading-tight mb-5">
+              nine pieces. the whole room, done.
+            </h2>
+          </div>
 
-          {ITEMS.map((item, i) => (
-            <article
-              key={item.n}
-              ref={(el) => {
-                itemRefs.current[i] = el;
-              }}
-              className="relative mb-3.5 rounded-2xl border border-hairline bg-card p-5"
-            >
-              <span className="absolute -top-3 left-5 rounded-full bg-lime px-3 py-0.5 text-[11px] font-bold tabular-nums text-bg">
-                {item.n} of 9
-              </span>
-              <div className="mt-1 flex items-baseline justify-between gap-3.5">
-                <h3 className="font-display text-xl font-medium leading-tight">{item.title}</h3>
-                <span className="flex-none font-display text-[21px] font-semibold tabular-nums text-lime">
-                  ${item.price}
-                </span>
-              </div>
-              <p className="mt-2 text-[14.5px] leading-[1.55] text-ink-muted">{item.why}</p>
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {item.specs.map((s) => (
-                  <span
-                    key={s.label}
-                    className={
-                      "rounded-full px-2.5 py-1 text-[11px] font-semibold " +
-                      (s.muted
-                        ? "bg-card-2 text-ink-dim"
-                        : "bg-lime/15 text-lime border border-lime/30")
-                    }
-                  >
-                    {s.label}
-                  </span>
-                ))}
-              </div>
-              <a
-                href={item.href}
-                rel="nofollow sponsored"
-                target="_blank"
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-lime px-4 py-3.5 text-sm font-bold text-bg transition-transform active:scale-[0.985]"
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {ITEMS.map((item, i) => (
+              <article
+                key={item.n}
+                ref={(el) => {
+                  itemRefs.current[i] = el;
+                }}
+                className="relative flex flex-col rounded-2xl border border-hairline bg-card p-5"
               >
-                get it on amazon
-                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                  <path d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
-              </a>
-            </article>
-          ))}
+                <span className="absolute -top-3 left-5 rounded-full bg-lime px-3 py-0.5 text-[11px] font-bold tabular-nums text-bg z-10">
+                  {item.n} of 9
+                </span>
+
+                {/* image placeholder */}
+                <div
+                  className="mb-4 flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-xl border border-hairline bg-gradient-to-br from-lilac/20 via-card-2 to-peach/15"
+                  aria-label={`${item.title} — image placeholder`}
+                >
+                  <div className="flex flex-col items-center gap-1.5 text-ink-dim">
+                    <svg
+                      className="h-8 w-8 opacity-60"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                    >
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <circle cx="9" cy="9" r="1.5" />
+                      <path d="m21 15-5-5L5 21" />
+                    </svg>
+                    <span className="text-[10px] font-mono uppercase tracking-wider">
+                      image · coming soon
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-1 flex items-baseline justify-between gap-3.5">
+                  <h3 className="font-display text-xl font-medium leading-tight">{item.title}</h3>
+                  <span className="flex-none font-display text-[21px] font-semibold tabular-nums text-lime">
+                    ${item.price}
+                  </span>
+                </div>
+                <p className="mt-2 text-[14.5px] leading-[1.55] text-ink-muted">{item.why}</p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {item.specs.map((s) => (
+                    <span
+                      key={s.label}
+                      className={
+                        "rounded-full px-2.5 py-1 text-[11px] font-semibold " +
+                        (s.muted
+                          ? "bg-card-2 text-ink-dim"
+                          : "bg-lime/15 text-lime border border-lime/30")
+                      }
+                    >
+                      {s.label}
+                    </span>
+                  ))}
+                </div>
+                <a
+                  href={item.href}
+                  rel="nofollow sponsored"
+                  target="_blank"
+                  className="mt-auto flex w-full items-center justify-center gap-2 rounded-xl bg-lime px-4 py-3.5 text-sm font-bold text-bg transition-transform active:scale-[0.985] pt-4"
+                  style={{ marginTop: "1rem" }}
+                >
+                  get it on amazon
+                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </a>
+              </article>
+            ))}
+          </div>
+
 
           {/* RECEIPT */}
           <section
             ref={receiptRef}
-            className="mt-7 rounded-2xl border border-hairline bg-card-2 p-6"
+            className="mt-7 rounded-2xl border border-hairline bg-card-2 p-6 md:mx-auto md:max-w-2xl"
           >
             <h2 className="font-display text-[23px] font-semibold mb-4">the damage.</h2>
             {ITEMS.map((it) => (
@@ -380,7 +411,7 @@ function FiveHundredLook() {
           </section>
 
           {/* ESSENTIALS */}
-          <section className="mt-11 rounded-2xl border border-peach/40 bg-peach/10 p-6">
+          <section className="mt-11 rounded-2xl border border-peach/40 bg-peach/10 p-6 md:mx-auto md:max-w-2xl">
             <h2 className="font-display text-[23px] font-semibold text-peach">
               the essentials are a separate budget. on purpose.
             </h2>
@@ -416,7 +447,7 @@ function FiveHundredLook() {
           </section>
 
           {/* CTA */}
-          <section className="mt-11 rounded-2xl bg-lime p-8 text-bg">
+          <section className="mt-11 rounded-2xl bg-lime p-8 text-bg md:mx-auto md:max-w-2xl">
             <h2 className="font-display text-[clamp(26px,6vw,32px)] font-bold leading-tight">
               want to see this in <em className="italic">your</em> room first?
             </h2>
@@ -433,7 +464,7 @@ function FiveHundredLook() {
           </section>
         </main>
 
-        <footer className="mt-5 pt-10 pb-24">
+        <footer className="mt-5 pt-10 pb-24 md:mx-auto md:max-w-2xl">
           <p className="border-t border-hairline pt-4 text-xs leading-[1.6] text-ink-dim">
             <b className="text-ink-muted">the honest fine print:</b> as an amazon associate, we earn
             from qualifying purchases made through links on this page — at no extra cost to you.
