@@ -9,8 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as The500LookRouteImport } from './routes/the-500-look'
 import { Route as IndexRouteImport } from './routes/index'
 
+const The500LookRoute = The500LookRouteImport.update({
+  id: '/the-500-look',
+  path: '/the-500-look',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +25,39 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/the-500-look': typeof The500LookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/the-500-look': typeof The500LookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/the-500-look': typeof The500LookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/the-500-look'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/the-500-look'
+  id: '__root__' | '/' | '/the-500-look'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  The500LookRoute: typeof The500LookRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/the-500-look': {
+      id: '/the-500-look'
+      path: '/the-500-look'
+      fullPath: '/the-500-look'
+      preLoaderRoute: typeof The500LookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +70,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  The500LookRoute: The500LookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
