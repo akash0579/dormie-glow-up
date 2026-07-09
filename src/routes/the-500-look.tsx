@@ -464,7 +464,7 @@ function FiveHundredLook() {
           </section>
         </main>
 
-        <footer className="mt-5 pt-10 pb-24">
+        <footer className="mt-5 pt-10 pb-24 md:mx-auto md:max-w-2xl">
           <p className="border-t border-hairline pt-4 text-xs leading-[1.6] text-ink-dim">
             <b className="text-ink-muted">the honest fine print:</b> as an amazon associate, we earn
             from qualifying purchases made through links on this page — at no extra cost to you.
