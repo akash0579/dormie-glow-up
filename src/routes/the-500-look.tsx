@@ -218,7 +218,8 @@ function FiveHundredLook() {
 
   return (
     <div className="min-h-screen bg-bg text-ink font-sans">
-      <div className="mx-auto max-w-[640px] px-5">
+      <div className="mx-auto max-w-[640px] px-5 md:max-w-5xl md:px-8">
+
         <header className="pt-6">
           <Link
             to="/"
