@@ -234,7 +234,7 @@ function FiveHundredLook() {
 
         <main>
           {/* HERO */}
-          <section className="pt-11 pb-3">
+          <section className="pt-11 pb-3 md:mx-auto md:max-w-2xl">
             <h1 className="font-display font-bold leading-[1.04] tracking-tight text-[clamp(38px,9vw,56px)]">
               the <em className="not-italic text-lime">$500</em> dorm look.
             </h1>
