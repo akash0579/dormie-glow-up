@@ -266,7 +266,7 @@ function FiveHundredLook() {
           </section>
 
           {/* RULES */}
-          <section className="mt-9 rounded-2xl border border-hairline bg-card p-6">
+          <section className="mt-9 rounded-2xl border border-hairline bg-card p-6 md:mx-auto md:max-w-2xl">
             <h2 className="font-display text-xl font-semibold mb-3">the rules we picked by</h2>
             {[
               [
