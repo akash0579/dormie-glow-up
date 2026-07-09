@@ -383,7 +383,7 @@ function FiveHundredLook() {
           {/* RECEIPT */}
           <section
             ref={receiptRef}
-            className="mt-7 rounded-2xl border border-hairline bg-card-2 p-6"
+            className="mt-7 rounded-2xl border border-hairline bg-card-2 p-6 md:mx-auto md:max-w-2xl"
           >
             <h2 className="font-display text-[23px] font-semibold mb-4">the damage.</h2>
             {ITEMS.map((it) => (
