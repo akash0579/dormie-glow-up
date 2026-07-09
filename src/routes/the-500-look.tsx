@@ -411,7 +411,7 @@ function FiveHundredLook() {
           </section>
 
           {/* ESSENTIALS */}
-          <section className="mt-11 rounded-2xl border border-peach/40 bg-peach/10 p-6">
+          <section className="mt-11 rounded-2xl border border-peach/40 bg-peach/10 p-6 md:mx-auto md:max-w-2xl">
             <h2 className="font-display text-[23px] font-semibold text-peach">
               the essentials are a separate budget. on purpose.
             </h2>
