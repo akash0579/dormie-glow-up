@@ -244,19 +244,20 @@ function VibeCard({ vibe, selected, onClick }: { vibe: Vibe; selected: boolean; 
   );
 }
 
-function StepCard({ n, total = "4", title, body, tone = "dark" }: { n: string; total?: string; title: string; body: string; tone?: "dark" | "lilac" }) {
+function StepCard({ n, total = "4", title, body, tone = "dark" }: { n: string; total?: string; title: string; body: string; tone?: "dark" | "lilac" | "cream" }) {
   const isLilac = tone === "lilac";
+  const isCream = tone === "cream";
   return (
-    <div className={`relative rounded-3xl p-5 ring-1 ${isLilac ? "bg-gradient-to-br from-lilac/25 to-card ring-lilac/40" : "bg-card ring-white/10"}`}>
+    <div className={`relative rounded-3xl p-5 ring-1 ${isCream ? "bg-cream text-[#0F0F11] ring-lime/40" : isLilac ? "bg-gradient-to-br from-lilac/25 to-card ring-lilac/40" : "bg-card ring-white/10"}`}>
       <div className="mb-4 flex items-center gap-2">
-        <span className={`grid h-8 w-8 place-items-center rounded-full font-mono text-xs font-bold text-[#0F0F11] ${isLilac ? "bg-lilac" : "bg-lime"}`}>
+        <span className={`grid h-8 w-8 place-items-center rounded-full font-mono text-xs font-bold text-[#0F0F11] ${isCream ? "bg-lime" : isLilac ? "bg-lilac" : "bg-lime"}`}>
           {n}
         </span>
-        <span className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">step {n} / {total}</span>
-        {isLilac && <span className="ml-auto rounded-full bg-lilac px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#0F0F11]">the payoff</span>}
+        <span className={`font-mono text-[10px] uppercase tracking-widest ${isCream ? "text-black/50" : "text-ink-dim"}`}>step {n} / {total}</span>
+        {(isCream || isLilac) && <span className={`ml-auto rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#0F0F11] ${isCream ? "bg-lime" : "bg-lilac"}`}>the payoff</span>}
       </div>
-      <div className="text-lg font-bold text-ink">{title}</div>
-      <div className="mt-1 text-sm text-ink-muted">{body}</div>
+      <div className={`text-lg font-bold ${isCream ? "text-[#0F0F11]" : "text-ink"}`}>{title}</div>
+      <div className={`mt-1 text-sm ${isCream ? "text-black/70" : "text-ink-muted"}`}>{body}</div>
     </div>
   );
 }
@@ -408,6 +409,8 @@ function Hero({ onOpen }: { onOpen: () => void }) {
           <StickerChip tone="lilac">set your budget</StickerChip>
           <StickerChip tone="peach">ship-to-ZIP aware</StickerChip>
           <StickerChip tone="cream">shop the look</StickerChip>
+          <StickerChip tone="dark">registry-ready</StickerChip>
+          <StickerChip tone="lilac">budgeted registry</StickerChip>
         </div>
 
         <div className="mt-6">
@@ -422,7 +425,7 @@ function Hero({ onOpen }: { onOpen: () => void }) {
             no pic yet? use demo room
           </SecondaryCTA>
           <p className="text-center text-[11px] text-ink-dim">
-            first design is free. then turn it into a budget-friendly shopping kit.
+            first, see the room. then turn it into a dorm registry people can actually help with.
           </p>
         </div>
       </div>
@@ -469,13 +472,13 @@ function HowItWorks({ onOpen }: { onOpen: () => void }) {
       <div className="mx-auto max-w-md">
         <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">how it works</p>
         <h2 className="mt-1 font-display text-3xl leading-tight font-extrabold lowercase">
-          three taps. then the reveal. then the list.
+          three taps. then the reveal. then the registry.
         </h2>
         <div className="mt-6 space-y-3">
           <StepCard n="1" title="drop the room pic" body="snap it, upload it, or use the demo room." />
           <StepCard n="2" title="pick the energy" body="cozy szn, golden hour, locked in, soft era, or type your own." />
           <StepCard n="3" title="see the glow-up" body="before/after reveal, edits, share card, roommate check." />
-          <StepCard n="4" tone="lilac" title="shop the look" body="set a budget, add your ZIP, and get real product links that can ship to you." />
+          <StepCard n="4" tone="cream" title="build the registry" body="set a budget, add your ZIP, and turn the look into a shareable dorm registry with real product links." />
         </div>
         <div className="mt-6 flex justify-center">
           <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "how" }); onOpen(); }}>
@@ -539,10 +542,10 @@ function ShoppingKitSection({ onOpen }: { onOpen: () => void }) {
       <div className="mx-auto max-w-md">
         <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">the practical payoff</p>
         <h2 className="mt-1 font-display text-3xl leading-tight font-extrabold lowercase">
-          pretty room. <span className="text-lime">real links.</span>
+          build the shopping kit, then turn it into a registry.
         </h2>
         <p className="mt-2 text-[14px] text-ink-muted">
-          dormie doesn't stop at the render. pick a budget, enter your ZIP, and turn the look into a shoppable dorm kit.
+          real product links become your dorm registry. pick a budget, add your ZIP, and turn the look into a shoppable kit people can claim from.
         </p>
 
         <div className="mt-5 rounded-3xl bg-card p-4 ring-1 ring-white/10">
@@ -611,10 +614,10 @@ function ShoppingKitSection({ onOpen }: { onOpen: () => void }) {
         {/* budget hook */}
         <div className="mt-6 rounded-3xl bg-gradient-to-br from-peach/15 to-card ring-1 ring-peach/30 p-5">
           <h3 className="font-display text-xl font-extrabold lowercase text-ink">
-            set the budget <span className="text-peach">before the cart gets scary.</span>
+            set the budget <span className="text-peach">before the registry gets chaotic.</span>
           </h3>
           <p className="mt-2 text-[13px] text-ink-muted">
-            pick a spend range and dormie builds the room around it. cute is good. financially chaotic is not.
+            pick a spend range and dormie builds the room around it. cute is good. a registry that spirals is not.
           </p>
         </div>
 
@@ -709,7 +712,7 @@ function ParentSection({ onOpen }: { onOpen: () => void }) {
           the version for whoever's paying.
         </h2>
         <p className="mt-2 text-[14px] text-ink-muted">
-          send home the practical view: the room, the budget, the ZIP-aware shopping kit, and the full list. no 19 random links. no mystery cart.
+          send home the practical view: the room, the budget, the registry, and the product links. no 19 random texts. no mystery cart.
         </p>
 
         <div className="mt-5 rounded-3xl bg-cream p-5 text-[#0F0F11] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.7)]">
@@ -724,10 +727,13 @@ function ParentSection({ onOpen }: { onOpen: () => void }) {
             {[
               ["estimated total", "$365"],
               ["budget selected", "$300–$400"],
+              ["registry progress", "$0 of $145 covered"],
               ["ships to", "ZIP 78705 · prioritized"],
               ["shopping kit", "14 pieces, 3 stores"],
+              ["claim/sponsor items", "family can claim what they cover"],
               ["subscription", "none"],
               ["auto-renew", "off"],
+              ["season pass", "$24 once"],
               ["season access", "until sep 7"],
             ].map(([k, v]) => (
               <div key={k} className="flex justify-between py-2">
@@ -737,14 +743,17 @@ function ParentSection({ onOpen }: { onOpen: () => void }) {
             ))}
           </dl>
           <p className="mt-3 text-[10px] leading-relaxed text-black/50">
-            product links and shipping availability can change. always confirm final price and availability at the store.
+            claiming an item keeps the Dormie registry organized. final checkout happens with the store. prices and availability can change — always confirm at checkout.
           </p>
         </div>
 
         <div className="mt-5 flex flex-col gap-2">
           <PrimaryCTA className="w-full" onClick={() => { track("parent_cta_clicked"); onOpen(); }}>
-            send mom the plan
+            send mom the registry
           </PrimaryCTA>
+          <SecondaryCTA className="w-full" onClick={() => { track("share_registry_clicked"); onOpen(); }}>
+            share the dorm registry
+          </SecondaryCTA>
           <p className="text-center text-[11px] text-ink-dim">
             student gets the fun version. parent gets the practical one.
           </p>
@@ -808,10 +817,10 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
     <section className="px-4 py-14">
       <div className="mx-auto max-w-md">
         <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          free gets you the look. <span className="text-lilac">pass gets you the plan.</span>
+          free gets you the look. <span className="text-lilac">pass gets you the registry people can help with.</span>
         </h2>
         <p className="mt-2 text-[14px] text-ink-muted">
-          try it free. go pass if you're actually moving in.
+          try it free. go pass if you're actually moving in and want the full registry.
         </p>
         <div className="mt-6 grid gap-4">
           <FreeVsPassCard
@@ -822,7 +831,7 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
               "3 free designs",
               "first design without signup",
               "basic share card",
-              "basic shopping preview",
+              "basic registry preview",
               "watermarked result",
             ]}
             ctaLabel="start free"
@@ -836,14 +845,16 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
               "unlimited designs",
               "hd / no watermark",
               "real-product renders",
-              "full shopping kit 🔒",
-              "budget controls 🔒",
-              "ZIP-based product links 🔒",
-              "dupe finder 🔒",
-              "extra angles",
-              "priority in the august rush",
+              "full dorm registry",
+              "cross-brand product links",
+              "family claim links",
+              "budget tracking",
+              "duplicate-buy prevention",
+              "dupe finder",
               "restyles until sep 7",
-              "no subscription · no auto-renew",
+              "$24 once",
+              "no subscription",
+              "no auto-renew",
             ]}
             ctaLabel="cover the season"
             onClick={() => { track("pass_cta_clicked"); onOpen(); }}
@@ -900,7 +911,7 @@ function FinalCTA({ onOpen }: { onOpen: () => void }) {
           <span className="text-lime">make the room make sense.</span>
         </h2>
         <p className="mt-4 text-[15px] text-ink-muted">
-          first design is free. no signup. no app. just your dorm, but better.
+          first design is free. no signup. design the room, build the registry, send the plan.
         </p>
         <div className="mt-6 flex flex-col gap-3">
           <PrimaryCTA size="lg" onClick={() => { track("hero_cta_clicked", { section: "final" }); onOpen(); }}>
@@ -910,7 +921,7 @@ function FinalCTA({ onOpen }: { onOpen: () => void }) {
             use demo room
           </SecondaryCTA>
           <p className="mt-2 text-[11px] text-ink-dim">
-            3 free designs · $24 once if you want the full season
+            3 free designs · dorm registry · $24 once for the full season
           </p>
         </div>
       </div>
