@@ -629,6 +629,113 @@ function ShoppingKitSection({ onOpen }: { onOpen: () => void }) {
   );
 }
 
+function RegistrySection({ onOpen }: { onOpen: () => void }) {
+  const studentItems = [
+    { t: "washable 5x7 rug", p: "$36" },
+    { t: "warm led string lights", p: "$9" },
+    { t: "clip-on desk lamp", p: "$12" },
+    { t: "peel-and-stick wall panels", p: "$18" },
+    { t: "under-bed storage bins", p: "$17" },
+    { t: "throw blanket", p: "$13" },
+  ];
+  const familyItems = [
+    "washable 5x7 rug",
+    "warm led string lights",
+    "clip-on desk lamp",
+    "command strips mega pack",
+  ];
+  return (
+    <section className="px-4 py-14 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
+      <div className="mx-auto max-w-md">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">the registry payoff</p>
+        <h2 className="mt-1 font-display text-3xl leading-tight font-extrabold lowercase">
+          make the registry claimable.
+        </h2>
+        <p className="mt-2 text-[14px] text-ink-muted">
+          turn your final dorm plan into a budgeted registry across brands. send it to family, friends, or your roommate so people can claim what they're covering.
+        </p>
+
+        {/* student card */}
+        <div className="mt-5 rounded-3xl bg-card p-4 ring-1 ring-white/10">
+          <div className="flex items-center justify-between">
+            <div className="font-display text-lg font-extrabold lowercase text-ink">the gift math.</div>
+            <span className="rounded-full bg-lime/15 ring-1 ring-lime/40 px-2.5 py-0.5 text-[10px] font-bold text-lime">16 spots open</span>
+          </div>
+          <div className="mt-3 rounded-2xl bg-white/[0.03] ring-1 ring-white/10 p-4">
+            <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">covered</div>
+            <div className="mt-1 font-display text-3xl font-extrabold text-ink">$0 <span className="text-ink-dim text-lg font-medium">of $145</span></div>
+            <div className="mt-2 h-2 w-full rounded-full bg-white/10 overflow-hidden">
+              <div className="h-full w-0 rounded-full bg-lime" />
+            </div>
+          </div>
+          <p className="mt-3 text-[13px] text-ink-muted">
+            share the registry. family claims items. claimed ones lock so nobody double-buys.
+          </p>
+          <div className="mt-4 space-y-2">
+            {studentItems.map((i) => (
+              <div key={i.t} className="flex items-center gap-3 rounded-2xl bg-white/[0.03] ring-1 ring-white/10 p-3">
+                <div className="h-10 w-10 shrink-0 rounded-lg bg-gradient-to-br from-white/10 to-white/[0.02] ring-1 ring-white/10" />
+                <div className="min-w-0 flex-1">
+                  <div className="text-[13px] font-semibold text-ink truncate">{i.t}</div>
+                </div>
+                <div className="font-mono text-[13px] font-bold text-ink">{i.p}</div>
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={() => { track("finish_registry_clicked"); onOpen(); }}
+            className="mt-4 w-full rounded-full bg-lime px-5 py-3.5 text-sm font-bold text-[#0F0F11] active:scale-[0.98] transition"
+          >
+            finish the registry — 16 spots open →
+          </button>
+        </div>
+
+        {/* family/shared view card */}
+        <div className="mt-5 rounded-3xl bg-cream p-5 text-[#0F0F11] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.7)]">
+          <div className="flex items-center justify-between">
+            <div className="font-display text-lg font-extrabold lowercase text-[#0F0F11]">their dorm registry, planned to the dollar</div>
+            <span className="rounded-full bg-[#0F0F11] px-2.5 py-0.5 text-[10px] font-bold text-lime">shareable</span>
+          </div>
+          <div className="mt-3 rounded-2xl bg-black/5 p-4">
+            <div className="font-mono text-[10px] uppercase tracking-widest text-black/50">covered</div>
+            <div className="mt-1 font-display text-3xl font-extrabold text-[#0F0F11]">$0 <span className="text-black/50 text-lg font-medium">of $145</span></div>
+            <div className="mt-2 h-2 w-full rounded-full bg-black/10 overflow-hidden">
+              <div className="h-full w-0 rounded-full bg-lime" />
+            </div>
+          </div>
+          <div className="mt-4 space-y-2">
+            {familyItems.map((t) => (
+              <button
+                key={t}
+                onClick={() => { track("registry_item_claimed", { item: t }); }}
+                className="w-full flex items-center justify-between rounded-2xl bg-white p-3 ring-1 ring-black/10 active:scale-[0.98] transition"
+              >
+                <span className="text-[13px] font-semibold text-[#0F0F11]">{t}</span>
+                <span className="text-[13px] font-bold text-[#0F0F11]">claim this →</span>
+              </button>
+            ))}
+          </div>
+          <p className="mt-4 text-[10px] leading-relaxed text-black/50">
+            no account needed. dormie sells nothing — the store handles the purchase. the registry just keeps everyone from double-buying.
+          </p>
+          <p className="mt-2 text-[10px] leading-relaxed text-black/50">
+            claiming an item keeps the Dormie registry organized. final checkout happens with the store. prices and availability can change — always confirm at checkout.
+          </p>
+        </div>
+
+        <div className="mt-6 flex flex-col gap-2">
+          <PrimaryCTA className="w-full" onClick={() => { track("hero_cta_clicked", { section: "registry" }); onOpen(); }}>
+            make my dorm registry
+          </PrimaryCTA>
+          <SecondaryCTA className="w-full" onClick={() => { track("share_registry_clicked", { section: "registry" }); onOpen(); }}>
+            share the registry
+          </SecondaryCTA>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ShareSection({ onOpen }: { onOpen: () => void }) {
   return (
     <section className="px-4 py-14">
