@@ -1063,56 +1063,168 @@ function FreeVsPassCard({
   );
 }
 
+function PassCard({
+  variant,
+  name,
+  price,
+  period,
+  perMonth,
+  features,
+  ctaLabel,
+  onClick,
+  badge,
+}: {
+  variant: "season" | "year";
+  name: string;
+  price: string;
+  period: string;
+  perMonth: string;
+  features: Array<string | { bold: string; rest: string }>;
+  ctaLabel: string;
+  onClick: () => void;
+  badge?: string;
+}) {
+  const isFeat = variant === "year";
+  return (
+    <div
+      className={`relative rounded-3xl p-5 ring-1 ${
+        isFeat
+          ? "bg-gradient-to-b from-lilac/20 to-card ring-lilac/50 shadow-[0_25px_60px_-25px_rgba(196,181,253,0.4)]"
+          : "bg-card ring-white/10"
+      }`}
+    >
+      {badge && (
+        <span className="absolute -top-2.5 left-5 rounded-full bg-lilac px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#0F0F11]">
+          {badge}
+        </span>
+      )}
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="text-lg font-bold text-ink lowercase">{name}</div>
+          <div className="mt-1 text-[11px] text-ink-dim">{perMonth}</div>
+        </div>
+        <div className="text-right">
+          <div className={`font-display text-3xl font-extrabold ${isFeat ? "text-lilac" : "text-lime"}`}>
+            {price}
+          </div>
+          <div className="text-[10px] text-ink-dim">{period}</div>
+        </div>
+      </div>
+      <ul className="mt-4 space-y-2 text-[13px] text-ink-muted">
+        {features.map((f, i) => (
+          <li key={i} className="flex gap-2">
+            <span className={isFeat ? "text-lilac" : "text-lime"}>✓</span>
+            {typeof f === "string" ? (
+              <span>{f}</span>
+            ) : (
+              <span>
+                <b className="text-ink font-semibold">{f.bold}</b> — {f.rest}
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
+      <div className="mt-4 rounded-xl bg-white/[0.04] ring-1 ring-white/10 px-3 py-2.5 text-[11px] text-ink-dim leading-relaxed">
+        built for you, not a group — invite friends instead and they get their own free credits.
+      </div>
+      <button
+        onClick={onClick}
+        className={`mt-4 w-full rounded-full py-3 text-sm font-bold active:scale-[0.98] transition ${
+          isFeat ? "bg-lilac text-[#0F0F11]" : "bg-lime text-[#0F0F11]"
+        }`}
+      >
+        {ctaLabel}
+      </button>
+    </div>
+  );
+}
+
 function PricingSection({ onOpen }: { onOpen: () => void }) {
+  const [plan, setPlan] = useState<"season" | "year">("year");
   return (
     <section className="px-4 py-14">
       <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          free gets you the look. <span className="text-lilac">pass gets you the registry people can help with.</span>
+        <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">for the ones who don't want to wait</p>
+        <h2 className="mt-2 font-display text-3xl leading-tight font-extrabold lowercase">
+          skip the sharing.<br />
+          <span className="text-lilac">design as much as you want.</span>
         </h2>
         <p className="mt-2 text-[14px] text-ink-muted">
-          try it free. go pass if you're actually moving in and want the full registry.
+          your free credits and the share bonus still work exactly the same — this is just for going further, faster.
         </p>
-        <div className="mt-6 grid gap-4">
-          <FreeVsPassCard
-            kind="free"
-            title="free"
-            price="$0"
-            features={[
-              "3 free designs",
-              "first design without signup",
-              "basic share card",
-              "basic registry preview",
-              "watermarked result",
-            ]}
-            ctaLabel="start free"
-            onClick={() => { track("hero_cta_clicked", { section: "pricing-free" }); onOpen(); }}
-          />
-          <FreeVsPassCard
-            kind="pass"
-            title="season pass"
-            price="$24 once"
-            features={[
-              "unlimited designs",
-              "hd / no watermark",
-              "real-product renders",
-              "full shoppable registry — budget, ZIP, one-tap carts, mixed brands, and family claiming",
-              "budget tracking",
 
-              "dupe finder",
-              "restyles until sep 7",
-              "$24 once",
-              "no subscription",
-              "no auto-renew",
-            ]}
-            ctaLabel="cover the season"
-            onClick={() => { track("pass_cta_clicked"); onOpen(); }}
-          />
+        {/* toggle */}
+        <div className="mt-5 relative flex rounded-full bg-white/[0.05] ring-1 ring-white/10 p-1">
+          <button
+            onClick={() => setPlan("season")}
+            className={`flex-1 rounded-full py-2.5 text-[12px] font-bold transition ${
+              plan === "season" ? "bg-lime text-[#0F0F11]" : "text-ink-muted"
+            }`}
+          >
+            3 months
+          </button>
+          <button
+            onClick={() => setPlan("year")}
+            className={`relative flex-1 rounded-full py-2.5 text-[12px] font-bold transition ${
+              plan === "year" ? "bg-lilac text-[#0F0F11]" : "text-ink-muted"
+            }`}
+          >
+            12 months
+            <span className="absolute -top-2 right-2 rounded-full bg-lime px-2 py-0.5 text-[9px] font-extrabold text-[#0F0F11]">
+              save 33%
+            </span>
+          </button>
+        </div>
+
+        <div className="mt-6">
+          {plan === "season" ? (
+            <PassCard
+              variant="season"
+              name="seasonal pass"
+              price="$36"
+              period="3 months"
+              perMonth="$12 / month, billed once"
+              features={[
+                { bold: "unlimited designs", rest: "tweaks and re-generations don't count against anything" },
+                "full registry + shopping, unlocked immediately",
+                "no auto-renew — it just ends at 3 months",
+              ]}
+              ctaLabel="get the seasonal pass"
+              onClick={() => { track("pass_cta_clicked", { plan: "season" }); onOpen(); }}
+            />
+          ) : (
+            <PassCard
+              variant="year"
+              name="yearly pass"
+              price="$72"
+              period="12 months"
+              perMonth="$6 / month, billed once"
+              badge="most save with this"
+              features={[
+                { bold: "unlimited designs", rest: "tweaks and re-generations don't count against anything" },
+                "full registry + shopping, unlocked immediately",
+                { bold: "covers your whole year", rest: "move-in, the january reset, and whenever the vibe changes" },
+              ]}
+              ctaLabel="get the yearly pass"
+              onClick={() => { track("pass_cta_clicked", { plan: "year" }); onOpen(); }}
+            />
+          )}
+        </div>
+
+        <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4 text-[12px]">
+          <span className="text-ink-dim">not ready to pay?</span>
+          <button
+            onClick={() => { track("share_free_clicked"); onOpen(); }}
+            className="font-semibold text-lime hover:underline"
+          >
+            share instead — still free →
+          </button>
         </div>
       </div>
     </section>
   );
 }
+
 
 function TrustSection({ onOpen }: { onOpen: () => void }) {
   const cards = [
