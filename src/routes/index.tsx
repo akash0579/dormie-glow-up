@@ -11,7 +11,7 @@ export const Route = createFileRoute("/")({
 function track(event: string, props?: Record<string, unknown>) {
   if (typeof window !== "undefined") {
     // eslint-disable-next-line no-console
-    console.log("[dormie:event]", event, props ?? {});
+    console.log("[dormtok:event]", event, props ?? {});
   }
 }
 
@@ -123,7 +123,7 @@ function HeroRevealCard({ onCTA }: { onCTA: () => void }) {
         {/* After (base) */}
         <img
           src={dormAfter}
-          alt="Styled dorm room after dormie"
+          alt="Styled dorm room after dormtok"
           className="absolute inset-0 h-full w-full object-cover"
           width={768}
           height={1024}
@@ -131,7 +131,7 @@ function HeroRevealCard({ onCTA }: { onCTA: () => void }) {
         {/* Before (fades in when selected) */}
         <img
           src={dormBefore}
-          alt="Plain dorm room before dormie"
+          alt="Plain dorm room before dormtok"
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
             mode === "before" ? "opacity-100" : "opacity-0"
           }`}
@@ -360,7 +360,7 @@ function TopBar() {
     <header className="sticky top-0 z-30 backdrop-blur-md bg-bg/80 border-b border-white/5">
       <div className="mx-auto max-w-md px-4 h-12 flex items-center justify-between">
         <div className="flex items-baseline gap-2 min-w-0">
-          <span className="font-display text-lg font-extrabold text-lime lowercase leading-none">dormie</span>
+          <span className="font-display text-lg font-extrabold text-lime lowercase leading-none">dormtok</span>
           <span className="font-mono text-[9px] uppercase tracking-widest text-ink-dim truncate">by reimaginehome ai</span>
         </div>
         <div className="flex items-center gap-2 shrink-0">
@@ -476,7 +476,7 @@ function ProblemSection({ onOpen }: { onOpen: () => void }) {
               pinterest doesn't know your dorm.
             </h2>
             <p className="mt-3 text-[15px] md:text-[16px] text-ink-muted md:max-w-sm">
-              your feed is cute. your room is tiny. the bed, desk, dresser, and chair probably have to stay. dormie designs around the room you actually got.
+              your feed is cute. your room is tiny. the bed, desk, dresser, and chair probably have to stay. dormtok designs around the room you actually got.
             </p>
             <div className="mt-6 hidden md:flex">
               <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "problem" }); onOpen(); }}>
@@ -980,7 +980,7 @@ function ShareSection({ onOpen }: { onOpen: () => void }) {
                 make my share card
               </PrimaryCTA>
               <p className="text-[11px] text-ink-dim">
-                your first share has a dormie watermark. pass removes it.
+                your first share has a dormtok watermark. pass removes it.
               </p>
             </div>
           </div>
@@ -997,7 +997,7 @@ function ShareSection({ onOpen }: { onOpen: () => void }) {
             make my share card
           </PrimaryCTA>
           <p className="text-center text-[11px] text-ink-dim">
-            your first share has a dormie watermark. pass removes it.
+            your first share has a dormtok watermark. pass removes it.
           </p>
         </div>
       </div>
@@ -1318,7 +1318,7 @@ function FinalCTA({ onOpen }: { onOpen: () => void }) {
 function Footer() {
   return (
     <footer className="border-t border-white/5 px-4 py-10 text-center">
-      <div className="font-display text-xl font-extrabold text-lime lowercase">dormie</div>
+      <div className="font-display text-xl font-extrabold text-lime lowercase">dormtok</div>
       <div className="mt-1 font-mono text-[10px] uppercase tracking-widest text-ink-dim">by reimaginehome ai</div>
       <div className="mt-3 text-[11px] text-ink-dim">© {new Date().getFullYear()} · built for back-to-school szn</div>
     </footer>

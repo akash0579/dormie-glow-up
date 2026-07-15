@@ -4,13 +4,13 @@ import { useEffect, useRef, useState } from "react";
 export const Route = createFileRoute("/the-500-look")({
   head: () => ({
     meta: [
-      { title: "the $500 dorm look — every piece linked | dormie" },
+      { title: "the $500 dorm look — every piece linked | dormtok" },
       {
         name: "description",
         content:
           "nine pieces that make the room people screenshot. twin xl, zero nails, RA-approved, $485 all in. every piece linked.",
       },
-      { property: "og:title", content: "the $500 dorm look — dormie" },
+      { property: "og:title", content: "the $500 dorm look — dormtok" },
       {
         property: "og:description",
         content: "nine pieces. $485 all in. the room people stop the dorm tour for.",
@@ -225,7 +225,7 @@ function FiveHundredLook() {
             to="/"
             className="text-xs font-bold tracking-widest uppercase text-lime hover:opacity-80"
           >
-            dormie · by reimaginehome ai
+            dormtok · by reimaginehome ai
           </Link>
           <div className="mt-1 text-[11px] text-ink-dim">
             as an amazon associate we earn from qualifying purchases.
@@ -472,7 +472,7 @@ function FiveHundredLook() {
             checkout is the real one. we only list things we'd put in a room we designed.
           </p>
           <p className="mt-3 text-xs text-ink-dim">
-            dormie · by reimaginehome ai
+            dormtok · by reimaginehome ai
           </p>
         </footer>
       </div>
