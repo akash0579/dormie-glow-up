@@ -1143,19 +1143,21 @@ function PassCard({
 function PricingSection({ onOpen }: { onOpen: () => void }) {
   const [plan, setPlan] = useState<"season" | "year">("year");
   return (
-    <section className="px-4 py-14">
-      <div className="mx-auto max-w-md">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">for the ones who don't want to wait</p>
-        <h2 className="mt-2 font-display text-3xl leading-tight font-extrabold lowercase">
-          skip the sharing.<br />
-          <span className="text-lilac">design as much as you want.</span>
-        </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          your free credits and the share bonus still work exactly the same — this is just for going further, faster.
-        </p>
+    <section className="px-4 py-14 md:px-8 md:py-20">
+      <div className="mx-auto max-w-md md:max-w-2xl">
+        <div className="md:text-center">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">for the ones who don't want to wait</p>
+          <h2 className="mt-2 font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+            skip the sharing.<br />
+            <span className="text-lilac">design as much as you want.</span>
+          </h2>
+          <p className="mt-2 md:mt-4 text-[14px] md:text-[15px] text-ink-muted md:mx-auto md:max-w-lg">
+            your free credits and the share bonus still work exactly the same — this is just for going further, faster.
+          </p>
+        </div>
 
         {/* toggle */}
-        <div className="mt-5 relative flex rounded-full bg-white/[0.05] ring-1 ring-white/10 p-1">
+        <div className="mt-5 md:mt-8 md:mx-auto md:max-w-sm relative flex rounded-full bg-white/[0.05] ring-1 ring-white/10 p-1">
           <button
             onClick={() => setPlan("season")}
             className={`flex-1 rounded-full py-2.5 text-[12px] font-bold transition ${
