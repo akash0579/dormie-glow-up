@@ -842,23 +842,25 @@ function RegistrySection({ onOpen }: { onOpen: () => void }) {
 
 function ShareSection({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="px-4 py-14">
-      <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          built for the group chat.
-        </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          brag card, vote card, roommate check, mom view. same room, different audience.
-        </p>
-        <div className="mt-5 grid grid-cols-2 gap-3">
+    <section className="px-4 md:px-8 py-14 md:py-24">
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <div className="md:max-w-3xl">
+          <h2 className="font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+            built for the group chat.
+          </h2>
+          <p className="mt-2 md:mt-4 text-[14px] md:text-[17px] text-ink-muted">
+            brag card, vote card, roommate check, mom view. same room, different audience.
+          </p>
+        </div>
+        <div className="mt-5 md:mt-10 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
           <div className="col-span-2">
             <ShareCard tag="brag time" tone="lime" title="okay it ate." body="vertical card for tiktok + stories" />
           </div>
           <ShareCard tag="roommate check" tone="lilac" title="wait this is cute" body="before they buy the wrong lamp" />
-          <ShareCard tag="mom view" tone="peach" title="the practical version" body="room + budget + list" />
+          <ShareCard tag="mom view" tone="peach" title="the practical version" body="room + budget + registry" />
         </div>
-        <div className="mt-5 flex flex-col gap-2">
-          <PrimaryCTA className="w-full" onClick={() => { track("hero_cta_clicked", { section: "share" }); onOpen(); }}>
+        <div className="mt-5 md:mt-10 flex flex-col md:flex-row md:items-center md:justify-center gap-2 md:gap-4">
+          <PrimaryCTA className="w-full md:w-auto" onClick={() => { track("hero_cta_clicked", { section: "share" }); onOpen(); }}>
             make my share card
           </PrimaryCTA>
           <p className="text-center text-[11px] text-ink-dim">
