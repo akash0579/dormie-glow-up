@@ -391,46 +391,56 @@ function Marquee() {
 
 function Hero({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="relative px-4 pt-5 pb-10 grain">
-      <div className="mx-auto max-w-md">
-        <div className="flex justify-center">
-          <StickerChip tone="dark" className="font-mono">back to school szn · 39 days out</StickerChip>
-        </div>
-        <h1 className="mt-3 text-center font-display text-[40px] leading-[0.95] font-extrabold tracking-tight lowercase">
-          your dorm,<br />
-          <span className="text-lime">but make it iconic.</span>
-        </h1>
-        <p className="mt-2 text-center text-[14px] leading-snug text-ink-muted">
-          snap your room. get a design built around the furniture you're stuck with — then shop it in one tap.
-        </p>
+    <section className="relative px-4 pt-5 pb-10 md:px-8 md:pt-10 md:pb-20 grain">
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <div className="md:grid md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] md:items-center md:gap-12 lg:gap-16">
+          {/* LEFT: copy + CTA */}
+          <div className="md:pr-2">
+            <div className="flex justify-center md:justify-start">
+              <StickerChip tone="dark" className="font-mono">back to school szn · 39 days out</StickerChip>
+            </div>
+            <h1 className="mt-3 text-center md:text-left font-display text-[40px] md:text-[76px] lg:text-[88px] leading-[0.95] font-extrabold tracking-tight lowercase">
+              your dorm,<br />
+              <span className="text-lime">but make it iconic.</span>
+            </h1>
+            <p className="mt-3 md:mt-5 text-center md:text-left text-[14px] md:text-[17px] leading-snug md:leading-relaxed text-ink-muted md:max-w-lg">
+              snap your room. get a design built around the furniture you're stuck with — then shop it in one tap.
+            </p>
 
-        <div className="mt-3 flex flex-wrap justify-center gap-1.5">
-          <StickerChip tone="lime">3 designs free</StickerChip>
-          <StickerChip tone="lilac">no signup to try</StickerChip>
-          <StickerChip tone="cream">ready in seconds</StickerChip>
-        </div>
+            <div className="mt-3 md:mt-5 flex flex-wrap justify-center md:justify-start gap-1.5">
+              <StickerChip tone="lime">3 designs free</StickerChip>
+              <StickerChip tone="lilac">no signup to try</StickerChip>
+              <StickerChip tone="cream">ready in seconds</StickerChip>
+            </div>
 
-        <div className="mt-4 flex flex-col items-stretch gap-2">
-          <PrimaryCTA size="lg" onClick={() => { track("hero_cta_clicked"); onOpen(); }}>
-            see my room →
-          </PrimaryCTA>
-          <div className="flex items-center justify-center gap-3 text-[11px] text-ink-dim">
-            <button
-              onClick={() => { track("demo_room_clicked"); onOpen(); }}
-              className="underline underline-offset-2 hover:text-ink"
-            >
-              use demo room
-            </button>
-            <span>·</span>
-            <span>no signup</span>
+            <div className="mt-4 md:mt-7 flex flex-col md:flex-row items-stretch md:items-center gap-2 md:gap-4">
+              <PrimaryCTA size="lg" onClick={() => { track("hero_cta_clicked"); onOpen(); }}>
+                see my room →
+              </PrimaryCTA>
+              <div className="flex items-center justify-center md:justify-start gap-3 text-[11px] md:text-[12px] text-ink-dim">
+                <button
+                  onClick={() => { track("demo_room_clicked"); onOpen(); }}
+                  className="underline underline-offset-2 hover:text-ink"
+                >
+                  use demo room
+                </button>
+                <span>·</span>
+                <span>no signup</span>
+              </div>
+            </div>
+
+            <p className="hidden md:block mt-6 text-[13px] text-ink-muted md:max-w-md">
+              then turn the room into a budgeted registry with real products, one-tap carts, and family claiming.
+            </p>
+          </div>
+
+          {/* RIGHT: reveal card */}
+          <div className="mt-5 md:mt-0">
+            <HeroRevealCard onCTA={onOpen} />
           </div>
         </div>
 
-        <div className="mt-5">
-          <HeroRevealCard onCTA={onOpen} />
-        </div>
-
-        <p className="mt-4 text-center text-[12px] text-ink-muted">
+        <p className="md:hidden mt-4 text-center text-[12px] text-ink-muted">
           then turn the room into a budgeted registry with real products, one-tap carts, and family claiming.
         </p>
       </div>
