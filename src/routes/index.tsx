@@ -965,22 +965,34 @@ function RegistryShopSection({ onOpen }: { onOpen: () => void }) {
 
 function ShareSection({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="px-4 py-14">
-      <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          built for the group chat.
-        </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          brag card, vote card, roommate check, mom view. same room, different audience.
-        </p>
-        <div className="mt-5 grid grid-cols-2 gap-3">
-          <div className="col-span-2">
-            <ShareCard tag="brag time" tone="lime" title="okay it ate." body="vertical card for tiktok + stories" />
+    <section className="px-4 py-14 md:px-8 md:py-20">
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <div className="md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] md:gap-14 md:items-center">
+          <div>
+            <h2 className="font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+              built for the group chat.
+            </h2>
+            <p className="mt-2 md:mt-4 text-[14px] md:text-[16px] text-ink-muted md:max-w-sm">
+              brag card, vote card, roommate check, mom view. same room, different audience.
+            </p>
+            <div className="mt-5 hidden md:flex flex-col gap-2 md:max-w-xs">
+              <PrimaryCTA className="w-full" onClick={() => { track("hero_cta_clicked", { section: "share" }); onOpen(); }}>
+                make my share card
+              </PrimaryCTA>
+              <p className="text-[11px] text-ink-dim">
+                your first share has a dormie watermark. pass removes it.
+              </p>
+            </div>
           </div>
-          <ShareCard tag="roommate check" tone="lilac" title="wait this is cute" body="before they buy the wrong lamp" />
-          <ShareCard tag="mom view" tone="peach" title="the practical version" body="room + budget + list" />
+          <div className="mt-5 md:mt-0 grid grid-cols-2 gap-3 md:gap-4">
+            <div className="col-span-2">
+              <ShareCard tag="brag time" tone="lime" title="okay it ate." body="vertical card for tiktok + stories" />
+            </div>
+            <ShareCard tag="roommate check" tone="lilac" title="wait this is cute" body="before they buy the wrong lamp" />
+            <ShareCard tag="mom view" tone="peach" title="the practical version" body="room + budget + list" />
+          </div>
         </div>
-        <div className="mt-5 flex flex-col gap-2">
+        <div className="mt-5 flex flex-col gap-2 md:hidden">
           <PrimaryCTA className="w-full" onClick={() => { track("hero_cta_clicked", { section: "share" }); onOpen(); }}>
             make my share card
           </PrimaryCTA>
@@ -1001,31 +1013,43 @@ function RoommateSection({ onOpen }: { onOpen: () => void }) {
     { me: true, t: "fine, no neon sign" },
   ];
   return (
-    <section className="px-4 py-14 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
-      <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          send this before your roommate buys ugly stuff.
-        </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          match the vibe before move-in. split ideas, vote on looks, and avoid the two-people-one-room disaster.
-        </p>
-        <div className="mt-5 rounded-3xl bg-card p-4 ring-1 ring-white/10">
-          <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim mb-3">roomie · today</div>
-          <div className="space-y-2">
-            {msgs.map((m, i) => (
-              <div key={i} className={`flex ${m.me ? "justify-end" : "justify-start"}`}>
-                <div
-                  className={`max-w-[80%] rounded-2xl px-3.5 py-2 text-[13px] ${
-                    m.me ? "bg-lime text-[#0F0F11] rounded-br-md" : "bg-white/[0.06] text-ink rounded-bl-md"
-                  }`}
-                >
-                  {m.t}
+    <section className="px-4 py-14 md:px-8 md:py-20 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
+      <div className="mx-auto max-w-md md:max-w-5xl">
+        <div className="md:grid md:grid-cols-2 md:gap-14 md:items-center">
+          <div>
+            <h2 className="font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+              send this before your roommate buys ugly stuff.
+            </h2>
+            <p className="mt-2 md:mt-4 text-[14px] md:text-[16px] text-ink-muted md:max-w-md">
+              match the vibe before move-in. split ideas, vote on looks, and avoid the two-people-one-room disaster.
+            </p>
+            <div className="mt-5 hidden md:flex flex-col gap-2 md:max-w-xs">
+              <PrimaryCTA className="w-full" onClick={() => { track("roommate_cta_clicked"); onOpen(); }}>
+                send to roommate
+              </PrimaryCTA>
+              <SecondaryCTA className="w-full" onClick={() => { track("hero_cta_clicked", { section: "roommate" }); onOpen(); }}>
+                design my side first
+              </SecondaryCTA>
+            </div>
+          </div>
+          <div className="mt-5 md:mt-0 rounded-3xl bg-card p-4 md:p-6 ring-1 ring-white/10">
+            <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim mb-3">roomie · today</div>
+            <div className="space-y-2">
+              {msgs.map((m, i) => (
+                <div key={i} className={`flex ${m.me ? "justify-end" : "justify-start"}`}>
+                  <div
+                    className={`max-w-[80%] rounded-2xl px-3.5 py-2 text-[13px] ${
+                      m.me ? "bg-lime text-[#0F0F11] rounded-br-md" : "bg-white/[0.06] text-ink rounded-bl-md"
+                    }`}
+                  >
+                    {m.t}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-        <div className="mt-5 flex flex-col gap-2">
+        <div className="mt-5 flex flex-col gap-2 md:hidden">
           <PrimaryCTA className="w-full" onClick={() => { track("roommate_cta_clicked"); onOpen(); }}>
             send to roommate
           </PrimaryCTA>
