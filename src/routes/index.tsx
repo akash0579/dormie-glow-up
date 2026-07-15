@@ -510,26 +510,26 @@ function VibePicker({ onOpen }: { onOpen: () => void }) {
     setSelected((s) => (s.includes(k) ? s.filter((x) => x !== k) : s.length < 3 ? [...s, k] : s));
   };
   return (
-    <section className="px-4 py-14">
-      <div className="mx-auto max-w-md">
+    <section className="px-4 md:px-8 py-14 md:py-24">
+      <div className="mx-auto max-w-md md:max-w-6xl">
         <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">step 3 / 4 · saves to your profile</p>
-        <h2 className="mt-1 font-display text-3xl leading-tight font-extrabold lowercase">
+        <h2 className="mt-1 font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase md:max-w-3xl">
           pick the energy. not the furniture.
         </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
+        <p className="mt-2 md:mt-3 text-[14px] md:text-[17px] text-ink-muted">
           the school stuff stays. the vibe is yours. up to three.
         </p>
-        <div className="mt-5 grid grid-cols-2 gap-3">
+        <div className="mt-5 md:mt-8 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {VIBES.map((v) => (
             <VibeCard key={v.key} vibe={v} selected={selected.includes(v.key)} onClick={() => toggle(v.key)} />
           ))}
         </div>
-        <input
-          placeholder="or type it — 'coquette but navy'"
-          className="mt-4 w-full rounded-full bg-white/[0.04] ring-1 ring-white/10 px-5 py-3.5 text-sm text-ink placeholder:text-ink-dim outline-none focus:ring-lime/60"
-        />
-        <div className="mt-5">
-          <PrimaryCTA className="w-full" onClick={() => { track("hero_cta_clicked", { section: "vibe" }); onOpen(); }}>
+        <div className="mt-4 md:mt-6 md:flex md:gap-3 md:items-center">
+          <input
+            placeholder="or type it — 'coquette but navy'"
+            className="w-full md:flex-1 rounded-full bg-white/[0.04] ring-1 ring-white/10 px-5 py-3.5 text-sm text-ink placeholder:text-ink-dim outline-none focus:ring-lime/60"
+          />
+          <PrimaryCTA className="mt-3 md:mt-0 w-full md:w-auto" onClick={() => { track("hero_cta_clicked", { section: "vibe" }); onOpen(); }}>
             cook it →
           </PrimaryCTA>
         </div>
