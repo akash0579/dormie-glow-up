@@ -405,12 +405,9 @@ function Hero({ onOpen }: { onOpen: () => void }) {
         </p>
 
         <div className="mt-4 flex flex-wrap justify-center gap-1.5">
-          <StickerChip tone="lime">real product links</StickerChip>
-          <StickerChip tone="lilac">set your budget</StickerChip>
-          <StickerChip tone="peach">ship-to-ZIP aware</StickerChip>
-          <StickerChip tone="cream">shop the look</StickerChip>
-          <StickerChip tone="dark">registry-ready</StickerChip>
-          <StickerChip tone="lilac">budgeted registry</StickerChip>
+          <StickerChip tone="lilac">budget + ZIP</StickerChip>
+          <StickerChip tone="lime">one-tap or mixed brands</StickerChip>
+          <StickerChip tone="cream">room → registry → cart</StickerChip>
         </div>
 
         <div className="mt-6">
@@ -422,12 +419,24 @@ function Hero({ onOpen }: { onOpen: () => void }) {
             see my room →
           </PrimaryCTA>
           <SecondaryCTA onClick={() => { track("demo_room_clicked"); onOpen(); }}>
-            no pic yet? use demo room
+            use demo room
           </SecondaryCTA>
-          <p className="text-center text-[11px] text-ink-dim">
-            first, see the room. then turn it into a dorm registry people can actually help with.
+          <p className="text-center text-[12px] text-ink-muted">
+            then turn the room into a budgeted registry with real products, one-tap carts, and family claiming.
           </p>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function SectionTransition() {
+  return (
+    <section className="px-4 pt-2 pb-1">
+      <div className="mx-auto max-w-md md:max-w-2xl text-center">
+        <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-dim">
+          the reveal is the fun part. <span className="text-lime">this is how the room actually happens.</span>
+        </p>
       </div>
     </section>
   );
