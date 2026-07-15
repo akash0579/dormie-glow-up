@@ -1025,7 +1025,7 @@ function ParentSection({ onOpen }: { onOpen: () => void }) {
           the version for whoever's paying.
         </h2>
         <p className="mt-2 text-[14px] text-ink-muted">
-          send home the practical view: the room, the budget, the registry, and the product links. no 19 random texts. no mystery cart.
+          send home the room, the budget, and the registry. family can claim what they're covering, and the rest stays ready for you to buy. one link. no random product texts. no double-buying.
         </p>
 
         <div className="mt-5 rounded-3xl bg-cream p-5 text-[#0F0F11] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.7)]">
