@@ -1063,7 +1063,7 @@ function Landing() {
   const open = () => setModalOpen(true);
   return (
     <div className="min-h-screen bg-bg text-ink">
-      <TopBar />
+      <TopBar onOpen={open} />
       <Marquee />
       <Hero onOpen={open} />
       <ProblemSection onOpen={open} />
