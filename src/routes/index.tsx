@@ -540,92 +540,166 @@ function VibePicker({ onOpen }: { onOpen: () => void }) {
 
 function ShoppingKitSection({ onOpen }: { onOpen: () => void }) {
   const budgets = ["$150", "$300", "$500", "custom"];
+  const stores = ["Amazon", "Target", "Walmart", "IKEA", "other"];
   const [budget, setBudget] = useState("$300");
   const [zip, setZip] = useState("78705");
+  const [activeStores, setActiveStores] = useState<string[]>(["Amazon", "Target"]);
+  const toggleStore = (s: string) => {
+    track("store_filter_selected", { store: s });
+    setActiveStores((cur) => (cur.includes(s) ? cur.filter((x) => x !== s) : [...cur, s]));
+  };
   const items = [
-    { t: "twin xl comforter", p: "$49", tag: "ships to your ZIP", tone: "lime" as const },
-    { t: "washable rug", p: "$55", tag: "dorm-safe", tone: "lilac" as const },
-    { t: "clip-on desk lamp", p: "$19", tag: "budget-friendly", tone: "peach" as const },
-    { t: "command strips", p: "$13", tag: "no nails", tone: "lime" as const },
-    { t: "under-bed bins", p: "$26", tag: "check stock before buying", tone: "cream" as const },
+    { t: "twin xl comforter", p: "$49", store: "Amazon", tag: "Amazon cart", tone: "lime" as const },
+    { t: "washable 5x7 rug", p: "$55", store: "Amazon", tag: "Amazon cart", tone: "lime" as const },
+    { t: "warm led string lights", p: "$9", store: "Amazon", tag: "Amazon cart", tone: "lime" as const },
+    { t: "clip-on desk lamp", p: "$19", store: "Amazon", tag: "Amazon cart", tone: "lime" as const },
+    { t: "command strips", p: "$13", store: "Amazon", tag: "no nails", tone: "peach" as const },
+    { t: "under-bed storage bins", p: "$26", store: "Amazon", tag: "Amazon cart", tone: "lime" as const },
+    { t: "throw blanket", p: "$13", store: "Amazon", tag: "budget-friendly", tone: "peach" as const },
+    { t: "peel-and-stick wall panels", p: "$18", store: "Target", tag: "check final availability", tone: "cream" as const },
   ];
   const total = items.reduce((s, i) => s + parseInt(i.p.slice(1)), 0);
   return (
-    <section className="px-4 py-14">
-      <div className="mx-auto max-w-md">
+    <section className="px-4 md:px-8 py-14 md:py-24">
+      <div className="mx-auto max-w-md md:max-w-6xl">
         <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">the practical payoff</p>
-        <h2 className="mt-1 font-display text-3xl leading-tight font-extrabold lowercase">
-          build the shopping kit, then turn it into a registry.
+        <h2 className="mt-1 font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase md:max-w-3xl">
+          design the room. <span className="text-lime">build the cart.</span>
         </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          real product links become your dorm registry. pick a budget, add your ZIP, and turn the look into a shoppable kit people can claim from.
+        <p className="mt-2 md:mt-4 text-[14px] md:text-[17px] text-ink-muted md:max-w-2xl">
+          set a budget, pick the products, and turn the look into real shopping links. when the bundle is from Amazon, send the whole bundle to an Amazon cart. shop the look without 47 open tabs.
         </p>
 
-        <div className="mt-5 rounded-3xl bg-card p-4 ring-1 ring-white/10">
-          {/* budget chips */}
-          <div className="flex items-center justify-between">
-            <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">budget</div>
-            <div className="rounded-full bg-lime/15 ring-1 ring-lime/40 px-2.5 py-0.5 text-[10px] font-bold text-lime">this look: ${total}</div>
-          </div>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {budgets.map((b) => (
-              <button
-                key={b}
-                onClick={() => { setBudget(b); track("budget_selected", { budget: b }); }}
-                className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition active:scale-[0.97] ${
-                  budget === b ? "bg-lime text-[#0F0F11]" : "bg-white/[0.05] ring-1 ring-white/15 text-ink hover:bg-white/[0.08]"
-                }`}
-              >
-                {b}
-              </button>
-            ))}
-          </div>
-
-          {/* ZIP */}
-          <div className="mt-4">
-            <label className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">ship to ZIP</label>
-            <div className="mt-1.5 flex items-center gap-2 rounded-full bg-white/[0.04] ring-1 ring-lime/40 focus-within:ring-lime px-4 py-2.5">
-              <span className="text-ink-dim text-sm">📍</span>
-              <input
-                value={zip}
-                onChange={(e) => setZip(e.target.value.replace(/[^0-9]/g, "").slice(0, 5))}
-                inputMode="numeric"
-                placeholder="78705"
-                className="flex-1 bg-transparent text-sm text-ink placeholder:text-ink-dim outline-none"
-              />
-              <span className="font-mono text-[10px] uppercase tracking-widest text-lime">ZIP-aware</span>
-            </div>
-          </div>
-
-          {/* product list */}
-          <div className="mt-4 space-y-2">
-            {items.map((i) => (
-              <div key={i.t} className="flex items-center gap-3 rounded-2xl bg-white/[0.03] ring-1 ring-white/10 p-3">
-                <div className="h-10 w-10 shrink-0 rounded-lg bg-gradient-to-br from-white/10 to-white/[0.02] ring-1 ring-white/10" />
-                <div className="min-w-0 flex-1">
-                  <div className="text-[13px] font-semibold text-ink truncate">{i.t}</div>
-                  <div className="mt-0.5">
-                    <StickerChip tone={i.tone} className="!px-2 !py-0.5 !text-[9px]">{i.tag}</StickerChip>
-                  </div>
-                </div>
-                <div className="font-mono text-[13px] font-bold text-ink">{i.p}</div>
+        <div className="mt-5 md:mt-10 md:grid md:grid-cols-2 md:gap-8 md:items-start">
+          {/* left column — room preview + budget hook (desktop) */}
+          <div className="hidden md:flex md:flex-col md:gap-5">
+            <div className="rounded-3xl bg-card p-3 ring-1 ring-white/10">
+              <div className="aspect-[4/3] rounded-2xl overflow-hidden">
+                <img src={dormAfter} alt="the styled room the bundle builds toward" className="h-full w-full object-cover" loading="lazy" />
               </div>
-            ))}
+              <div className="flex items-center justify-between p-3">
+                <div className="text-sm font-semibold text-ink">the golden hour look</div>
+                <div className="font-mono text-[11px] text-ink-dim">8 pieces · est. ${total}</div>
+              </div>
+            </div>
+            <div className="rounded-3xl bg-gradient-to-br from-peach/15 to-card ring-1 ring-peach/30 p-5">
+              <h3 className="font-display text-xl font-extrabold lowercase text-ink">
+                set the budget <span className="text-peach">before the registry gets chaotic.</span>
+              </h3>
+              <p className="mt-2 text-[13px] text-ink-muted">
+                pick a spend range and dormie builds the room around it. cute is good. a registry that spirals is not.
+              </p>
+            </div>
+            <p className="text-[11px] text-ink-dim">
+              dormie helps organize your room plan, registry, and product links. final price, availability, shipping, and checkout happen with Amazon or the store.
+            </p>
           </div>
 
-          <button
-            onClick={() => { track("build_shopping_kit_clicked", { budget, zip }); onOpen(); }}
-            className="mt-4 w-full rounded-full bg-lime px-5 py-3.5 text-sm font-bold text-[#0F0F11] active:scale-[0.98] transition"
-          >
-            build my shopping kit →
-          </button>
-          <p className="mt-3 text-center text-[10px] leading-relaxed text-ink-dim">
-            we prioritize products that can ship to your ZIP. always confirm final availability at checkout.
-          </p>
+          {/* right — kit builder */}
+          <div className="rounded-3xl bg-card p-4 md:p-6 ring-1 ring-white/10">
+            {/* budget */}
+            <div className="flex items-center justify-between">
+              <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">budget</div>
+              <div className="rounded-full bg-lime/15 ring-1 ring-lime/40 px-2.5 py-0.5 text-[10px] font-bold text-lime">this look: ${total}</div>
+            </div>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {budgets.map((b) => (
+                <button
+                  key={b}
+                  onClick={() => { setBudget(b); track("budget_selected", { budget: b }); }}
+                  className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition active:scale-[0.97] ${
+                    budget === b ? "bg-lime text-[#0F0F11]" : "bg-white/[0.05] ring-1 ring-white/15 text-ink hover:bg-white/[0.08]"
+                  }`}
+                >
+                  {b}
+                </button>
+              ))}
+            </div>
+
+            {/* ZIP */}
+            <div className="mt-4">
+              <label className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">where should it ship?</label>
+              <div className="mt-1.5 flex items-center gap-2 rounded-full bg-white/[0.04] ring-1 ring-lime/40 focus-within:ring-lime px-4 py-2.5">
+                <span className="text-ink-dim text-sm">📍</span>
+                <input
+                  value={zip}
+                  onChange={(e) => { const v = e.target.value.replace(/[^0-9]/g, "").slice(0, 5); setZip(v); if (v.length === 5) track("zip_submitted", { zip: v }); }}
+                  inputMode="numeric"
+                  placeholder="ZIP code"
+                  className="flex-1 bg-transparent text-sm text-ink placeholder:text-ink-dim outline-none"
+                />
+                <span className="font-mono text-[10px] uppercase tracking-widest text-lime">ZIP-aware</span>
+              </div>
+              <p className="mt-1.5 text-[10.5px] text-ink-dim">ship to {zip || "your ZIP"} · prioritized. confirm final availability at checkout.</p>
+            </div>
+
+            {/* store filters */}
+            <div className="mt-4">
+              <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">stores</div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {stores.map((s) => {
+                  const on = activeStores.includes(s);
+                  return (
+                    <button
+                      key={s}
+                      onClick={() => toggleStore(s)}
+                      className={`rounded-full px-3 py-1.5 text-[11px] font-bold transition active:scale-[0.97] ${
+                        on ? "bg-lilac text-[#0F0F11]" : "bg-white/[0.05] ring-1 ring-white/15 text-ink hover:bg-white/[0.08]"
+                      }`}
+                    >
+                      {s}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Amazon bundle */}
+            <div className="mt-5 rounded-2xl bg-gradient-to-br from-lime/10 to-card-2 ring-1 ring-lime/30 p-4">
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <div className="text-[13px] font-bold text-ink truncate">golden hour starter bundle</div>
+                  <div className="mt-0.5 font-mono text-[10.5px] text-ink-dim">8 items · est. ${total} · all Amazon</div>
+                </div>
+                <StickerChip tone="lime" className="!px-2 !py-0.5 !text-[9px]">Amazon-ready</StickerChip>
+              </div>
+              <div className="mt-3 space-y-2">
+                {items.map((i) => (
+                  <div key={i.t} className="flex items-center gap-3 rounded-xl bg-white/[0.03] ring-1 ring-white/10 p-2.5">
+                    <div className="h-9 w-9 shrink-0 rounded-lg bg-gradient-to-br from-white/10 to-white/[0.02] ring-1 ring-white/10" />
+                    <div className="min-w-0 flex-1">
+                      <div className="text-[13px] font-semibold text-ink truncate">{i.t}</div>
+                      <div className="mt-0.5 flex items-center gap-1.5">
+                        <span className="font-mono text-[9px] uppercase tracking-widest text-ink-dim">{i.store}</span>
+                        <StickerChip tone={i.tone} className="!px-2 !py-0.5 !text-[9px]">{i.tag}</StickerChip>
+                      </div>
+                    </div>
+                    <div className="font-mono text-[13px] font-bold text-ink">{i.p}</div>
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={() => { track("amazon_cart_clicked", { budget, zip }); track("amazon_bundle_viewed"); onOpen(); }}
+                className="mt-4 w-full rounded-full bg-lime px-5 py-3.5 text-sm font-bold text-[#0F0F11] active:scale-[0.98] transition"
+              >
+                add bundle to Amazon cart →
+              </button>
+              <p className="mt-2 text-center text-[10px] leading-relaxed text-ink-dim">
+                the cart opens on Amazon. final checkout happens there.
+              </p>
+            </div>
+
+            <button
+              onClick={() => { track("build_shopping_kit_clicked", { budget, zip }); onOpen(); }}
+              className="mt-3 w-full rounded-full bg-white/[0.05] ring-1 ring-white/15 px-5 py-3 text-sm font-semibold text-ink active:scale-[0.98] transition"
+            >
+              open the shopping list (mixed stores) →
+            </button>
+          </div>
         </div>
 
-        {/* budget hook */}
-        <div className="mt-6 rounded-3xl bg-gradient-to-br from-peach/15 to-card ring-1 ring-peach/30 p-5">
+        {/* mobile-only budget hook + trust */}
+        <div className="md:hidden mt-6 rounded-3xl bg-gradient-to-br from-peach/15 to-card ring-1 ring-peach/30 p-5">
           <h3 className="font-display text-xl font-extrabold lowercase text-ink">
             set the budget <span className="text-peach">before the registry gets chaotic.</span>
           </h3>
@@ -633,9 +707,8 @@ function ShoppingKitSection({ onOpen }: { onOpen: () => void }) {
             pick a spend range and dormie builds the room around it. cute is good. a registry that spirals is not.
           </p>
         </div>
-
-        <p className="mt-4 text-center text-[11px] text-ink-dim">
-          product links and shipping availability can change. dormie helps you plan faster — final price and availability are confirmed by the store.
+        <p className="md:hidden mt-4 text-center text-[11px] text-ink-dim">
+          dormie helps organize your room plan, registry, and product links. final price, availability, shipping, and checkout happen with Amazon or the store.
         </p>
       </div>
     </section>
