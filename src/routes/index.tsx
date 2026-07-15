@@ -534,216 +534,413 @@ function VibePicker({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-function ShoppingKitSection({ onOpen }: { onOpen: () => void }) {
-  const budgets = ["$150", "$300", "$500", "custom"];
-  const [budget, setBudget] = useState("$300");
+// --- Combined registry + shopping section -------------------------------
+type ShopMode = "amazon" | "walmart" | "mixed";
+type ItemState = "gift" | "self" | "claimed";
+type RegistryItem = {
+  id: string;
+  cat: string;
+  name: string;
+  price: number;
+  merchant: { amazon: string; walmart: string; mixed: string };
+  claimedBy?: string;
+};
+
+const REGISTRY_BASE: RegistryItem[] = [
+  { id: "comforter", cat: "comforter", name: "twin xl comforter set", price: 49, merchant: { amazon: "Amazon", walmart: "Walmart", mixed: "Amazon" } },
+  { id: "rug", cat: "rug", name: "washable 5x7 rug", price: 55, merchant: { amazon: "Amazon", walmart: "Walmart", mixed: "Walmart" } },
+  { id: "lights", cat: "string lights", name: "warm led string lights", price: 12, merchant: { amazon: "Amazon", walmart: "Walmart", mixed: "Amazon" } },
+  { id: "lamp", cat: "desk lamp", name: "clip-on desk lamp", price: 19, merchant: { amazon: "Amazon", walmart: "Walmart", mixed: "Target" } },
+  { id: "wall", cat: "wall decor", name: "peel-and-stick wall panels", price: 24, merchant: { amazon: "Amazon", walmart: "Walmart", mixed: "Target" } },
+  { id: "bins", cat: "under-bed bins", name: "under-bed storage bins", price: 26, merchant: { amazon: "Amazon", walmart: "Walmart", mixed: "IKEA" } },
+  { id: "throw", cat: "throw blanket", name: "throw blanket", price: 26, merchant: { amazon: "Amazon", walmart: "Walmart", mixed: "IKEA" } },
+  { id: "strips", cat: "command strips", name: "command strips mega pack", price: 13, merchant: { amazon: "Amazon", walmart: "Walmart", mixed: "Amazon" } },
+];
+
+const merchantColor = (m: string) => {
+  if (m === "Amazon") return "bg-[#FF9900]/15 text-[#FFB84D] ring-[#FF9900]/40";
+  if (m === "Walmart") return "bg-[#0071DC]/15 text-[#5AB0FF] ring-[#0071DC]/40";
+  if (m === "Target") return "bg-[#CC0000]/15 text-[#FF6E6E] ring-[#CC0000]/40";
+  if (m === "IKEA") return "bg-[#FFDA1A]/15 text-[#FFE875] ring-[#FFDA1A]/40";
+  return "bg-white/10 text-ink ring-white/20";
+};
+
+function RegistryShopSection({ onOpen }: { onOpen: () => void }) {
+  const [budget, setBudget] = useState<string>("$300");
   const [zip, setZip] = useState("78705");
-  const items = [
-    { t: "twin xl comforter", p: "$49", tag: "ships to your ZIP", tone: "lime" as const },
-    { t: "washable rug", p: "$55", tag: "dorm-safe", tone: "lilac" as const },
-    { t: "clip-on desk lamp", p: "$19", tag: "budget-friendly", tone: "peach" as const },
-    { t: "command strips", p: "$13", tag: "no nails", tone: "lime" as const },
-    { t: "under-bed bins", p: "$26", tag: "check stock before buying", tone: "cream" as const },
-  ];
-  const total = items.reduce((s, i) => s + parseInt(i.p.slice(1)), 0);
-  return (
-    <section className="px-4 py-14">
-      <div className="mx-auto max-w-md">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">the practical payoff</p>
-        <h2 className="mt-1 font-display text-3xl leading-tight font-extrabold lowercase">
-          build the shopping kit, then turn it into a registry.
-        </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          real product links become your dorm registry. pick a budget, add your ZIP, and turn the look into a shoppable kit people can claim from.
-        </p>
-
-        <div className="mt-5 rounded-3xl bg-card p-4 ring-1 ring-white/10">
-          {/* budget chips */}
-          <div className="flex items-center justify-between">
-            <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">budget</div>
-            <div className="rounded-full bg-lime/15 ring-1 ring-lime/40 px-2.5 py-0.5 text-[10px] font-bold text-lime">this look: ${total}</div>
-          </div>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {budgets.map((b) => (
-              <button
-                key={b}
-                onClick={() => { setBudget(b); track("budget_selected", { budget: b }); }}
-                className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition active:scale-[0.97] ${
-                  budget === b ? "bg-lime text-[#0F0F11]" : "bg-white/[0.05] ring-1 ring-white/15 text-ink hover:bg-white/[0.08]"
-                }`}
-              >
-                {b}
-              </button>
-            ))}
-          </div>
-
-          {/* ZIP */}
-          <div className="mt-4">
-            <label className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">ship to ZIP</label>
-            <div className="mt-1.5 flex items-center gap-2 rounded-full bg-white/[0.04] ring-1 ring-lime/40 focus-within:ring-lime px-4 py-2.5">
-              <span className="text-ink-dim text-sm">📍</span>
-              <input
-                value={zip}
-                onChange={(e) => setZip(e.target.value.replace(/[^0-9]/g, "").slice(0, 5))}
-                inputMode="numeric"
-                placeholder="78705"
-                className="flex-1 bg-transparent text-sm text-ink placeholder:text-ink-dim outline-none"
-              />
-              <span className="font-mono text-[10px] uppercase tracking-widest text-lime">ZIP-aware</span>
-            </div>
-          </div>
-
-          {/* product list */}
-          <div className="mt-4 space-y-2">
-            {items.map((i) => (
-              <div key={i.t} className="flex items-center gap-3 rounded-2xl bg-white/[0.03] ring-1 ring-white/10 p-3">
-                <div className="h-10 w-10 shrink-0 rounded-lg bg-gradient-to-br from-white/10 to-white/[0.02] ring-1 ring-white/10" />
-                <div className="min-w-0 flex-1">
-                  <div className="text-[13px] font-semibold text-ink truncate">{i.t}</div>
-                  <div className="mt-0.5">
-                    <StickerChip tone={i.tone} className="!px-2 !py-0.5 !text-[9px]">{i.tag}</StickerChip>
-                  </div>
-                </div>
-                <div className="font-mono text-[13px] font-bold text-ink">{i.p}</div>
-              </div>
-            ))}
-          </div>
-
-          <button
-            onClick={() => { track("build_shopping_kit_clicked", { budget, zip }); onOpen(); }}
-            className="mt-4 w-full rounded-full bg-lime px-5 py-3.5 text-sm font-bold text-[#0F0F11] active:scale-[0.98] transition"
-          >
-            build my shopping kit →
-          </button>
-          <p className="mt-3 text-center text-[10px] leading-relaxed text-ink-dim">
-            we prioritize products that can ship to your ZIP. always confirm final availability at checkout.
-          </p>
-        </div>
-
-        {/* budget hook */}
-        <div className="mt-6 rounded-3xl bg-gradient-to-br from-peach/15 to-card ring-1 ring-peach/30 p-5">
-          <h3 className="font-display text-xl font-extrabold lowercase text-ink">
-            set the budget <span className="text-peach">before the registry gets chaotic.</span>
-          </h3>
-          <p className="mt-2 text-[13px] text-ink-muted">
-            pick a spend range and dormie builds the room around it. cute is good. a registry that spirals is not.
-          </p>
-        </div>
-
-        <p className="mt-4 text-center text-[11px] text-ink-dim">
-          product links and shipping availability can change. dormie helps you plan faster — final price and availability are confirmed by the store.
-        </p>
-      </div>
-    </section>
+  const [mode, setMode] = useState<ShopMode>("mixed");
+  const [items, setItems] = useState<Array<RegistryItem & { state: ItemState }>>(
+    () => REGISTRY_BASE.map((i) => ({ ...i, state: "gift" }))
   );
-}
 
-function RegistrySection({ onOpen }: { onOpen: () => void }) {
-  const studentItems = [
-    { t: "washable 5x7 rug", p: "$36" },
-    { t: "warm led string lights", p: "$9" },
-    { t: "clip-on desk lamp", p: "$12" },
-    { t: "peel-and-stick wall panels", p: "$18" },
-    { t: "under-bed storage bins", p: "$17" },
-    { t: "throw blanket", p: "$13" },
-  ];
-  const familyItems = [
-    "washable 5x7 rug",
-    "warm led string lights",
-    "clip-on desk lamp",
-    "command strips mega pack",
-  ];
+  useEffect(() => { track("combined_registry_section_viewed"); }, []);
+
+  const budgets = ["$150", "$300", "$500", "custom $420"];
+  const total = items.reduce((s, i) => s + i.price, 0);
+  const covered = items.filter((i) => i.state === "claimed").reduce((s, i) => s + i.price, 0);
+  const handled = items.filter((i) => i.state === "claimed" || i.state === "self").length;
+  const leftToBuy = items.filter((i) => i.state !== "claimed").reduce((s, i) => s + i.price, 0);
+  const openCount = items.filter((i) => i.state === "gift").length;
+  const pct = Math.round((covered / total) * 100);
+
+  const modeLabel = mode === "amazon" ? "amazon one-tap" : mode === "walmart" ? "walmart one-tap" : "mixed brands";
+  const modeHeading = mode === "amazon" ? "the amazon registry." : mode === "walmart" ? "the walmart registry." : "the mixed-brand registry.";
+  const cartCTA =
+    mode === "amazon" ? "add unclaimed items to your amazon cart" :
+    mode === "walmart" ? "add unclaimed items to your walmart cart" :
+    "open the remaining product links";
+  const buildCTA = `build the registry — ${budget.replace("custom ", "")} · ${modeLabel} →`;
+
+  const cycleState = (id: string) => {
+    setItems((prev) => prev.map((i) => {
+      if (i.id !== id) return i;
+      const next: ItemState = i.state === "gift" ? "self" : i.state === "self" ? "gift" : "gift";
+      track(next === "self" ? "item_marked_self_buy" : "item_marked_gift", { id });
+      return { ...i, state: next };
+    }));
+  };
+  const claim = (id: string) => {
+    setItems((prev) => prev.map((i) => {
+      if (i.id !== id || i.state === "claimed") return i;
+      track("registry_item_claimed", { id });
+      return { ...i, state: "claimed", claimedBy: "mom" };
+    }));
+  };
+  const swap = (id: string) => { track("product_swap_clicked", { id }); };
+  const remove = (id: string) => {
+    track("product_removed", { id });
+    setItems((prev) => prev.filter((i) => i.id !== id));
+  };
+
   return (
     <section className="px-4 py-14 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
-      <div className="mx-auto max-w-md">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">the registry payoff</p>
-        <h2 className="mt-1 font-display text-3xl leading-tight font-extrabold lowercase">
-          make the registry claimable.
-        </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          turn your final dorm plan into a budgeted registry across brands. send it to family, friends, or your roommate so people can claim what they're covering.
-        </p>
-
-        {/* student card */}
-        <div className="mt-5 rounded-3xl bg-card p-4 ring-1 ring-white/10">
-          <div className="flex items-center justify-between">
-            <div className="font-display text-lg font-extrabold lowercase text-ink">the gift math.</div>
-            <span className="rounded-full bg-lime/15 ring-1 ring-lime/40 px-2.5 py-0.5 text-[10px] font-bold text-lime">16 spots open</span>
-          </div>
-          <div className="mt-3 rounded-2xl bg-white/[0.03] ring-1 ring-white/10 p-4">
-            <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">covered</div>
-            <div className="mt-1 font-display text-3xl font-extrabold text-ink">$0 <span className="text-ink-dim text-lg font-medium">of $145</span></div>
-            <div className="mt-2 h-2 w-full rounded-full bg-white/10 overflow-hidden">
-              <div className="h-full w-0 rounded-full bg-lime" />
-            </div>
-          </div>
-          <p className="mt-3 text-[13px] text-ink-muted">
-            share the registry. family claims items. claimed ones lock so nobody double-buys.
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <div className="md:mx-auto md:max-w-2xl md:text-center">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">the practical payoff</p>
+          <h2 className="mt-1 font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+            design the room. <span className="text-lime">price the registry.</span>
+          </h2>
+          <p className="mt-2 text-[14px] md:text-[15px] text-ink-muted">
+            set the budget, add the ZIP, and turn the final room into a shoppable registry. buy the items yourself, or share the link so friends and family can claim what they're covering.
           </p>
-          <div className="mt-4 space-y-2">
-            {studentItems.map((i) => (
-              <div key={i.t} className="flex items-center gap-3 rounded-2xl bg-white/[0.03] ring-1 ring-white/10 p-3">
-                <div className="h-10 w-10 shrink-0 rounded-lg bg-gradient-to-br from-white/10 to-white/[0.02] ring-1 ring-white/10" />
-                <div className="min-w-0 flex-1">
-                  <div className="text-[13px] font-semibold text-ink truncate">{i.t}</div>
+        </div>
+
+        {/* Desktop 2-col: controls left, live registry right */}
+        <div className="mt-6 grid gap-4 lg:grid-cols-5">
+
+          {/* ============ STAGE 1 — PRICE THE REGISTRY ============ */}
+          <div className="lg:col-span-2 space-y-4">
+            <div className="rounded-3xl bg-card p-5 ring-1 ring-white/10">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">stage 1</div>
+                  <h3 className="mt-0.5 font-display text-xl font-extrabold lowercase text-ink">price the registry.</h3>
                 </div>
-                <div className="font-mono text-[13px] font-bold text-ink">{i.p}</div>
+                <span className="rounded-full bg-lime/15 ring-1 ring-lime/40 px-2.5 py-0.5 text-[10px] font-bold text-lime">this room: ${total}</span>
               </div>
-            ))}
-          </div>
-          <button
-            onClick={() => { track("finish_registry_clicked"); onOpen(); }}
-            className="mt-4 w-full rounded-full bg-lime px-5 py-3.5 text-sm font-bold text-[#0F0F11] active:scale-[0.98] transition"
-          >
-            finish the registry — 16 spots open →
-          </button>
-        </div>
+              <p className="mt-1 text-[12px] text-ink-muted">
+                what it costs, where it checks out, and where it needs to ship.
+              </p>
 
-        {/* family/shared view card */}
-        <div className="mt-5 rounded-3xl bg-cream p-5 text-[#0F0F11] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.7)]">
-          <div className="flex items-center justify-between">
-            <div className="font-display text-lg font-extrabold lowercase text-[#0F0F11]">their dorm registry, planned to the dollar</div>
-            <span className="rounded-full bg-[#0F0F11] px-2.5 py-0.5 text-[10px] font-bold text-lime">shareable</span>
+              {/* budget */}
+              <div className="mt-4">
+                <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">the budget.</div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {budgets.map((b) => (
+                    <button
+                      key={b}
+                      onClick={() => { setBudget(b); track("budget_selected", { budget: b }); }}
+                      className={`rounded-full px-3.5 py-2 text-xs font-bold transition active:scale-[0.97] ${
+                        budget === b ? "bg-lime text-[#0F0F11] shadow-[0_0_20px_-6px_rgba(216,255,79,0.7)]" : "bg-white/[0.05] ring-1 ring-white/15 text-ink hover:bg-white/[0.08]"
+                      }`}
+                    >
+                      {b}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* checkout style */}
+              <div className="mt-5">
+                <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">the checkout style.</div>
+                <div className="mt-2 grid grid-cols-1 gap-2">
+                  {([
+                    { k: "amazon", t: "amazon one-tap", d: "eligible Amazon items land together in your Amazon cart.", accent: "ring-[#FF9900]/50" },
+                    { k: "walmart", t: "walmart one-tap", d: "eligible Walmart items land together in your Walmart cart.", accent: "ring-[#0071DC]/50" },
+                    { k: "mixed", t: "mixed brands", d: "best pick for each item across Amazon, Walmart, Target, IKEA + more. each item opens with its store.", accent: "ring-lilac/50" },
+                  ] as const).map((opt) => {
+                    const active = mode === opt.k;
+                    return (
+                      <button
+                        key={opt.k}
+                        onClick={() => { setMode(opt.k); track(`${opt.k}_${opt.k === "mixed" ? "brands" : "one_tap"}_selected`); }}
+                        className={`text-left rounded-2xl p-3 ring-1 transition active:scale-[0.98] ${
+                          active ? `bg-white/[0.06] ${opt.accent} ring-2` : "bg-white/[0.03] ring-white/10 hover:bg-white/[0.05]"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="text-[13px] font-bold text-ink lowercase">{opt.t}</div>
+                          {active && <span className="grid h-5 w-5 place-items-center rounded-full bg-lime text-[#0F0F11] text-[10px] font-bold">✓</span>}
+                        </div>
+                        <div className="mt-1 text-[11px] text-ink-muted">{opt.d}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="mt-2 text-[10px] text-ink-dim">
+                  this changes where you check out, not the room we design. swap any item later.
+                </p>
+              </div>
+
+              {/* ZIP */}
+              <div className="mt-5">
+                <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">ship to ZIP</div>
+                <div className="mt-1.5 flex items-center gap-2 rounded-full bg-white/[0.04] ring-1 ring-lime/40 focus-within:ring-lime px-4 py-2.5">
+                  <span className="text-ink-dim text-sm">📍</span>
+                  <input
+                    value={zip}
+                    onChange={(e) => { const v = e.target.value.replace(/[^0-9]/g, "").slice(0, 5); setZip(v); track("zip_entered", { zip: v }); }}
+                    inputMode="numeric"
+                    placeholder="78705"
+                    className="flex-1 bg-transparent text-sm text-ink placeholder:text-ink-dim outline-none"
+                  />
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-lime">ZIP-aware</span>
+                </div>
+                <p className="mt-2 text-[11px] text-ink-muted">
+                  Dormie uses the budget and ZIP to prioritize products relevant to the room and location.
+                </p>
+              </div>
+
+              <button
+                onClick={() => { track("registry_created", { budget, zip, mode }); onOpen(); }}
+                className="mt-5 w-full rounded-full bg-lime px-5 py-3.5 text-sm font-bold text-[#0F0F11] active:scale-[0.98] transition animate-pulse-glow"
+              >
+                {buildCTA}
+              </button>
+            </div>
+
+            <p className="text-center text-[10px] leading-relaxed text-ink-dim px-2">
+              amazon for speed. walmart for value. mixed brands for choice.
+            </p>
           </div>
-          <div className="mt-3 rounded-2xl bg-black/5 p-4">
-            <div className="font-mono text-[10px] uppercase tracking-widest text-black/50">covered</div>
-            <div className="mt-1 font-display text-3xl font-extrabold text-[#0F0F11]">$0 <span className="text-black/50 text-lg font-medium">of $145</span></div>
-            <div className="mt-2 h-2 w-full rounded-full bg-black/10 overflow-hidden">
-              <div className="h-full w-0 rounded-full bg-lime" />
+
+          {/* ============ STAGE 2 — BUILD THE REGISTRY ============ */}
+          <div className="lg:col-span-3 space-y-4">
+            <div className="rounded-3xl bg-card p-5 ring-1 ring-white/10">
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">stage 2 · live registry</div>
+                  <h3 className="mt-0.5 font-display text-xl font-extrabold lowercase text-ink">{modeHeading}</h3>
+                </div>
+                <span className={`rounded-full ring-1 px-2.5 py-0.5 text-[10px] font-bold uppercase ${
+                  mode === "amazon" ? "bg-[#FF9900]/15 text-[#FFB84D] ring-[#FF9900]/40" :
+                  mode === "walmart" ? "bg-[#0071DC]/15 text-[#5AB0FF] ring-[#0071DC]/40" :
+                  "bg-lilac/15 text-lilac ring-lilac/40"
+                }`}>{modeLabel}</span>
+              </div>
+              <p className="mt-1 text-[12px] text-ink-muted">
+                one registry for the whole room — gifts check items off, you buy the rest.
+              </p>
+
+              {/* gift math */}
+              <div className="mt-4 rounded-2xl bg-white/[0.03] ring-1 ring-white/10 p-4">
+                <div className="flex items-baseline justify-between">
+                  <div>
+                    <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">the gift math</div>
+                    <div className="mt-1 font-display text-2xl font-extrabold text-ink">${covered} <span className="text-ink-dim text-base font-medium">of ${total} covered</span></div>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">left to buy</div>
+                    <div className="mt-1 font-display text-2xl font-extrabold text-lime">${leftToBuy}</div>
+                  </div>
+                </div>
+                <div className="mt-3 h-2 w-full rounded-full bg-white/10 overflow-hidden">
+                  <div className="h-full rounded-full bg-lime transition-all" style={{ width: `${pct}%` }} />
+                </div>
+                <div className="mt-2 flex items-center justify-between text-[11px] text-ink-muted">
+                  <span>{handled} of {items.length} handled</span>
+                  <span>{openCount} open for gifts</span>
+                </div>
+              </div>
+
+              {/* helper */}
+              <p className="mt-3 text-[12px] text-ink-muted">
+                <span className="text-ink font-semibold">mark what you're buying.</span> leave the rest open for gifts.
+              </p>
+
+              {/* product rows */}
+              <div className="mt-3 space-y-2">
+                {items.map((i) => {
+                  const merch = i.merchant[mode];
+                  const isSelf = i.state === "self";
+                  const isClaimed = i.state === "claimed";
+                  return (
+                    <div
+                      key={i.id}
+                      className={`rounded-2xl p-3 ring-1 transition ${
+                        isClaimed ? "bg-lilac/10 ring-lilac/40" :
+                        isSelf ? "bg-lime/10 ring-lime/40" :
+                        "bg-white/[0.03] ring-white/10"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="h-12 w-12 shrink-0 rounded-lg bg-gradient-to-br from-white/10 to-white/[0.02] ring-1 ring-white/10 grid place-items-center text-[9px] font-mono uppercase text-ink-dim">
+                          {i.cat.split(" ")[0]}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="font-mono text-[9px] uppercase tracking-widest text-ink-dim truncate">{i.cat}</div>
+                          <div className="text-[13px] font-semibold text-ink truncate">{i.name}</div>
+                          <div className="mt-1 flex items-center gap-1.5 flex-wrap">
+                            <span className={`rounded-full ring-1 px-2 py-0.5 text-[9px] font-bold ${merchantColor(merch)}`}>{merch}</span>
+                            {isClaimed && <span className="rounded-full bg-lilac px-2 py-0.5 text-[9px] font-bold text-[#0F0F11]">claimed by {i.claimedBy}</span>}
+                            {isSelf && <span className="rounded-full bg-lime px-2 py-0.5 text-[9px] font-bold text-[#0F0F11]">i'll buy</span>}
+                          </div>
+                        </div>
+                        <div className="font-mono text-[13px] font-bold text-ink shrink-0">${i.price}</div>
+                      </div>
+                      <div className="mt-2 flex items-center gap-1.5">
+                        <button
+                          disabled={isClaimed}
+                          onClick={() => cycleState(i.id)}
+                          className={`flex-1 rounded-full px-3 py-1.5 text-[11px] font-bold transition active:scale-[0.97] ${
+                            isClaimed ? "bg-white/5 text-ink-dim" :
+                            isSelf ? "bg-lime text-[#0F0F11]" :
+                            "bg-white/[0.06] ring-1 ring-white/15 text-ink"
+                          }`}
+                        >
+                          {isClaimed ? "handled" : isSelf ? "✓ i'll buy" : "mark: i'll buy"}
+                        </button>
+                        <button
+                          onClick={() => swap(i.id)}
+                          className="rounded-full bg-white/[0.06] ring-1 ring-white/15 px-3 py-1.5 text-[11px] font-bold text-ink active:scale-[0.97]"
+                        >
+                          swap
+                        </button>
+                        <button
+                          onClick={() => remove(i.id)}
+                          className="rounded-full bg-white/[0.04] ring-1 ring-white/10 px-3 py-1.5 text-[11px] font-bold text-ink-muted active:scale-[0.97]"
+                          aria-label="remove"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <p className="mt-3 text-[11px] text-ink-dim">
+                one product per slot. swap anything before the registry goes live.
+              </p>
+
+              <button
+                onClick={() => { track(mode === "amazon" ? "amazon_cart_clicked" : mode === "walmart" ? "walmart_cart_clicked" : "mixed_product_link_clicked"); onOpen(); }}
+                className="mt-4 w-full rounded-full bg-lime px-5 py-3.5 text-sm font-bold text-[#0F0F11] active:scale-[0.98] transition"
+              >
+                {cartCTA} →
+              </button>
+              <p className="mt-2 text-center text-[11px] text-ink-muted">
+                family claims the gifts. you buy whatever's left.
+              </p>
             </div>
           </div>
-          <div className="mt-4 space-y-2">
-            {familyItems.map((t) => (
-              <button
-                key={t}
-                onClick={() => { track("registry_item_claimed", { item: t }); }}
-                className="w-full flex items-center justify-between rounded-2xl bg-white p-3 ring-1 ring-black/10 active:scale-[0.98] transition"
-              >
-                <span className="text-[13px] font-semibold text-[#0F0F11]">{t}</span>
-                <span className="text-[13px] font-bold text-[#0F0F11]">claim this →</span>
-              </button>
-            ))}
-          </div>
-          <p className="mt-4 text-[10px] leading-relaxed text-black/50">
-            no account needed. dormie sells nothing — the store handles the purchase. the registry just keeps everyone from double-buying.
-          </p>
-          <p className="mt-2 text-[10px] leading-relaxed text-black/50">
-            claiming an item keeps the Dormie registry organized. final checkout happens with the store. prices and availability can change — always confirm at checkout.
-          </p>
         </div>
 
-        <div className="mt-6 flex flex-col gap-2">
-          <PrimaryCTA className="w-full" onClick={() => { track("hero_cta_clicked", { section: "registry" }); onOpen(); }}>
-            make my dorm registry
-          </PrimaryCTA>
-          <SecondaryCTA className="w-full" onClick={() => { track("share_registry_clicked", { section: "registry" }); onOpen(); }}>
-            share the registry
-          </SecondaryCTA>
+        {/* ============ STAGE 3 — SHARE THE REGISTRY ============ */}
+        <div className="mt-6 grid gap-4 lg:grid-cols-2">
+          {/* Share action card */}
+          <div className="rounded-3xl bg-gradient-to-br from-lilac/15 to-card ring-1 ring-lilac/30 p-5">
+            <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">stage 3</div>
+            <h3 className="mt-0.5 font-display text-2xl font-extrabold lowercase text-ink">
+              share it. <span className="text-lilac">split who pays.</span>
+            </h3>
+            <p className="mt-2 text-[13px] text-ink-muted">
+              one link for your roommate, parents, relatives, and family group chat.
+            </p>
+            <button
+              onClick={() => { track("registry_shared"); onOpen(); }}
+              className="mt-4 w-full rounded-full bg-lilac px-5 py-3.5 text-sm font-bold text-[#0F0F11] active:scale-[0.98] transition"
+            >
+              share the registry →
+            </button>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {["copy link", "messages", "whatsapp", "email", "share sheet"].map((s) => (
+                <span key={s} className="rounded-full bg-white/[0.04] ring-1 ring-white/10 px-3 py-1.5 text-[11px] text-ink-muted">{s}</span>
+              ))}
+            </div>
+            <p className="mt-4 text-[11px] text-ink-dim">
+              send the registry, not 19 product links. one room. one budget. one link.
+            </p>
+          </div>
+
+          {/* Family-facing cream card */}
+          <div className="rounded-3xl bg-cream p-5 text-[#0F0F11] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.7)]">
+            <div className="flex items-center justify-between">
+              <div className="font-display text-lg font-extrabold lowercase text-[#0F0F11]">their dorm registry, planned to the dollar.</div>
+              <span className="rounded-full bg-[#0F0F11] px-2.5 py-0.5 text-[10px] font-bold text-lime">shareable</span>
+            </div>
+            <div className="mt-3 aspect-[16/10] rounded-xl overflow-hidden">
+              <img src={dormAfter} alt="" className="h-full w-full object-cover" loading="lazy" />
+            </div>
+            <div className="mt-3 rounded-2xl bg-black/5 p-4">
+              <div className="flex items-baseline justify-between">
+                <div>
+                  <div className="font-mono text-[10px] uppercase tracking-widest text-black/50">covered</div>
+                  <div className="mt-0.5 font-display text-2xl font-extrabold text-[#0F0F11]">${covered} <span className="text-black/50 text-base font-medium">of ${total}</span></div>
+                </div>
+                <div className="text-right">
+                  <div className="font-mono text-[10px] uppercase tracking-widest text-black/50">open</div>
+                  <div className="mt-0.5 font-display text-2xl font-extrabold text-[#0F0F11]">{openCount}</div>
+                </div>
+              </div>
+              <div className="mt-2 h-2 w-full rounded-full bg-black/10 overflow-hidden">
+                <div className="h-full rounded-full bg-lime transition-all" style={{ width: `${pct}%` }} />
+              </div>
+            </div>
+            <p className="mt-3 text-[12px] text-black/70">claim an item so everyone knows you're covering it.</p>
+            <div className="mt-3 space-y-2 max-h-[280px] overflow-y-auto pr-1">
+              {items.slice(0, 6).map((i) => {
+                const merch = i.merchant[mode];
+                return (
+                  <div key={i.id} className="flex items-center gap-2 rounded-2xl bg-white p-3 ring-1 ring-black/10">
+                    <div className="min-w-0 flex-1">
+                      <div className="text-[12px] font-semibold text-[#0F0F11] truncate">{i.name}</div>
+                      <div className="mt-0.5 flex items-center gap-1.5">
+                        <span className="rounded-full bg-black/5 ring-1 ring-black/10 px-2 py-0.5 text-[9px] font-bold text-black/70">{merch}</span>
+                        <span className="font-mono text-[10px] text-black/60">${i.price}</span>
+                      </div>
+                    </div>
+                    {i.state === "claimed" ? (
+                      <span className="rounded-full bg-[#0F0F11] px-2.5 py-1 text-[10px] font-bold text-lime">claimed by {i.claimedBy}</span>
+                    ) : i.state === "self" ? (
+                      <span className="rounded-full bg-black/10 px-2.5 py-1 text-[10px] font-bold text-[#0F0F11]">covered</span>
+                    ) : (
+                      <button
+                        onClick={() => claim(i.id)}
+                        className="rounded-full bg-[#0F0F11] px-3 py-1.5 text-[11px] font-bold text-lime active:scale-[0.97]"
+                      >
+                        claim this →
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            <p className="mt-3 text-[10px] leading-relaxed text-black/50">
+              no account needed to view the registry. claiming updates the Dormie registry — final purchase happens with the retailer. claimed here means nobody else buys the same thing.
+            </p>
+          </div>
         </div>
+
+        {/* honesty footer */}
+        <p className="mt-6 mx-auto max-w-2xl text-center text-[11px] leading-relaxed text-ink-dim">
+          Dormie organizes the room plan, registry, and product links. final price, stock, shipping, and checkout are confirmed by the retailer. ZIP helps prioritize relevant products — availability can change.
+        </p>
       </div>
     </section>
   );
 }
+
 
 function ShareSection({ onOpen }: { onOpen: () => void }) {
   return (
