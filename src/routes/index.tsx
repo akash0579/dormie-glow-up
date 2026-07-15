@@ -880,15 +880,25 @@ function RoommateSection({ onOpen }: { onOpen: () => void }) {
     { me: true, t: "fine, no neon sign" },
   ];
   return (
-    <section className="px-4 py-14 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
-      <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          send this before your roommate buys ugly stuff.
-        </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          match the vibe before move-in. split ideas, vote on looks, and avoid the two-people-one-room disaster.
-        </p>
-        <div className="mt-5 rounded-3xl bg-card p-4 ring-1 ring-white/10">
+    <section className="px-4 md:px-8 py-14 md:py-24 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
+      <div className="mx-auto max-w-md md:max-w-6xl md:grid md:grid-cols-2 md:gap-12 md:items-center">
+        <div>
+          <h2 className="font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+            send this before your roommate buys ugly stuff.
+          </h2>
+          <p className="mt-2 md:mt-4 text-[14px] md:text-[17px] text-ink-muted">
+            match the vibe before move-in. split ideas, vote on looks, and avoid the two-people-one-room disaster.
+          </p>
+          <div className="hidden md:flex md:mt-6 md:gap-3">
+            <PrimaryCTA onClick={() => { track("roommate_cta_clicked"); onOpen(); }}>
+              send to roommate
+            </PrimaryCTA>
+            <SecondaryCTA onClick={() => { track("hero_cta_clicked", { section: "roommate" }); onOpen(); }}>
+              design my side first
+            </SecondaryCTA>
+          </div>
+        </div>
+        <div className="mt-5 md:mt-0 rounded-3xl bg-card p-4 md:p-6 ring-1 ring-white/10">
           <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim mb-3">roomie · today</div>
           <div className="space-y-2">
             {msgs.map((m, i) => (
@@ -904,7 +914,7 @@ function RoommateSection({ onOpen }: { onOpen: () => void }) {
             ))}
           </div>
         </div>
-        <div className="mt-5 flex flex-col gap-2">
+        <div className="md:hidden mt-5 flex flex-col gap-2">
           <PrimaryCTA className="w-full" onClick={() => { track("roommate_cta_clicked"); onOpen(); }}>
             send to roommate
           </PrimaryCTA>
