@@ -1233,7 +1233,8 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
               period="3 months"
               perMonth="$12 / month, billed once"
               features={[
-                { bold: "unlimited designs", rest: "re-style, re-generate, swap the vibe — nothing counts against you" },
+                { bold: "up to 5 uploads", rest: "add photos of your actual dorm so designs match your space" },
+                { bold: "50 design generations", rest: "plenty of room to explore vibes, layouts, and swaps" },
                 { bold: "every vibe unlocked", rest: "cottagecore, y2k, quiet luxe, dark academia — try them all on the same room" },
                 { bold: "full shoppable registry", rest: "every piece linked to real products, filtered by budget and ZIP" },
                 { bold: "roommate share mode", rest: "send the design + registry so you don't both buy the same rug" },
