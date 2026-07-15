@@ -391,42 +391,51 @@ function Marquee() {
 
 function Hero({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="relative px-4 pt-6 pb-10 grain">
+    <section className="relative px-4 pt-5 pb-10 grain">
       <div className="mx-auto max-w-md">
         <div className="flex justify-center">
           <StickerChip tone="dark" className="font-mono">back to school szn · 39 days out</StickerChip>
         </div>
-        <h1 className="mt-4 text-center font-display text-[42px] leading-[0.95] font-extrabold tracking-tight lowercase">
+        <h1 className="mt-3 text-center font-display text-[40px] leading-[0.95] font-extrabold tracking-tight lowercase">
           your dorm,<br />
           <span className="text-lime">but it ate.</span>
         </h1>
-        <p className="mt-3 text-center text-[15px] leading-snug text-ink-muted">
+        <p className="mt-2 text-center text-[14px] leading-snug text-ink-muted">
           one pic of your actual room → styled around the furniture you're stuck with. first design is free. no signup.
         </p>
 
-        <div className="mt-4 flex flex-wrap justify-center gap-1.5">
+        <div className="mt-3 flex flex-wrap justify-center gap-1.5">
           <StickerChip tone="lilac">budget + ZIP</StickerChip>
           <StickerChip tone="lime">one-tap or mixed brands</StickerChip>
           <StickerChip tone="cream">room → registry → cart</StickerChip>
         </div>
 
-        <div className="mt-6">
-          <HeroRevealCard onCTA={onOpen} />
-        </div>
-
-        <div className="mt-6 flex flex-col items-stretch gap-3">
+        <div className="mt-4 flex flex-col items-stretch gap-2">
           <PrimaryCTA size="lg" onClick={() => { track("hero_cta_clicked"); onOpen(); }}>
             see my room →
           </PrimaryCTA>
-          <SecondaryCTA onClick={() => { track("demo_room_clicked"); onOpen(); }}>
-            use demo room
-          </SecondaryCTA>
-          <p className="text-center text-[12px] text-ink-muted">
-            then turn the room into a budgeted registry with real products, one-tap carts, and family claiming.
-          </p>
+          <div className="flex items-center justify-center gap-3 text-[11px] text-ink-dim">
+            <button
+              onClick={() => { track("demo_room_clicked"); onOpen(); }}
+              className="underline underline-offset-2 hover:text-ink"
+            >
+              use demo room
+            </button>
+            <span>·</span>
+            <span>no signup</span>
+          </div>
         </div>
+
+        <div className="mt-5">
+          <HeroRevealCard onCTA={onOpen} />
+        </div>
+
+        <p className="mt-4 text-center text-[12px] text-ink-muted">
+          then turn the room into a budgeted registry with real products, one-tap carts, and family claiming.
+        </p>
       </div>
     </section>
+
   );
 }
 
