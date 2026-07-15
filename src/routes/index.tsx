@@ -333,7 +333,7 @@ function StickyMobileCTA({ onOpen }: { onOpen: () => void }) {
   }, []);
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-40 pointer-events-none px-3 pb-3 transition-all duration-300 ${
+      className={`fixed inset-x-0 bottom-0 z-40 pointer-events-none px-3 pb-3 transition-all duration-300 md:hidden ${
         show ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
       }`}
       style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
