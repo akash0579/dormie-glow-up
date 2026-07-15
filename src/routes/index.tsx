@@ -1261,11 +1261,12 @@ function Landing() {
       <TopBar />
       <Marquee />
       <Hero onOpen={open} />
+      <SectionTransition />
+      <RegistryShopSection onOpen={open} />
       <ProblemSection onOpen={open} />
       <HowItWorks onOpen={open} />
       <VibePicker onOpen={open} />
-      <ShoppingKitSection onOpen={open} />
-      <RegistrySection onOpen={open} />
+
       <ShareSection onOpen={open} />
       <RoommateSection onOpen={open} />
       <ParentSection onOpen={open} />
