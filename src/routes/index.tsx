@@ -1233,7 +1233,8 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
               period="3 months"
               perMonth="$12 / month, billed once"
               features={[
-                { bold: "unlimited designs", rest: "re-style, re-generate, swap the vibe — nothing counts against you" },
+                { bold: "up to 5 uploads", rest: "add photos of your actual dorm so designs match your space" },
+                { bold: "50 design generations", rest: "plenty of room to explore vibes, layouts, and swaps" },
                 { bold: "every vibe unlocked", rest: "cottagecore, y2k, quiet luxe, dark academia — try them all on the same room" },
                 { bold: "full shoppable registry", rest: "every piece linked to real products, filtered by budget and ZIP" },
                 { bold: "roommate share mode", rest: "send the design + registry so you don't both buy the same rug" },
@@ -1251,7 +1252,8 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
               perMonth="$6 / month, billed once"
               badge="most save with this"
               features={[
-                { bold: "unlimited designs, all year", rest: "tweaks, re-generations, and full vibe swaps never count" },
+                { bold: "up to 15 uploads", rest: "capture every angle of your dorm, common area, and future apartment" },
+                { bold: "unlimited design generations", rest: "tweaks, re-generations, and full vibe swaps never count" },
                 { bold: "every vibe + every season", rest: "move-in look, the january reset, spring refresh — same pass" },
                 { bold: "full shoppable registry", rest: "real products, budget + ZIP filters, one-tap add to cart" },
                 { bold: "priority new features", rest: "early access to new vibes, room types, and shopping partners" },
