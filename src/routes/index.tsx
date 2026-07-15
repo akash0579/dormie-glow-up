@@ -510,7 +510,7 @@ function HowItWorks({ onOpen }: { onOpen: () => void }) {
         <div className="md:text-center md:max-w-2xl md:mx-auto">
           <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">how it works</p>
           <h2 className="mt-1 font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
-            drop the pic. see the vibe. build the list.
+            drop the pic.<br className="md:hidden" /> see the vibe.<br className="md:hidden" /> build the list.
           </h2>
         </div>
         <div className="mt-6 md:mt-10 grid gap-3 md:grid-cols-4 md:gap-4">
