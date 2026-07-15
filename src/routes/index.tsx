@@ -994,8 +994,6 @@ function RegistryShopSection({ onOpen }: { onOpen: () => void }) {
 }
 
 
-type ShareAudience = "friends" | "roommate" | "family";
-
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {
@@ -1010,23 +1008,20 @@ function usePrefersReducedMotion() {
 }
 
 function BragReel({ playing, onToggle }: { playing: boolean; onToggle: () => void }) {
-  const [progress, setProgress] = useState(0); // 0..1
+  const [progress, setProgress] = useState(0); // 0..1 looping
   const reduced = usePrefersReducedMotion();
   const rafRef = useRef<number | null>(null);
   const startRef = useRef<number | null>(null);
-  const DURATION = 4200;
+  const DURATION = 4600;
 
   useEffect(() => {
     if (!playing || reduced) return;
     startRef.current = null;
     const step = (ts: number) => {
       if (startRef.current === null) startRef.current = ts;
-      const elapsed = ts - startRef.current;
-      const p = Math.min(1, elapsed / DURATION);
-      setProgress(p);
-      if (p < 1) {
-        rafRef.current = requestAnimationFrame(step);
-      }
+      const elapsed = (ts - startRef.current) % DURATION;
+      setProgress(elapsed / DURATION);
+      rafRef.current = requestAnimationFrame(step);
     };
     rafRef.current = requestAnimationFrame(step);
     return () => {
@@ -1034,354 +1029,169 @@ function BragReel({ playing, onToggle }: { playing: boolean; onToggle: () => voi
     };
   }, [playing, reduced]);
 
-  // reveal curve: hold before ~25%, wipe 25-55%, hold after
-  const reveal = Math.max(0, Math.min(1, (progress - 0.25) / 0.3));
+  // reveal curve: hold before ~25%, wipe 25-55%, hold after until loop
+  const reveal = Math.max(0, Math.min(1, (progress - 0.22) / 0.28));
   const wipePct = reduced ? 100 : Math.round(reveal * 100);
 
   return (
-    <div className="relative overflow-hidden rounded-[26px] bg-[#0F0F11] ring-1 ring-white/10 shadow-[0_30px_80px_-30px_rgba(216,255,79,0.25)]">
-      {/* 9:16 frame */}
-      <div className="relative w-full" style={{ aspectRatio: "9 / 16" }}>
-        <img src={dormBefore} alt="dorm room before styling" className="absolute inset-0 h-full w-full object-cover" />
-        <img
-          src={dormAfter}
-          alt="dorm room after styling"
-          className="absolute inset-0 h-full w-full object-cover transition-[clip-path] duration-100"
-          style={{ clipPath: `inset(0 ${100 - wipePct}% 0 0)` }}
-        />
-        {/* vertical wipe seam */}
-        {wipePct > 0 && wipePct < 100 && (
-          <div
-            className="absolute top-0 bottom-0 w-[2px] bg-[#D8FF4F] shadow-[0_0_16px_2px_rgba(216,255,79,0.6)]"
-            style={{ left: `calc(${wipePct}% - 1px)` }}
-          />
-        )}
-
-        {/* top overlay: label + watermark */}
-        <div className="absolute inset-x-0 top-0 flex items-start justify-between p-3">
-          <div className="flex flex-col gap-1.5">
-            <span className="inline-flex w-fit items-center gap-1 rounded-full bg-black/55 backdrop-blur-sm px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white ring-1 ring-white/15">
-              {wipePct < 50 ? "before" : "after"}
-            </span>
-            <span className="inline-flex w-fit items-center gap-1 rounded-full bg-[#D8FF4F] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#0F0F11]">
-              golden hour
-            </span>
-          </div>
-          <span className="rounded-md bg-black/55 px-2 py-0.5 text-[9px] font-semibold tracking-[0.2em] text-white/80 ring-1 ring-white/10">
-            DORMTOK
-          </span>
-        </div>
-
-        {/* bottom overlay: hall + budget */}
-        <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-3">
-          <div className="flex flex-col gap-1">
-            <span className="text-[11px] font-semibold text-white/90 drop-shadow">
-              ucla · hedrick hall
-            </span>
-            <span className="inline-flex w-fit items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[10px] font-bold text-[#0F0F11]">
-              under $300
-            </span>
-          </div>
-          <button
-            type="button"
-            onClick={(e) => { e.stopPropagation(); onToggle(); }}
-            aria-label={playing ? "pause reel" : "play reel"}
-            className="grid h-10 w-10 place-items-center rounded-full bg-white/95 text-[#0F0F11] shadow-[0_6px_18px_-4px_rgba(0,0,0,0.6)] hover:scale-105 transition-transform"
-          >
-            {playing ? (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-            ) : (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7L7 5z"/></svg>
+    <div className="relative w-full">
+      {/* phone bezel */}
+      <div className="relative mx-auto w-full max-w-[300px] rounded-[36px] bg-[#0A0A0C] p-2 ring-1 ring-white/10 shadow-[0_40px_100px_-30px_rgba(216,255,79,0.35)]">
+        <div className="relative overflow-hidden rounded-[28px] bg-black">
+          <div className="relative w-full" style={{ aspectRatio: "9 / 16" }}>
+            <img src={dormBefore} alt="dorm room before styling" className="absolute inset-0 h-full w-full object-cover" />
+            <img
+              src={dormAfter}
+              alt="dorm room after styling"
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ clipPath: `inset(0 ${100 - wipePct}% 0 0)` }}
+            />
+            {wipePct > 0 && wipePct < 100 && (
+              <div
+                className="absolute top-0 bottom-0 w-[2px] bg-[#D8FF4F] shadow-[0_0_16px_2px_rgba(216,255,79,0.7)]"
+                style={{ left: `calc(${wipePct}% - 1px)` }}
+              />
             )}
-          </button>
-        </div>
 
-        {/* timeline */}
-        <div className="absolute inset-x-3 bottom-[68px] h-[3px] rounded-full bg-white/20 overflow-hidden">
-          <div
-            className="h-full bg-[#D8FF4F]"
-            style={{ width: `${Math.round(progress * 100)}%` }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function AudiencePreview({ audience }: { audience: ShareAudience }) {
-  if (audience === "family") {
-    return (
-      <div className="rounded-[22px] bg-[#F5F0E8] p-4 text-[#0F0F11] ring-1 ring-black/5">
-        <div className="flex items-center gap-3">
-          <img src={dormAfter} alt="final dorm design" className="h-16 w-16 rounded-xl object-cover" />
-          <div className="flex-1">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-black/50">registry</div>
-            <div className="text-[15px] font-bold leading-tight">hedrick hall · golden hour</div>
-          </div>
-        </div>
-        <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-          <div className="rounded-xl bg-white p-2">
-            <div className="text-[10px] uppercase tracking-wide text-black/50">total</div>
-            <div className="text-[13px] font-bold">$284</div>
-          </div>
-          <div className="rounded-xl bg-[#D8FF4F] p-2">
-            <div className="text-[10px] uppercase tracking-wide text-black/60">covered</div>
-            <div className="text-[13px] font-bold">$168</div>
-          </div>
-          <div className="rounded-xl bg-white p-2">
-            <div className="text-[10px] uppercase tracking-wide text-black/50">open</div>
-            <div className="text-[13px] font-bold">4 items</div>
-          </div>
-        </div>
-        <div className="mt-3 flex flex-col gap-1.5">
-          {[
-            { name: "linen duvet, sage", price: "$68", claimed: true },
-            { name: "warm-white string lights", price: "$18", claimed: false },
-            { name: "arched mirror", price: "$52", claimed: false },
-          ].map((it) => (
-            <div key={it.name} className="flex items-center justify-between rounded-lg bg-white px-2.5 py-2">
-              <div>
-                <div className="text-[12px] font-semibold">{it.name}</div>
-                <div className="text-[10px] text-black/50">{it.price}</div>
-              </div>
-              {it.claimed ? (
-                <span className="rounded-full bg-[#0F0F11] px-2 py-0.5 text-[10px] font-bold text-[#D8FF4F]">claimed ✓</span>
-              ) : (
-                <button className="rounded-full bg-[#0F0F11] px-2.5 py-1 text-[10px] font-bold text-white">claim this</button>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (audience === "roommate") {
-    return (
-      <div className="rounded-[22px] bg-[#0F0F11] p-4 text-white ring-1 ring-white/10">
-        <div className="flex items-center gap-3">
-          <img src={dormAfter} alt="final dorm design" className="h-16 w-16 rounded-xl object-cover" />
-          <div className="flex-1">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/50">shared plan</div>
-            <div className="text-[15px] font-bold leading-tight">room 214 · you + maya</div>
-          </div>
-          <span className="rounded-full bg-[#C7B5FF] px-2 py-0.5 text-[10px] font-bold text-[#0F0F11]">waiting for their pick</span>
-        </div>
-        <div className="mt-3 flex flex-col gap-1.5">
-          {[
-            { item: "mini fridge", who: "maya", tone: "lilac" as const },
-            { item: "rug, 5x7", who: "you", tone: "lime" as const },
-            { item: "steamer", who: "maya", tone: "lilac" as const },
-            { item: "string lights", who: "you", tone: "lime" as const },
-          ].map((r) => (
-            <div key={r.item} className="flex items-center justify-between rounded-lg bg-white/[0.06] px-2.5 py-2 ring-1 ring-white/5">
-              <span className="text-[12px] font-semibold">{r.item}</span>
-              <span
-                className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                  r.tone === "lime" ? "bg-[#D8FF4F] text-[#0F0F11]" : "bg-[#C7B5FF] text-[#0F0F11]"
-                }`}
-              >
-                {r.who} brings
+            {/* top row */}
+            <div className="absolute inset-x-0 top-0 flex items-start justify-between p-2.5">
+              <span className="inline-flex items-center gap-1 rounded-full bg-black/55 backdrop-blur-sm px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-white ring-1 ring-white/15">
+                {wipePct < 50 ? "before" : "after"}
+              </span>
+              <span className="rounded-md bg-black/55 px-1.5 py-0.5 text-[8px] font-semibold tracking-[0.2em] text-white/80 ring-1 ring-white/10">
+                DORMTOK
               </span>
             </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
 
-  // friends
-  return (
-    <div className="rounded-[22px] bg-[#0F0F11] p-4 text-white ring-1 ring-white/10">
-      <div className="flex items-center gap-3">
-        <img src={dormAfter} alt="final dorm design" className="h-16 w-16 rounded-xl object-cover" />
-        <div className="flex-1">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/50">the reveal</div>
-          <div className="text-[15px] font-bold leading-tight">golden hour · warm + soft</div>
+            {/* bottom row */}
+            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-2.5">
+              <div className="flex flex-col gap-1">
+                <span className="inline-flex w-fit items-center rounded-full bg-[#D8FF4F] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] text-[#0F0F11]">
+                  golden hour
+                </span>
+                <span className="text-[10px] font-semibold text-white/90 drop-shadow">
+                  under $300
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); onToggle(); }}
+                aria-label={playing ? "pause reel" : "play reel"}
+                className="grid h-8 w-8 place-items-center rounded-full bg-white/95 text-[#0F0F11] shadow-[0_6px_18px_-4px_rgba(0,0,0,0.6)] hover:scale-105 transition-transform"
+              >
+                {playing ? (
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+                ) : (
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7L7 5z"/></svg>
+                )}
+              </button>
+            </div>
+
+            {/* timeline */}
+            <div className="absolute inset-x-2.5 bottom-[54px] h-[2px] rounded-full bg-white/20 overflow-hidden">
+              <div className="h-full bg-[#D8FF4F]" style={{ width: `${Math.round(progress * 100)}%` }} />
+            </div>
+          </div>
         </div>
-        <img src={dormBefore} alt="before" className="h-12 w-12 rounded-lg object-cover ring-1 ring-white/15" />
       </div>
-      <div className="mt-3 rounded-xl bg-white/[0.06] p-3 ring-1 ring-white/5">
-        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/50">quick vote</div>
-        <div className="mt-2 grid grid-cols-2 gap-2">
-          <button className="group relative overflow-hidden rounded-lg ring-1 ring-white/10">
-            <img src={dormAfter} alt="option a" className="h-20 w-full object-cover" />
-            <span className="absolute inset-x-1 bottom-1 rounded-md bg-[#D8FF4F] px-1.5 py-0.5 text-[10px] font-bold text-[#0F0F11]">A · golden hour</span>
-          </button>
-          <button className="group relative overflow-hidden rounded-lg ring-1 ring-white/10">
-            <img src={dormBefore} alt="option b" className="h-20 w-full object-cover" />
-            <span className="absolute inset-x-1 bottom-1 rounded-md bg-white px-1.5 py-0.5 text-[10px] font-bold text-[#0F0F11]">B · quiet luxe</span>
-          </button>
+
+      {/* ghost diptych behind — before/after thumbs */}
+      <div className="pointer-events-none absolute -left-2 top-8 hidden md:block rotate-[-6deg] opacity-70">
+        <div className="rounded-2xl bg-[#141416] p-1.5 ring-1 ring-white/10 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)]">
+          <img src={dormBefore} alt="" className="h-24 w-16 rounded-xl object-cover" />
+          <div className="mt-1 text-center text-[8px] font-semibold uppercase tracking-[0.18em] text-white/50">before</div>
         </div>
       </div>
-      <div className="mt-3 flex items-center justify-between rounded-lg bg-white/[0.06] px-2.5 py-2 ring-1 ring-white/5">
-        <span className="truncate text-[11px] text-white/70">dormtok.co/r/hedrick-214</span>
-        <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-semibold">copy link</span>
+      <div className="pointer-events-none absolute -right-2 bottom-8 hidden md:block rotate-[6deg] opacity-80">
+        <div className="rounded-2xl bg-[#141416] p-1.5 ring-1 ring-[#D8FF4F]/30 shadow-[0_20px_50px_-20px_rgba(216,255,79,0.4)]">
+          <img src={dormAfter} alt="" className="h-24 w-16 rounded-xl object-cover" />
+          <div className="mt-1 text-center text-[8px] font-semibold uppercase tracking-[0.18em] text-[#D8FF4F]">after</div>
+        </div>
       </div>
+
+      {/* floating chips */}
+      <span className="pointer-events-none absolute -top-3 right-6 hidden md:inline-flex animate-float items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#0F0F11] shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]">
+        9:16
+      </span>
+      <span className="pointer-events-none absolute bottom-4 -left-4 hidden md:inline-flex animate-float items-center gap-1 rounded-full bg-[#C7B5FF] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#0F0F11] shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]" style={{ animationDelay: "0.4s" }}>
+        auto-cut
+      </span>
     </div>
   );
 }
 
 function ShareSection({ onOpen }: { onOpen: () => void }) {
-  const [audience, setAudience] = useState<ShareAudience>("friends");
   const [playing, setPlaying] = useState(true);
   const viewedRef = useRef(false);
 
   useEffect(() => {
     if (viewedRef.current) return;
     viewedRef.current = true;
-    track("share_section_viewed");
+    track("brag_section_viewed");
     track("brag_reel_played", { auto: true });
   }, []);
 
-  const selectAudience = (a: ShareAudience) => {
-    setAudience(a);
-    track("share_audience_selected", { audience: a });
-    track(`${a}_share_selected` as const);
-  };
-
-  const audienceCopy: Record<ShareAudience, { line: string; cta: string; event: string }> = {
-    friends: {
-      line: "the reveal, the vibe, and a quick vote.",
-      cta: "send the reveal",
-      event: "reveal_shared",
-    },
-    roommate: {
-      line: "the design, shared items, and who's bringing what.",
-      cta: "send to roommate",
-      event: "roommate_plan_shared",
-    },
-    family: {
-      line: "the room, budget, registry, and what's still open to claim.",
-      cta: "send the registry",
-      event: "registry_shared",
-    },
-  };
-  const copy = audienceCopy[audience];
-
   return (
-    <section className="px-4 py-14 md:px-8 md:py-20">
-      <div className="mx-auto max-w-md md:max-w-6xl">
-        <div className="flex flex-col items-start gap-3 md:items-center md:text-center">
-          <span className="inline-flex items-center rounded-full bg-white/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/70 ring-1 ring-white/10">
-            share it your way
-          </span>
-          <h2 className="font-display text-3xl md:text-5xl leading-[1.05] font-extrabold lowercase text-white">
-            the group chat gets the reveal.
-            <br className="hidden md:block" />
-            <span className="text-white/70"> everyone else gets the plan.</span>
-          </h2>
-          <p className="max-w-xl text-[14px] md:text-[15px] text-ink-muted">
-            turn your before-and-after into a ready-to-post reel, or share the room, registry, and shopping list with the people helping make it happen.
-          </p>
-        </div>
+    <section className="relative px-4 py-16 md:px-8 md:py-24 overflow-hidden">
+      {/* ambient glow */}
+      <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D8FF4F]/[0.06] blur-3xl" />
 
-        <div className="mt-8 md:mt-12 grid gap-5 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] md:items-start md:gap-8">
-          {/* LEFT — Brag Reel */}
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] md:items-center md:gap-14">
+          {/* LEFT — copy */}
           <div className="flex flex-col">
-            <div className="mb-3 flex items-center gap-2">
-              <span className="rounded-full bg-[#D8FF4F] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#0F0F11]">brag reel</span>
-              <span className="text-[11px] text-ink-dim">auto-cut by dormtok</span>
-            </div>
-            <h3 className="font-display text-2xl md:text-3xl font-extrabold lowercase leading-tight text-white">
-              your room reveal, already cut.
-            </h3>
-            <p className="mt-1.5 text-[13px] md:text-[14px] text-ink-muted max-w-md">
-              Dormtok turns the original room and final design into a short vertical reel for Reels, TikTok, or Stories.
+            <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-[#D8FF4F]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#D8FF4F] ring-1 ring-[#D8FF4F]/25">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#D8FF4F] animate-pulse" />
+              brag reel
+            </span>
+            <h2 className="mt-4 font-display text-4xl md:text-6xl leading-[0.98] font-extrabold lowercase text-white">
+              your room,<br />
+              <span className="italic text-[#D8FF4F]">already a reel.</span>
+            </h2>
+            <p className="mt-5 max-w-md text-[15px] md:text-[17px] leading-relaxed text-ink-muted">
+              every design comes with a short vertical cut — before, transition, after — sized for reels, tiktok, and stories. no editing app. no timing it. just the post.
             </p>
 
-            <div
-              className="relative mt-4 md:mt-5 cursor-pointer"
-              onClick={() => { setPlaying((p) => { const nxt = !p; track(nxt ? "brag_reel_played" : "brag_reel_paused"); return nxt; }); }}
-            >
-              <BragReel playing={playing} onToggle={() => setPlaying((p) => !p)} />
-              {/* connector dot — desktop only */}
-              <div className="pointer-events-none absolute -right-4 top-1/2 hidden h-px w-8 -translate-y-1/2 bg-gradient-to-r from-white/20 to-white/0 md:block" />
+            {/* proof row */}
+            <div className="mt-6 grid grid-cols-3 gap-2 max-w-md">
+              {[
+                { k: "9:16", v: "vertical-ready" },
+                { k: "~6s", v: "auto-timed cut" },
+                { k: "1 tap", v: "save or post" },
+              ].map((s) => (
+                <div key={s.k} className="rounded-xl bg-white/[0.04] px-3 py-2.5 ring-1 ring-white/10">
+                  <div className="font-display text-lg font-extrabold text-white">{s.k}</div>
+                  <div className="text-[10px] uppercase tracking-wide text-white/50">{s.v}</div>
+                </div>
+              ))}
             </div>
 
-            <div className="mt-3 flex flex-wrap items-center gap-1.5">
-              {["before + after", "9:16", "reels", "tiktok", "stories"].map((c) => (
-                <span key={c} className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/70 ring-1 ring-white/10">
+            {/* format chips */}
+            <div className="mt-5 flex flex-wrap items-center gap-1.5">
+              {["reels", "tiktok", "stories", "before + after"].map((c) => (
+                <span key={c} className="rounded-full bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70 ring-1 ring-white/10">
                   {c}
                 </span>
               ))}
             </div>
 
-            <div className="mt-4 flex flex-col gap-1.5">
-              <button
-                type="button"
-                onClick={() => { track("brag_reel_preview_clicked"); onOpen(); }}
-                className="inline-flex w-fit items-center gap-1 rounded-full bg-white px-4 py-2 text-[13px] font-bold text-[#0F0F11] hover:scale-[1.02] transition-transform"
-              >
-                preview my reel →
-              </button>
-              <p className="text-[11px] text-ink-dim">save it, post it, or send it to the group chat.</p>
+            <div className="mt-7 flex flex-col items-start gap-2">
+              <PrimaryCTA onClick={() => { track("brag_reel_preview_clicked"); onOpen(); }}>
+                get my reel →
+              </PrimaryCTA>
+              <p className="text-[11px] text-ink-dim">
+                first reel drops with a small dormtok tag. pass removes it.
+              </p>
             </div>
           </div>
 
-          {/* RIGHT — Share the Room */}
-          <div className="flex flex-col">
-            <div className="mb-3 flex items-center gap-2">
-              <span className="rounded-full bg-[#C7B5FF] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#0F0F11]">share the room</span>
-              <span className="text-[11px] text-ink-dim">one room, three audiences</span>
-            </div>
-            <h3 className="font-display text-2xl md:text-3xl font-extrabold lowercase leading-tight text-white">
-              same room. different people need different details.
-            </h3>
-            <p className="mt-1.5 text-[13px] md:text-[14px] text-ink-muted max-w-md">
-              send the reveal to friends, the plan to your roommate, and the registry to family.
-            </p>
-
-            {/* audience selector */}
-            <div
-              role="tablist"
-              aria-label="choose audience"
-              className="mt-4 md:mt-5 inline-flex w-full max-w-full items-center gap-1 self-start overflow-x-auto rounded-full bg-white/5 p-1 ring-1 ring-white/10"
-            >
-              {(["friends", "roommate", "family"] as ShareAudience[]).map((a) => {
-                const active = audience === a;
-                return (
-                  <button
-                    key={a}
-                    role="tab"
-                    aria-selected={active}
-                    onClick={() => selectAudience(a)}
-                    className={`flex-1 whitespace-nowrap rounded-full px-3 py-1.5 text-[12px] font-semibold transition-colors ${
-                      active
-                        ? "bg-white text-[#0F0F11]"
-                        : "text-white/70 hover:text-white"
-                    }`}
-                  >
-                    {a}
-                  </button>
-                );
-              })}
-            </div>
-
-            <p className="mt-3 text-[13px] text-ink-muted">{copy.line}</p>
-
-            <div className="mt-3">
-              <AudiencePreview audience={audience} />
-            </div>
-
-            <button
-              type="button"
-              onClick={() => { track(copy.event); onOpen(); }}
-              className="mt-4 inline-flex w-fit items-center gap-1 rounded-full bg-[#D8FF4F] px-4 py-2 text-[13px] font-bold text-[#0F0F11] hover:scale-[1.02] transition-transform"
-            >
-              {copy.cta} →
-            </button>
+          {/* RIGHT — reel */}
+          <div
+            className="relative mx-auto w-full max-w-[320px] cursor-pointer md:mx-0 md:justify-self-end"
+            onClick={() => { setPlaying((p) => { const nxt = !p; track(nxt ? "brag_reel_played" : "brag_reel_paused"); return nxt; }); }}
+          >
+            <BragReel playing={playing} onToggle={() => setPlaying((p) => !p)} />
           </div>
-        </div>
-
-        {/* closing */}
-        <div className="mt-10 md:mt-14 flex flex-col items-start gap-3 md:items-center md:text-center">
-          <p className="font-display text-lg md:text-xl font-extrabold lowercase text-white">
-            post the transformation. share the details.
-          </p>
-          <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "share" }); onOpen(); }}>
-            see my room →
-          </PrimaryCTA>
         </div>
       </div>
     </section>
