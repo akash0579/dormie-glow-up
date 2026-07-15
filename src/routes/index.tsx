@@ -513,7 +513,7 @@ function HowItWorks({ onOpen }: { onOpen: () => void }) {
             drop the pic.<br className="md:hidden" /> see the vibe.<br className="md:hidden" /> build the list.
           </h2>
         </div>
-        <div className="mt-6 md:mt-10 grid gap-3 md:grid-cols-4 md:gap-4">
+        <div className="mt-6 md:mt-10 grid gap-3 md:grid-cols-4 md:gap-4 items-stretch">
           <StepCard n="1" title="drop the room pic" body="snap it, upload it, or use the demo room." />
           <StepCard n="2" title="pick the energy" body="cozy szn, golden hour, locked in, soft era, or type your own." />
           <StepCard n="3" title="see the glow-up" body="before/after reveal, edits, share card, roommate check." />
