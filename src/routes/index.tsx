@@ -929,19 +929,32 @@ function RoommateSection({ onOpen }: { onOpen: () => void }) {
 
 function ParentSection({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="px-4 py-14">
-      <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          the version for whoever's paying.
-        </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          send home the practical view: the room, the budget, the registry, and the product links. no 19 random texts. no mystery cart.
-        </p>
+    <section className="px-4 md:px-8 py-14 md:py-24">
+      <div className="mx-auto max-w-md md:max-w-6xl md:grid md:grid-cols-2 md:gap-12 md:items-start">
+        <div>
+          <h2 className="font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+            the version for whoever's paying.
+          </h2>
+          <p className="mt-2 md:mt-4 text-[14px] md:text-[17px] text-ink-muted">
+            send home the practical view: the room, the budget, the registry, and the real product links. Amazon bundle items can become an Amazon-ready cart. no 19 random texts. no mystery cart.
+          </p>
+          <div className="hidden md:flex md:flex-col md:gap-3 md:mt-8 md:max-w-sm">
+            <PrimaryCTA onClick={() => { track("parent_registry_clicked"); onOpen(); }}>
+              send mom the registry
+            </PrimaryCTA>
+            <SecondaryCTA onClick={() => { track("registry_shared", { section: "parent" }); onOpen(); }}>
+              share the dorm plan
+            </SecondaryCTA>
+            <p className="text-[11px] text-ink-dim">
+              student gets the fun version. parent gets the practical one.
+            </p>
+          </div>
+        </div>
 
-        <div className="mt-5 rounded-3xl bg-cream p-5 text-[#0F0F11] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.7)]">
+        <div className="mt-5 md:mt-0 rounded-3xl bg-cream p-5 md:p-6 text-[#0F0F11] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.7)]">
           <div className="flex items-center justify-between">
             <div className="font-mono text-[10px] uppercase tracking-widest text-black/50">room summary — for parent</div>
-            <span className="rounded-full bg-[#0F0F11] px-2.5 py-0.5 text-[10px] font-bold text-lime">$24 once</span>
+            <span className="rounded-full bg-[#0F0F11] px-2.5 py-0.5 text-[10px] font-bold text-lime">yearly · $72</span>
           </div>
           <div className="mt-3 aspect-[16/10] rounded-xl overflow-hidden">
             <img src={dormAfter} alt="" className="h-full w-full object-cover" loading="lazy" />
@@ -952,12 +965,11 @@ function ParentSection({ onOpen }: { onOpen: () => void }) {
               ["budget selected", "$300–$400"],
               ["registry progress", "$0 of $145 covered"],
               ["ships to", "ZIP 78705 · prioritized"],
-              ["shopping kit", "14 pieces, 3 stores"],
+              ["shopping kit", "8 pieces · Amazon-ready bundle"],
+              ["Amazon cart", "1-tap for eligible bundle"],
               ["claim/sponsor items", "family can claim what they cover"],
-              ["subscription", "none"],
-              ["auto-renew", "off"],
-              ["season pass", "$24 once"],
-              ["season access", "until sep 7"],
+              ["seasonal pass", "$36 · 3 months · no auto-renew"],
+              ["yearly pass", "$72 · 12 months · saves 33%"],
             ].map(([k, v]) => (
               <div key={k} className="flex justify-between py-2">
                 <dt className="text-black/60">{k}</dt>
@@ -966,16 +978,16 @@ function ParentSection({ onOpen }: { onOpen: () => void }) {
             ))}
           </dl>
           <p className="mt-3 text-[10px] leading-relaxed text-black/50">
-            claiming an item keeps the Dormie registry organized. final checkout happens with the store. prices and availability can change — always confirm at checkout.
+            claiming an item keeps the Dormie registry organized. final checkout happens with Amazon or the store. prices and availability can change — always confirm at checkout.
           </p>
         </div>
 
-        <div className="mt-5 flex flex-col gap-2">
-          <PrimaryCTA className="w-full" onClick={() => { track("parent_cta_clicked"); onOpen(); }}>
+        <div className="md:hidden mt-5 flex flex-col gap-2">
+          <PrimaryCTA className="w-full" onClick={() => { track("parent_registry_clicked"); onOpen(); }}>
             send mom the registry
           </PrimaryCTA>
-          <SecondaryCTA className="w-full" onClick={() => { track("share_registry_clicked"); onOpen(); }}>
-            share the dorm registry
+          <SecondaryCTA className="w-full" onClick={() => { track("registry_shared", { section: "parent" }); onOpen(); }}>
+            share the dorm plan
           </SecondaryCTA>
           <p className="text-center text-[11px] text-ink-dim">
             student gets the fun version. parent gets the practical one.
