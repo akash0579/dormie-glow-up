@@ -487,7 +487,7 @@ function HowItWorks({ onOpen }: { onOpen: () => void }) {
           <StepCard n="1" title="drop the room pic" body="snap it, upload it, or use the demo room." />
           <StepCard n="2" title="pick the energy" body="cozy szn, golden hour, locked in, soft era, or type your own." />
           <StepCard n="3" title="see the glow-up" body="before/after reveal, edits, share card, roommate check." />
-          <StepCard n="4" tone="cream" title="build the registry" body="set a budget, add your ZIP, and turn the look into a shareable dorm registry with real product links." />
+          <StepCard n="4" tone="cream" title="build + share the registry" body="set the budget and ZIP, choose Amazon, Walmart, or mixed brands, then decide what you'll buy and what friends or family can claim." />
         </div>
         <div className="mt-6 flex justify-center">
           <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "how" }); onOpen(); }}>
