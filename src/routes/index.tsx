@@ -397,42 +397,47 @@ function Marquee() {
 
 function Hero({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="relative px-4 pt-6 pb-10 grain">
-      <div className="mx-auto max-w-md">
-        <div className="flex justify-center">
-          <StickerChip tone="dark" className="font-mono">back to school szn · 39 days out</StickerChip>
-        </div>
-        <h1 className="mt-4 text-center font-display text-[42px] leading-[0.95] font-extrabold tracking-tight lowercase">
-          your dorm,<br />
-          <span className="text-lime">but it ate.</span>
-        </h1>
-        <p className="mt-3 text-center text-[15px] leading-snug text-ink-muted">
-          one pic of your actual room → styled around the furniture you're stuck with. first design is free. no signup.
-        </p>
-
-        <div className="mt-4 flex flex-wrap justify-center gap-1.5">
-          <StickerChip tone="lime">real product links</StickerChip>
-          <StickerChip tone="lilac">set your budget</StickerChip>
-          <StickerChip tone="peach">ship-to-ZIP aware</StickerChip>
-          <StickerChip tone="cream">shop the look</StickerChip>
-          <StickerChip tone="dark">registry-ready</StickerChip>
-          <StickerChip tone="lilac">budgeted registry</StickerChip>
-        </div>
-
-        <div className="mt-6">
-          <HeroRevealCard onCTA={onOpen} />
-        </div>
-
-        <div className="mt-6 flex flex-col items-stretch gap-3">
-          <PrimaryCTA size="lg" onClick={() => { track("hero_cta_clicked"); onOpen(); }}>
-            see my room →
-          </PrimaryCTA>
-          <SecondaryCTA onClick={() => { track("demo_room_clicked"); onOpen(); }}>
-            no pic yet? use demo room
-          </SecondaryCTA>
-          <p className="text-center text-[11px] text-ink-dim">
-            first, see the room. then turn it into a dorm registry people can actually help with.
+    <section className="relative px-4 md:px-8 pt-6 md:pt-12 pb-10 md:pb-20 grain">
+      <div className="mx-auto max-w-md md:max-w-6xl md:grid md:grid-cols-2 md:gap-14 md:items-center">
+        <div>
+          <div className="flex md:justify-start justify-center">
+            <StickerChip tone="dark" className="font-mono">back to school szn · 39 days out</StickerChip>
+          </div>
+          <h1 className="mt-4 text-center md:text-left font-display text-[42px] md:text-[76px] leading-[0.95] font-extrabold tracking-tight lowercase">
+            your dorm,<br />
+            <span className="text-lime">but it ate.</span>
+          </h1>
+          <p className="mt-3 md:mt-5 text-center md:text-left text-[15px] md:text-[18px] leading-snug text-ink-muted md:max-w-[46ch]">
+            one pic of your actual room → styled around the furniture you're stuck with. first design is free. no signup.
           </p>
+
+          <div className="mt-4 md:mt-6 flex flex-wrap justify-center md:justify-start gap-1.5">
+            <StickerChip tone="lime">3 free designs</StickerChip>
+            <StickerChip tone="dark">first one, no signup</StickerChip>
+            <StickerChip tone="lilac">registry-ready</StickerChip>
+            <StickerChip tone="peach">Amazon-ready bundles</StickerChip>
+            <StickerChip tone="cream">real product links</StickerChip>
+          </div>
+
+          <div className="md:hidden mt-6">
+            <HeroRevealCard onCTA={onOpen} />
+          </div>
+
+          <div className="mt-6 flex flex-col md:flex-row md:items-center items-stretch gap-3">
+            <PrimaryCTA size="lg" onClick={() => { track("hero_cta_clicked"); onOpen(); }}>
+              see my room →
+            </PrimaryCTA>
+            <SecondaryCTA onClick={() => { track("demo_room_clicked"); onOpen(); }}>
+              use demo room
+            </SecondaryCTA>
+          </div>
+          <p className="mt-3 text-center md:text-left text-[11px] md:text-[12px] text-ink-dim md:max-w-[52ch]">
+            first, see the room. then turn it into a registry, shopping list, or Amazon-ready cart.
+          </p>
+        </div>
+
+        <div className="hidden md:block">
+          <HeroRevealCard onCTA={onOpen} />
         </div>
       </div>
     </section>
