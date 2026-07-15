@@ -468,23 +468,32 @@ function ProblemSection({ onOpen }: { onOpen: () => void }) {
     { t: "don't buy first, regret later", b: "see the vibe before the cart gets expensive." },
   ];
   return (
-    <section className="px-4 py-14">
-      <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          pinterest doesn't know your dorm.
-        </h2>
-        <p className="mt-3 text-[15px] text-ink-muted">
-          your feed is cute. your room is tiny. the bed, desk, dresser, and chair probably have to stay. dormie designs around the room you actually got.
-        </p>
-        <div className="mt-6 space-y-3">
-          {cards.map((c) => (
-            <div key={c.t} className="rounded-2xl bg-card p-4 ring-1 ring-white/10">
-              <div className="text-[15px] font-bold text-ink">{c.t}</div>
-              <div className="mt-1 text-[13px] text-ink-muted">{c.b}</div>
+    <section className="px-4 py-14 md:px-8 md:py-20">
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <div className="md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] md:gap-14 md:items-start">
+          <div>
+            <h2 className="font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+              pinterest doesn't know your dorm.
+            </h2>
+            <p className="mt-3 text-[15px] md:text-[16px] text-ink-muted md:max-w-sm">
+              your feed is cute. your room is tiny. the bed, desk, dresser, and chair probably have to stay. dormie designs around the room you actually got.
+            </p>
+            <div className="mt-6 hidden md:flex">
+              <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "problem" }); onOpen(); }}>
+                try my room free
+              </PrimaryCTA>
             </div>
-          ))}
+          </div>
+          <div className="mt-6 md:mt-0 grid gap-3 md:grid-cols-3 md:gap-4">
+            {cards.map((c) => (
+              <div key={c.t} className="rounded-2xl bg-card p-4 md:p-5 ring-1 ring-white/10">
+                <div className="text-[15px] font-bold text-ink">{c.t}</div>
+                <div className="mt-1 text-[13px] text-ink-muted">{c.b}</div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 flex justify-center md:hidden">
           <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "problem" }); onOpen(); }}>
             try my room free
           </PrimaryCTA>
@@ -496,19 +505,21 @@ function ProblemSection({ onOpen }: { onOpen: () => void }) {
 
 function HowItWorks({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="px-4 py-14 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
-      <div className="mx-auto max-w-md">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">how it works</p>
-        <h2 className="mt-1 font-display text-3xl leading-tight font-extrabold lowercase">
-          three taps. then the reveal. then the registry.
-        </h2>
-        <div className="mt-6 space-y-3">
+    <section className="px-4 py-14 md:px-8 md:py-20 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <div className="md:text-center md:max-w-2xl md:mx-auto">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">how it works</p>
+          <h2 className="mt-1 font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+            three taps. then the reveal. then the registry.
+          </h2>
+        </div>
+        <div className="mt-6 md:mt-10 grid gap-3 md:grid-cols-4 md:gap-4">
           <StepCard n="1" title="drop the room pic" body="snap it, upload it, or use the demo room." />
           <StepCard n="2" title="pick the energy" body="cozy szn, golden hour, locked in, soft era, or type your own." />
           <StepCard n="3" title="see the glow-up" body="before/after reveal, edits, share card, roommate check." />
           <StepCard n="4" tone="cream" title="build + share the registry" body="set the budget and ZIP, choose Amazon, Walmart, or mixed brands, then decide what you'll buy and what friends or family can claim." />
         </div>
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 md:mt-10 flex justify-center">
           <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "how" }); onOpen(); }}>
             start with my first free design
           </PrimaryCTA>
