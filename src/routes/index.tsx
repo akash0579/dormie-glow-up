@@ -998,39 +998,63 @@ function ParentSection({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-function FreeVsPassCard({
-  kind,
+function PricingCard({
+  variant,
   title,
   price,
+  subprice,
+  badge,
+  savings,
   features,
   ctaLabel,
+  reassurance,
   onClick,
 }: {
-  kind: "free" | "pass";
+  variant: "free" | "seasonal" | "yearly";
   title: string;
   price: string;
+  subprice?: string;
+  badge?: string;
+  savings?: string;
   features: string[];
   ctaLabel: string;
+  reassurance?: string;
   onClick: () => void;
 }) {
-  const isPass = kind === "pass";
+  const isYearly = variant === "yearly";
+  const isSeasonal = variant === "seasonal";
+  const accent = isYearly ? "lilac" : isSeasonal ? "lime" : "lime";
+  const ring = isYearly
+    ? "ring-2 ring-lilac shadow-[0_0_40px_-8px_rgba(199,181,255,0.5)]"
+    : "ring-1 ring-white/10";
+  const bg = isYearly
+    ? "bg-gradient-to-b from-lilac/20 to-card"
+    : "bg-card";
   return (
-    <div
-      className={`rounded-3xl p-5 ring-1 ${
-        isPass ? "bg-gradient-to-b from-lilac/20 to-card ring-lilac/40" : "bg-card ring-white/10"
-      }`}
-    >
-      <div className="flex items-center justify-between">
+    <div className={`relative rounded-3xl p-5 md:p-6 ${bg} ${ring} flex flex-col`}>
+      {badge && (
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-lilac px-3 py-1 text-[10px] font-bold text-[#0F0F11] whitespace-nowrap">
+          {badge}
+        </div>
+      )}
+      <div className="flex items-center justify-between gap-2">
         <div className="text-lg font-bold text-ink lowercase">{title}</div>
-        {isPass && <span className="rounded-full bg-lilac px-2.5 py-0.5 text-[10px] font-bold text-[#0F0F11]">season pass</span>}
+        {savings && (
+          <span className="rounded-full bg-lime/20 ring-1 ring-lime/40 px-2 py-0.5 text-[10px] font-bold text-lime">
+            {savings}
+          </span>
+        )}
       </div>
-      <div className={`mt-2 font-display text-3xl font-extrabold ${isPass ? "text-lilac" : "text-lime"}`}>
+      <div className={`mt-2 font-display text-4xl font-extrabold text-${accent}`}>
         {price}
       </div>
-      <ul className="mt-4 space-y-2 text-[13px] text-ink-muted">
+      {subprice && (
+        <div className="mt-1 font-mono text-[11px] text-ink-dim">{subprice}</div>
+      )}
+      <ul className="mt-4 space-y-2 text-[13px] text-ink-muted flex-1">
         {features.map((f) => (
           <li key={f} className="flex gap-2">
-            <span className={isPass ? "text-lilac" : "text-lime"}>✓</span>
+            <span className={`text-${accent}`}>✓</span>
             <span>{f}</span>
           </li>
         ))}
@@ -1038,63 +1062,107 @@ function FreeVsPassCard({
       <button
         onClick={onClick}
         className={`mt-5 w-full rounded-full py-3 text-sm font-bold active:scale-[0.98] transition ${
-          isPass ? "bg-lilac text-[#0F0F11]" : "bg-lime text-[#0F0F11]"
+          isYearly ? "bg-lilac text-[#0F0F11]" : "bg-lime text-[#0F0F11]"
         }`}
       >
         {ctaLabel}
       </button>
+      {reassurance && (
+        <p className="mt-2 text-center text-[11px] text-ink-dim">{reassurance}</p>
+      )}
     </div>
   );
 }
 
 function PricingSection({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="px-4 py-14">
-      <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          free gets you the look. <span className="text-lilac">pass gets you the registry people can help with.</span>
-        </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          try it free. go pass if you're actually moving in and want the full registry.
-        </p>
-        <div className="mt-6 grid gap-4">
-          <FreeVsPassCard
-            kind="free"
+    <section className="px-4 md:px-8 py-14 md:py-24">
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <div className="md:max-w-3xl">
+          <h2 className="font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+            try it free. <span className="text-lilac">go unlimited if you don't want to wait.</span>
+          </h2>
+          <p className="mt-2 md:mt-4 text-[14px] md:text-[17px] text-ink-muted">
+            your free credits and share bonus still work exactly the same. the pass is just for going further, faster.
+          </p>
+        </div>
+        <div className="mt-8 md:mt-12 grid gap-6 md:gap-6 md:grid-cols-3 md:items-stretch">
+          <PricingCard
+            variant="free"
             title="free"
             price="$0"
             features={[
               "3 free designs",
               "first design without signup",
-              "basic share card",
+              "basic edits and remixes",
+              "watermarked share card",
+              "basic shopping preview",
               "basic registry preview",
-              "watermarked result",
+              "share bonus still available",
+              "referral credits still available",
             ]}
             ctaLabel="start free"
             onClick={() => { track("hero_cta_clicked", { section: "pricing-free" }); onOpen(); }}
           />
-          <FreeVsPassCard
-            kind="pass"
-            title="season pass"
-            price="$24 once"
+          <PricingCard
+            variant="seasonal"
+            title="seasonal pass"
+            price="$36"
+            subprice="3 months · $12/month, billed once"
             features={[
               "unlimited designs",
-              "hd / no watermark",
-              "real-product renders",
               "full dorm registry",
+              "full shopping experience",
               "cross-brand product links",
-              "family claim links",
-              "budget tracking",
-              "duplicate-buy prevention",
+              "Amazon bundle/cart support",
+              "real-product renders",
+              "HD exports",
+              "no watermark",
+              "extra room angles",
               "dupe finder",
-              "restyles until sep 7",
-              "$24 once",
-              "no subscription",
               "no auto-renew",
+              "ends automatically after 3 months",
             ]}
-            ctaLabel="cover the season"
-            onClick={() => { track("pass_cta_clicked"); onOpen(); }}
+            ctaLabel="get the seasonal pass"
+            reassurance="built for move-in season. nothing to cancel."
+            onClick={() => { track("seasonal_pass_clicked"); onOpen(); }}
+          />
+          <PricingCard
+            variant="yearly"
+            title="yearly pass"
+            price="$72"
+            subprice="12 months · $6/month, billed once"
+            badge="most save with this"
+            savings="save 33%"
+            features={[
+              "unlimited designs",
+              "full dorm registry",
+              "full shopping experience",
+              "cross-brand product links",
+              "Amazon bundle/cart support",
+              "real-product renders",
+              "HD exports",
+              "no watermark",
+              "extra room angles",
+              "dupe finder",
+              "covers move-in",
+              "covers the January reset",
+              "covers restyles whenever the vibe changes",
+              "ideal for the full dorm year",
+            ]}
+            ctaLabel="get the yearly pass"
+            onClick={() => { track("yearly_pass_clicked"); onOpen(); }}
           />
         </div>
+        <p className="mt-6 md:mt-8 text-center text-[12.5px] text-ink-dim">
+          not ready to pay?{" "}
+          <button
+            onClick={() => { track("registry_shared", { section: "pricing" }); onOpen(); }}
+            className="text-lime font-semibold hover:underline"
+          >
+            share instead — still free →
+          </button>
+        </p>
       </div>
     </section>
   );
