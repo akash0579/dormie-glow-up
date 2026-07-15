@@ -451,23 +451,25 @@ function ProblemSection({ onOpen }: { onOpen: () => void }) {
     { t: "don't buy first, regret later", b: "see the vibe before the cart gets expensive." },
   ];
   return (
-    <section className="px-4 py-14">
-      <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          pinterest doesn't know your dorm.
-        </h2>
-        <p className="mt-3 text-[15px] text-ink-muted">
-          your feed is cute. your room is tiny. the bed, desk, dresser, and chair probably have to stay. dormie designs around the room you actually got.
-        </p>
-        <div className="mt-6 space-y-3">
+    <section className="px-4 md:px-8 py-14 md:py-24">
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <div className="md:max-w-3xl">
+          <h2 className="font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+            pinterest doesn't know your dorm.
+          </h2>
+          <p className="mt-3 md:mt-4 text-[15px] md:text-[17px] text-ink-muted">
+            your feed is cute. your room is tiny. the bed, desk, dresser, and chair probably have to stay. dormie designs around the room you actually got.
+          </p>
+        </div>
+        <div className="mt-6 md:mt-10 grid gap-3 md:gap-5 md:grid-cols-3">
           {cards.map((c) => (
-            <div key={c.t} className="rounded-2xl bg-card p-4 ring-1 ring-white/10">
-              <div className="text-[15px] font-bold text-ink">{c.t}</div>
-              <div className="mt-1 text-[13px] text-ink-muted">{c.b}</div>
+            <div key={c.t} className="rounded-2xl bg-card p-4 md:p-6 ring-1 ring-white/10">
+              <div className="text-[15px] md:text-lg font-bold text-ink">{c.t}</div>
+              <div className="mt-1 md:mt-2 text-[13px] md:text-[14px] text-ink-muted">{c.b}</div>
             </div>
           ))}
         </div>
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 md:mt-10 flex justify-center">
           <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "problem" }); onOpen(); }}>
             try my room free
           </PrimaryCTA>
