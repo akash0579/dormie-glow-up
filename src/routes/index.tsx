@@ -686,7 +686,7 @@ function PhoneFrame({ children, step, label, tone = "lime" }: { children: ReactN
   } as const;
   const t = toneMap[tone];
   return (
-    <div className="relative">
+    <div className="relative flex h-full flex-col">
       {/* big step numeral watermark */}
       <div aria-hidden className="pointer-events-none absolute -top-6 -left-1 z-0 font-display text-[88px] leading-none font-extrabold text-white/[0.04] select-none">
         {step}
@@ -696,8 +696,8 @@ function PhoneFrame({ children, step, label, tone = "lime" }: { children: ReactN
         <span className={`grid h-5 w-5 place-items-center rounded-full font-mono text-[10px] font-extrabold ${t.badge}`}>{step}</span>
         <span className="text-[10px] font-bold text-ink lowercase tracking-wide">{label}</span>
       </div>
-      <div className={`relative z-10 rounded-[28px] bg-bg-2 ring-1 ${t.ring} p-2.5 ${t.glow}`}>
-        <div className="rounded-[22px] bg-bg ring-1 ring-white/10 overflow-hidden">
+      <div className={`relative z-10 flex h-full flex-col rounded-[28px] bg-bg-2 ring-1 ${t.ring} p-2.5 ${t.glow}`}>
+        <div className="flex h-full flex-col overflow-hidden rounded-[22px] bg-bg ring-1 ring-white/10">
           {children}
         </div>
       </div>
@@ -948,7 +948,7 @@ function RegistryShopSection({ onOpen }: { onOpen: () => void }) {
         </div>
 
         {/* DESKTOP 3-up */}
-        <div className="mt-10 hidden md:grid md:grid-cols-3 md:gap-5 lg:gap-7">
+        <div className="mt-10 hidden md:grid md:grid-cols-3 md:items-stretch md:gap-5 lg:gap-7">
           <PhoneFrame step="01" label="set the plan" tone="lime">
             <PlanCard mode={mode} setMode={setMode} budget={budget} setBudget={setBudget} zip={zip} setZip={setZip} />
           </PhoneFrame>
