@@ -481,19 +481,19 @@ function ProblemSection({ onOpen }: { onOpen: () => void }) {
 
 function HowItWorks({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="px-4 py-14 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
-      <div className="mx-auto max-w-md">
+    <section className="px-4 md:px-8 py-14 md:py-24 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
+      <div className="mx-auto max-w-md md:max-w-6xl">
         <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">how it works</p>
-        <h2 className="mt-1 font-display text-3xl leading-tight font-extrabold lowercase">
-          three taps. then the reveal. then the registry.
+        <h2 className="mt-1 font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase md:max-w-3xl">
+          three taps. then the reveal. then the plan.
         </h2>
-        <div className="mt-6 space-y-3">
+        <div className="mt-6 md:mt-10 grid gap-3 md:gap-4 md:grid-cols-4">
           <StepCard n="1" title="drop the room pic" body="snap it, upload it, or use the demo room." />
           <StepCard n="2" title="pick the energy" body="cozy szn, golden hour, locked in, soft era, or type your own." />
-          <StepCard n="3" title="see the glow-up" body="before/after reveal, edits, share card, roommate check." />
-          <StepCard n="4" tone="cream" title="build the registry" body="set a budget, add your ZIP, and turn the look into a shareable dorm registry with real product links." />
+          <StepCard n="3" title="see the glow-up" body="get the before/after, remix the room, and send it to the group chat." />
+          <StepCard n="4" tone="cream" title="build the registry + cart" body="set the budget, add your ZIP, get real product links, and turn eligible Amazon bundles into an Amazon cart." />
         </div>
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 md:mt-10 flex justify-center">
           <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "how" }); onOpen(); }}>
             start with my first free design
           </PrimaryCTA>
