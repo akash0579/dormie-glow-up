@@ -401,13 +401,13 @@ function Hero({ onOpen }: { onOpen: () => void }) {
           <span className="text-lime">but make it iconic.</span>
         </h1>
         <p className="mt-2 text-center text-[14px] leading-snug text-ink-muted">
-          snap your room. get a design built around the furniture you're stuck with — plus a shoppable registry. free, no signup.
+          snap your room. get a design built around the furniture you're stuck with — plus a shoppable registry.
         </p>
 
         <div className="mt-3 flex flex-wrap justify-center gap-1.5">
-          <StickerChip tone="lilac">budget + ZIP</StickerChip>
-          <StickerChip tone="lime">one-tap or mixed brands</StickerChip>
-          <StickerChip tone="cream">room → registry → cart</StickerChip>
+          <StickerChip tone="lime">free first design</StickerChip>
+          <StickerChip tone="lilac">no signup</StickerChip>
+          <StickerChip tone="cream">ready in 60 seconds</StickerChip>
         </div>
 
         <div className="mt-4 flex flex-col items-stretch gap-2">
