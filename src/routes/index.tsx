@@ -401,7 +401,7 @@ function Hero({ onOpen }: { onOpen: () => void }) {
           <span className="text-lime">but make it iconic.</span>
         </h1>
         <p className="mt-2 text-center text-[14px] leading-snug text-ink-muted">
-          snap your assigned room → get a full design that works around the bolted-down furniture, on your budget, with a shoppable registry ready to send. first look free, no signup.
+          snap your room. get a design built around the furniture you're stuck with — plus a shoppable registry. free, no signup.
         </p>
 
         <div className="mt-3 flex flex-wrap justify-center gap-1.5">
