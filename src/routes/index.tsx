@@ -976,64 +976,6 @@ function RoommateSection({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-function ParentSection({ onOpen }: { onOpen: () => void }) {
-  return (
-    <section className="px-4 py-14">
-      <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          the version for whoever's paying.
-        </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          send home the room, the budget, and the registry. family can claim what they're covering, and the rest stays ready for you to buy. one link. no random product texts. no double-buying.
-        </p>
-
-        <div className="mt-5 rounded-3xl bg-cream p-5 text-[#0F0F11] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.7)]">
-          <div className="flex items-center justify-between">
-            <div className="font-mono text-[10px] uppercase tracking-widest text-black/50">room summary — for parent</div>
-            <span className="rounded-full bg-[#0F0F11] px-2.5 py-0.5 text-[10px] font-bold text-lime">$24 once</span>
-          </div>
-          <div className="mt-3 aspect-[16/10] rounded-xl overflow-hidden">
-            <img src={dormAfter} alt="" className="h-full w-full object-cover" loading="lazy" />
-          </div>
-          <dl className="mt-4 divide-y divide-black/10 text-sm">
-            {[
-              ["estimated total", "$365"],
-              ["budget selected", "$300–$400"],
-              ["registry progress", "$0 of $145 covered"],
-              ["ships to", "ZIP 78705 · prioritized"],
-              ["shopping kit", "14 pieces, 3 stores"],
-              ["claim/sponsor items", "family can claim what they cover"],
-              ["subscription", "none"],
-              ["auto-renew", "off"],
-              ["season pass", "$24 once"],
-              ["season access", "until sep 7"],
-            ].map(([k, v]) => (
-              <div key={k} className="flex justify-between py-2">
-                <dt className="text-black/60">{k}</dt>
-                <dd className="font-semibold text-right">{v}</dd>
-              </div>
-            ))}
-          </dl>
-          <p className="mt-3 text-[10px] leading-relaxed text-black/50">
-            claiming an item keeps the Dormie registry organized. final checkout happens with the store. prices and availability can change — always confirm at checkout.
-          </p>
-        </div>
-
-        <div className="mt-5 flex flex-col gap-2">
-          <PrimaryCTA className="w-full" onClick={() => { track("parent_cta_clicked"); onOpen(); }}>
-            send mom the registry
-          </PrimaryCTA>
-          <SecondaryCTA className="w-full" onClick={() => { track("share_registry_clicked"); onOpen(); }}>
-            share the dorm registry
-          </SecondaryCTA>
-          <p className="text-center text-[11px] text-ink-dim">
-            student gets the fun version. parent gets the practical one.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function FreeVsPassCard({
   kind,
