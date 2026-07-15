@@ -355,19 +355,25 @@ function StickyMobileCTA({ onOpen }: { onOpen: () => void }) {
 }
 
 // --- Sections ------------------------------------------------------------
-function TopBar() {
+function TopBar({ onOpen }: { onOpen: () => void }) {
   return (
     <header className="sticky top-0 z-30 backdrop-blur-md bg-bg/80 border-b border-white/5">
-      <div className="mx-auto max-w-md px-4 h-12 flex items-center justify-between">
+      <div className="mx-auto max-w-md md:max-w-6xl px-4 md:px-8 h-12 md:h-16 flex items-center justify-between">
         <div className="flex items-baseline gap-2 min-w-0">
-          <span className="font-display text-lg font-extrabold text-lime lowercase leading-none">dormie</span>
-          <span className="font-mono text-[9px] uppercase tracking-widest text-ink-dim truncate">by reimaginehome ai</span>
+          <span className="font-display text-lg md:text-2xl font-extrabold text-lime lowercase leading-none">dormie</span>
+          <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-ink-dim truncate">by reimaginehome ai</span>
         </div>
-        <div className="flex items-center gap-2 shrink-0">
-          <span className="hidden xs:inline font-mono text-[9px] uppercase tracking-widest text-ink-dim">bts szn · 39d</span>
-          <span className="rounded-full bg-lime/15 ring-1 ring-lime/40 px-2.5 py-1 text-[10px] font-bold text-lime">
+        <div className="flex items-center gap-2 md:gap-3 shrink-0">
+          <span className="hidden xs:inline md:hidden font-mono text-[9px] uppercase tracking-widest text-ink-dim">bts szn · 39d</span>
+          <span className="rounded-full bg-lime/15 ring-1 ring-lime/40 px-2.5 py-1 text-[10px] md:text-[11px] font-bold text-lime">
             <span className="text-lime">3</span> free
           </span>
+          <button
+            onClick={() => { track("hero_cta_clicked", { section: "topbar" }); onOpen(); }}
+            className="hidden md:inline-flex items-center gap-1 rounded-full bg-lime px-4 py-2 text-xs font-bold text-[#0F0F11] active:scale-95 transition"
+          >
+            see my room →
+          </button>
         </div>
       </div>
     </header>
