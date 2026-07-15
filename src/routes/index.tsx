@@ -1156,6 +1156,20 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
           </p>
         </div>
 
+        {/* free tier reminder */}
+        <div className="mt-6 md:mt-8 rounded-2xl bg-gradient-to-br from-lime/15 to-lime/[0.04] ring-1 ring-lime/30 p-4 md:p-5">
+          <div className="flex items-start gap-3">
+            <span className="grid h-8 w-8 flex-none place-items-center rounded-full bg-lime font-mono text-sm font-extrabold text-[#0F0F11]">3</span>
+            <div className="min-w-0">
+              <div className="text-[14px] md:text-[15px] font-bold text-ink lowercase">3 designs, free. no card, no catch.</div>
+              <p className="mt-1 text-[12.5px] md:text-[13px] text-ink-muted leading-relaxed">
+                the <b className="text-ink font-semibold">first one skips signup entirely</b> — snap the room, see the design. the next two are free after a quick signup. share with a friend and unlock more.
+              </p>
+            </div>
+          </div>
+        </div>
+
+
         {/* toggle */}
         <div className="mt-5 md:mt-8 md:mx-auto md:max-w-sm relative flex rounded-full bg-white/[0.05] ring-1 ring-white/10 p-1">
           <button
@@ -1188,8 +1202,10 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
               period="3 months"
               perMonth="$12 / month, billed once"
               features={[
-                { bold: "unlimited designs", rest: "tweaks and re-generations don't count against anything" },
-                "full registry + shopping, unlocked immediately",
+                { bold: "unlimited designs", rest: "re-style, re-generate, swap the vibe — nothing counts against you" },
+                { bold: "every vibe unlocked", rest: "cottagecore, y2k, quiet luxe, dark academia — try them all on the same room" },
+                { bold: "full shoppable registry", rest: "every piece linked to real products, filtered by budget and ZIP" },
+                { bold: "roommate share mode", rest: "send the design + registry so you don't both buy the same rug" },
                 "no auto-renew — it just ends at 3 months",
               ]}
               ctaLabel="get the seasonal pass"
@@ -1204,12 +1220,16 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
               perMonth="$6 / month, billed once"
               badge="most save with this"
               features={[
-                { bold: "unlimited designs", rest: "tweaks and re-generations don't count against anything" },
-                "full registry + shopping, unlocked immediately",
-                { bold: "covers your whole year", rest: "move-in, the january reset, and whenever the vibe changes" },
+                { bold: "unlimited designs, all year", rest: "tweaks, re-generations, and full vibe swaps never count" },
+                { bold: "every vibe + every season", rest: "move-in look, the january reset, spring refresh — same pass" },
+                { bold: "full shoppable registry", rest: "real products, budget + ZIP filters, one-tap add to cart" },
+                { bold: "priority new features", rest: "early access to new vibes, room types, and shopping partners" },
+                { bold: "roommate + parent share", rest: "loop them in without them needing an account" },
+                "works for the next apartment too — not just the dorm",
               ]}
               ctaLabel="get the yearly pass"
               onClick={() => { track("pass_cta_clicked", { plan: "year" }); onOpen(); }}
+
             />
           )}
         </div>
