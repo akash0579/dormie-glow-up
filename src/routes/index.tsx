@@ -641,9 +641,40 @@ function WalmartMark({ size = 13 }: { size?: number }) {
   );
 }
 
+function TargetMark({ size = 13 }: { size?: number }) {
+  return (
+    <span className="inline-flex items-center gap-1">
+      <svg viewBox="0 0 20 20" style={{ width: size * 1.05, height: size * 1.05 }} aria-hidden>
+        <circle cx="10" cy="10" r="9" fill="#CC0000" />
+        <circle cx="10" cy="10" r="5.8" fill="#fff" />
+        <circle cx="10" cy="10" r="2.6" fill="#CC0000" />
+      </svg>
+      <span className="font-bold text-white" style={{ fontSize: size, letterSpacing: "-0.01em" }}>Target</span>
+    </span>
+  );
+}
+
+function IkeaMark({ size = 13 }: { size?: number }) {
+  return (
+    <span
+      className="inline-flex items-center justify-center rounded-[3px] bg-[#FFDA1A] px-1.5"
+      style={{ height: size * 1.2 }}
+    >
+      <span
+        className="font-extrabold text-[#0058A3]"
+        style={{ fontSize: size * 0.95, letterSpacing: "0.02em", lineHeight: 1 }}
+      >
+        IKEA
+      </span>
+    </span>
+  );
+}
+
 function MerchantBadge({ name }: { name: string }) {
   if (name === "Amazon") return <span className="inline-flex items-center gap-1 rounded-full bg-white/[0.04] ring-1 ring-[#FF9900]/40 px-1.5 py-0.5"><AmazonMark size={9} /></span>;
   if (name === "Walmart") return <span className="inline-flex items-center gap-1 rounded-full bg-white/[0.04] ring-1 ring-[#0071DC]/40 px-1.5 py-0.5"><WalmartMark size={9} /></span>;
+  if (name === "Target") return <span className="inline-flex items-center gap-1 rounded-full bg-white/[0.04] ring-1 ring-[#CC0000]/40 px-1.5 py-0.5"><TargetMark size={9} /></span>;
+  if (name === "IKEA") return <span className="inline-flex items-center gap-1 rounded-full bg-white/[0.04] ring-1 ring-[#FFDA1A]/40 px-1 py-0.5"><IkeaMark size={8} /></span>;
   return <span className={`rounded-full ring-1 px-1.5 py-0.5 text-[9px] font-bold ${merchantColor(name)}`}>{name}</span>;
 }
 
