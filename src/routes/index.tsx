@@ -333,7 +333,7 @@ function StickyMobileCTA({ onOpen }: { onOpen: () => void }) {
   }, []);
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-40 pointer-events-none px-3 pb-3 transition-all duration-300 ${
+      className={`fixed inset-x-0 bottom-0 z-40 pointer-events-none px-3 pb-3 md:hidden transition-all duration-300 ${
         show ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
       }`}
       style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
@@ -391,46 +391,56 @@ function Marquee() {
 
 function Hero({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="relative px-4 pt-5 pb-10 grain">
-      <div className="mx-auto max-w-md">
-        <div className="flex justify-center">
-          <StickerChip tone="dark" className="font-mono">back to school szn · 39 days out</StickerChip>
-        </div>
-        <h1 className="mt-3 text-center font-display text-[40px] leading-[0.95] font-extrabold tracking-tight lowercase">
-          your dorm,<br />
-          <span className="text-lime">but make it iconic.</span>
-        </h1>
-        <p className="mt-2 text-center text-[14px] leading-snug text-ink-muted">
-          snap your room. get a design built around the furniture you're stuck with — then shop it in one tap.
-        </p>
+    <section className="relative px-4 pt-5 pb-10 md:px-8 md:pt-10 md:pb-20 grain">
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <div className="md:grid md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] md:items-center md:gap-12 lg:gap-16">
+          {/* LEFT: copy + CTA */}
+          <div className="md:pr-2">
+            <div className="flex justify-center md:justify-start">
+              <StickerChip tone="dark" className="font-mono">back to school szn · 39 days out</StickerChip>
+            </div>
+            <h1 className="mt-3 text-center md:text-left font-display text-[40px] md:text-[76px] lg:text-[88px] leading-[0.95] font-extrabold tracking-tight lowercase">
+              your dorm,<br />
+              <span className="text-lime">but make it iconic.</span>
+            </h1>
+            <p className="mt-3 md:mt-5 text-center md:text-left text-[14px] md:text-[17px] leading-snug md:leading-relaxed text-ink-muted md:max-w-lg">
+              snap your room. get a design built around the furniture you're stuck with — then shop it in one tap.
+            </p>
 
-        <div className="mt-3 flex flex-wrap justify-center gap-1.5">
-          <StickerChip tone="lime">3 designs free</StickerChip>
-          <StickerChip tone="lilac">no signup to try</StickerChip>
-          <StickerChip tone="cream">ready in seconds</StickerChip>
-        </div>
+            <div className="mt-3 md:mt-5 flex flex-wrap justify-center md:justify-start gap-1.5">
+              <StickerChip tone="lime">3 designs free</StickerChip>
+              <StickerChip tone="lilac">no signup to try</StickerChip>
+              <StickerChip tone="cream">ready in seconds</StickerChip>
+            </div>
 
-        <div className="mt-4 flex flex-col items-stretch gap-2">
-          <PrimaryCTA size="lg" onClick={() => { track("hero_cta_clicked"); onOpen(); }}>
-            see my room →
-          </PrimaryCTA>
-          <div className="flex items-center justify-center gap-3 text-[11px] text-ink-dim">
-            <button
-              onClick={() => { track("demo_room_clicked"); onOpen(); }}
-              className="underline underline-offset-2 hover:text-ink"
-            >
-              use demo room
-            </button>
-            <span>·</span>
-            <span>no signup</span>
+            <div className="mt-4 md:mt-7 flex flex-col md:flex-row items-stretch md:items-center gap-2 md:gap-4">
+              <PrimaryCTA size="lg" onClick={() => { track("hero_cta_clicked"); onOpen(); }}>
+                see my room →
+              </PrimaryCTA>
+              <div className="flex items-center justify-center md:justify-start gap-3 text-[11px] md:text-[12px] text-ink-dim">
+                <button
+                  onClick={() => { track("demo_room_clicked"); onOpen(); }}
+                  className="underline underline-offset-2 hover:text-ink"
+                >
+                  use demo room
+                </button>
+                <span>·</span>
+                <span>no signup</span>
+              </div>
+            </div>
+
+            <p className="hidden md:block mt-6 text-[13px] text-ink-muted md:max-w-md">
+              then turn the room into a budgeted registry with real products, one-tap carts, and family claiming.
+            </p>
+          </div>
+
+          {/* RIGHT: reveal card */}
+          <div className="mt-5 md:mt-0">
+            <HeroRevealCard onCTA={onOpen} />
           </div>
         </div>
 
-        <div className="mt-5">
-          <HeroRevealCard onCTA={onOpen} />
-        </div>
-
-        <p className="mt-4 text-center text-[12px] text-ink-muted">
+        <p className="md:hidden mt-4 text-center text-[12px] text-ink-muted">
           then turn the room into a budgeted registry with real products, one-tap carts, and family claiming.
         </p>
       </div>
@@ -458,23 +468,32 @@ function ProblemSection({ onOpen }: { onOpen: () => void }) {
     { t: "don't buy first, regret later", b: "see the vibe before the cart gets expensive." },
   ];
   return (
-    <section className="px-4 py-14">
-      <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          pinterest doesn't know your dorm.
-        </h2>
-        <p className="mt-3 text-[15px] text-ink-muted">
-          your feed is cute. your room is tiny. the bed, desk, dresser, and chair probably have to stay. dormie designs around the room you actually got.
-        </p>
-        <div className="mt-6 space-y-3">
-          {cards.map((c) => (
-            <div key={c.t} className="rounded-2xl bg-card p-4 ring-1 ring-white/10">
-              <div className="text-[15px] font-bold text-ink">{c.t}</div>
-              <div className="mt-1 text-[13px] text-ink-muted">{c.b}</div>
+    <section className="px-4 py-14 md:px-8 md:py-20">
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <div className="md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] md:gap-14 md:items-start">
+          <div>
+            <h2 className="font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+              pinterest doesn't know your dorm.
+            </h2>
+            <p className="mt-3 text-[15px] md:text-[16px] text-ink-muted md:max-w-sm">
+              your feed is cute. your room is tiny. the bed, desk, dresser, and chair probably have to stay. dormie designs around the room you actually got.
+            </p>
+            <div className="mt-6 hidden md:flex">
+              <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "problem" }); onOpen(); }}>
+                try my room free
+              </PrimaryCTA>
             </div>
-          ))}
+          </div>
+          <div className="mt-6 md:mt-0 grid gap-3 md:grid-cols-3 md:gap-4">
+            {cards.map((c) => (
+              <div key={c.t} className="rounded-2xl bg-card p-4 md:p-5 ring-1 ring-white/10">
+                <div className="text-[15px] font-bold text-ink">{c.t}</div>
+                <div className="mt-1 text-[13px] text-ink-muted">{c.b}</div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 flex justify-center md:hidden">
           <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "problem" }); onOpen(); }}>
             try my room free
           </PrimaryCTA>
@@ -486,19 +505,21 @@ function ProblemSection({ onOpen }: { onOpen: () => void }) {
 
 function HowItWorks({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="px-4 py-14 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
-      <div className="mx-auto max-w-md">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">how it works</p>
-        <h2 className="mt-1 font-display text-3xl leading-tight font-extrabold lowercase">
-          three taps. then the reveal. then the registry.
-        </h2>
-        <div className="mt-6 space-y-3">
+    <section className="px-4 py-14 md:px-8 md:py-20 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <div className="md:text-center md:max-w-2xl md:mx-auto">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">how it works</p>
+          <h2 className="mt-1 font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+            three taps. then the reveal. then the registry.
+          </h2>
+        </div>
+        <div className="mt-6 md:mt-10 grid gap-3 md:grid-cols-4 md:gap-4">
           <StepCard n="1" title="drop the room pic" body="snap it, upload it, or use the demo room." />
           <StepCard n="2" title="pick the energy" body="cozy szn, golden hour, locked in, soft era, or type your own." />
           <StepCard n="3" title="see the glow-up" body="before/after reveal, edits, share card, roommate check." />
           <StepCard n="4" tone="cream" title="build + share the registry" body="set the budget and ZIP, choose Amazon, Walmart, or mixed brands, then decide what you'll buy and what friends or family can claim." />
         </div>
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 md:mt-10 flex justify-center">
           <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "how" }); onOpen(); }}>
             start with my first free design
           </PrimaryCTA>
@@ -515,28 +536,32 @@ function VibePicker({ onOpen }: { onOpen: () => void }) {
     setSelected((s) => (s.includes(k) ? s.filter((x) => x !== k) : s.length < 3 ? [...s, k] : s));
   };
   return (
-    <section className="px-4 py-14">
-      <div className="mx-auto max-w-md">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">step 3 / 4 · saves to your profile</p>
-        <h2 className="mt-1 font-display text-3xl leading-tight font-extrabold lowercase">
-          pick the energy. not the furniture.
-        </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          the school stuff stays. the vibe is yours. up to three.
-        </p>
-        <div className="mt-5 grid grid-cols-2 gap-3">
+    <section className="px-4 py-14 md:px-8 md:py-20">
+      <div className="mx-auto max-w-md md:max-w-5xl">
+        <div className="md:text-center md:max-w-2xl md:mx-auto">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">step 3 / 4 · saves to your profile</p>
+          <h2 className="mt-1 font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+            pick the energy. not the furniture.
+          </h2>
+          <p className="mt-2 md:mt-3 text-[14px] md:text-[15px] text-ink-muted">
+            the school stuff stays. the vibe is yours. up to three.
+          </p>
+        </div>
+        <div className="mt-5 md:mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
           {VIBES.map((v) => (
             <VibeCard key={v.key} vibe={v} selected={selected.includes(v.key)} onClick={() => toggle(v.key)} />
           ))}
         </div>
-        <input
-          placeholder="or type it — 'coquette but navy'"
-          className="mt-4 w-full rounded-full bg-white/[0.04] ring-1 ring-white/10 px-5 py-3.5 text-sm text-ink placeholder:text-ink-dim outline-none focus:ring-lime/60"
-        />
-        <div className="mt-5">
-          <PrimaryCTA className="w-full" onClick={() => { track("hero_cta_clicked", { section: "vibe" }); onOpen(); }}>
-            cook it →
-          </PrimaryCTA>
+        <div className="md:mx-auto md:max-w-xl">
+          <input
+            placeholder="or type it — 'coquette but navy'"
+            className="mt-4 md:mt-6 w-full rounded-full bg-white/[0.04] ring-1 ring-white/10 px-5 py-3.5 text-sm text-ink placeholder:text-ink-dim outline-none focus:ring-lime/60"
+          />
+          <div className="mt-5 md:mt-4 md:flex md:justify-center">
+            <PrimaryCTA className="w-full md:w-auto" onClick={() => { track("hero_cta_clicked", { section: "vibe" }); onOpen(); }}>
+              cook it →
+            </PrimaryCTA>
+          </div>
         </div>
       </div>
     </section>
@@ -940,22 +965,34 @@ function RegistryShopSection({ onOpen }: { onOpen: () => void }) {
 
 function ShareSection({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="px-4 py-14">
-      <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          built for the group chat.
-        </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          brag card, vote card, roommate check, mom view. same room, different audience.
-        </p>
-        <div className="mt-5 grid grid-cols-2 gap-3">
-          <div className="col-span-2">
-            <ShareCard tag="brag time" tone="lime" title="okay it ate." body="vertical card for tiktok + stories" />
+    <section className="px-4 py-14 md:px-8 md:py-20">
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <div className="md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] md:gap-14 md:items-center">
+          <div>
+            <h2 className="font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+              built for the group chat.
+            </h2>
+            <p className="mt-2 md:mt-4 text-[14px] md:text-[16px] text-ink-muted md:max-w-sm">
+              brag card, vote card, roommate check, mom view. same room, different audience.
+            </p>
+            <div className="mt-5 hidden md:flex flex-col gap-2 md:max-w-xs">
+              <PrimaryCTA className="w-full" onClick={() => { track("hero_cta_clicked", { section: "share" }); onOpen(); }}>
+                make my share card
+              </PrimaryCTA>
+              <p className="text-[11px] text-ink-dim">
+                your first share has a dormie watermark. pass removes it.
+              </p>
+            </div>
           </div>
-          <ShareCard tag="roommate check" tone="lilac" title="wait this is cute" body="before they buy the wrong lamp" />
-          <ShareCard tag="mom view" tone="peach" title="the practical version" body="room + budget + list" />
+          <div className="mt-5 md:mt-0 grid grid-cols-2 gap-3 md:gap-4">
+            <div className="col-span-2">
+              <ShareCard tag="brag time" tone="lime" title="okay it ate." body="vertical card for tiktok + stories" />
+            </div>
+            <ShareCard tag="roommate check" tone="lilac" title="wait this is cute" body="before they buy the wrong lamp" />
+            <ShareCard tag="mom view" tone="peach" title="the practical version" body="room + budget + list" />
+          </div>
         </div>
-        <div className="mt-5 flex flex-col gap-2">
+        <div className="mt-5 flex flex-col gap-2 md:hidden">
           <PrimaryCTA className="w-full" onClick={() => { track("hero_cta_clicked", { section: "share" }); onOpen(); }}>
             make my share card
           </PrimaryCTA>
@@ -976,31 +1013,43 @@ function RoommateSection({ onOpen }: { onOpen: () => void }) {
     { me: true, t: "fine, no neon sign" },
   ];
   return (
-    <section className="px-4 py-14 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
-      <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          send this before your roommate buys ugly stuff.
-        </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          match the vibe before move-in. split ideas, vote on looks, and avoid the two-people-one-room disaster.
-        </p>
-        <div className="mt-5 rounded-3xl bg-card p-4 ring-1 ring-white/10">
-          <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim mb-3">roomie · today</div>
-          <div className="space-y-2">
-            {msgs.map((m, i) => (
-              <div key={i} className={`flex ${m.me ? "justify-end" : "justify-start"}`}>
-                <div
-                  className={`max-w-[80%] rounded-2xl px-3.5 py-2 text-[13px] ${
-                    m.me ? "bg-lime text-[#0F0F11] rounded-br-md" : "bg-white/[0.06] text-ink rounded-bl-md"
-                  }`}
-                >
-                  {m.t}
+    <section className="px-4 py-14 md:px-8 md:py-20 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
+      <div className="mx-auto max-w-md md:max-w-5xl">
+        <div className="md:grid md:grid-cols-2 md:gap-14 md:items-center">
+          <div>
+            <h2 className="font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+              send this before your roommate buys ugly stuff.
+            </h2>
+            <p className="mt-2 md:mt-4 text-[14px] md:text-[16px] text-ink-muted md:max-w-md">
+              match the vibe before move-in. split ideas, vote on looks, and avoid the two-people-one-room disaster.
+            </p>
+            <div className="mt-5 hidden md:flex flex-col gap-2 md:max-w-xs">
+              <PrimaryCTA className="w-full" onClick={() => { track("roommate_cta_clicked"); onOpen(); }}>
+                send to roommate
+              </PrimaryCTA>
+              <SecondaryCTA className="w-full" onClick={() => { track("hero_cta_clicked", { section: "roommate" }); onOpen(); }}>
+                design my side first
+              </SecondaryCTA>
+            </div>
+          </div>
+          <div className="mt-5 md:mt-0 rounded-3xl bg-card p-4 md:p-6 ring-1 ring-white/10">
+            <div className="font-mono text-[10px] uppercase tracking-widest text-ink-dim mb-3">roomie · today</div>
+            <div className="space-y-2">
+              {msgs.map((m, i) => (
+                <div key={i} className={`flex ${m.me ? "justify-end" : "justify-start"}`}>
+                  <div
+                    className={`max-w-[80%] rounded-2xl px-3.5 py-2 text-[13px] ${
+                      m.me ? "bg-lime text-[#0F0F11] rounded-br-md" : "bg-white/[0.06] text-ink rounded-bl-md"
+                    }`}
+                  >
+                    {m.t}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-        <div className="mt-5 flex flex-col gap-2">
+        <div className="mt-5 flex flex-col gap-2 md:hidden">
           <PrimaryCTA className="w-full" onClick={() => { track("roommate_cta_clicked"); onOpen(); }}>
             send to roommate
           </PrimaryCTA>
@@ -1094,19 +1143,21 @@ function PassCard({
 function PricingSection({ onOpen }: { onOpen: () => void }) {
   const [plan, setPlan] = useState<"season" | "year">("year");
   return (
-    <section className="px-4 py-14">
-      <div className="mx-auto max-w-md">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">for the ones who don't want to wait</p>
-        <h2 className="mt-2 font-display text-3xl leading-tight font-extrabold lowercase">
-          skip the sharing.<br />
-          <span className="text-lilac">design as much as you want.</span>
-        </h2>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          your free credits and the share bonus still work exactly the same — this is just for going further, faster.
-        </p>
+    <section className="px-4 py-14 md:px-8 md:py-20">
+      <div className="mx-auto max-w-md md:max-w-2xl">
+        <div className="md:text-center">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">for the ones who don't want to wait</p>
+          <h2 className="mt-2 font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+            skip the sharing.<br />
+            <span className="text-lilac">design as much as you want.</span>
+          </h2>
+          <p className="mt-2 md:mt-4 text-[14px] md:text-[15px] text-ink-muted md:mx-auto md:max-w-lg">
+            your free credits and the share bonus still work exactly the same — this is just for going further, faster.
+          </p>
+        </div>
 
         {/* toggle */}
-        <div className="mt-5 relative flex rounded-full bg-white/[0.05] ring-1 ring-white/10 p-1">
+        <div className="mt-5 md:mt-8 md:mx-auto md:max-w-sm relative flex rounded-full bg-white/[0.05] ring-1 ring-white/10 p-1">
           <button
             onClick={() => setPlan("season")}
             className={`flex-1 rounded-full py-2.5 text-[12px] font-bold transition ${
@@ -1189,23 +1240,25 @@ function TrustSection({ onOpen }: { onOpen: () => void }) {
     { t: "first design free", b: "no signup until after the first result." },
   ];
   return (
-    <section className="px-4 py-14 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
-      <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          not a fake showroom render.
-        </h2>
-        <div className="mt-5 grid grid-cols-2 gap-3">
+    <section className="px-4 py-14 md:px-8 md:py-20 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <div className="md:text-center md:max-w-2xl md:mx-auto">
+          <h2 className="font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+            not a fake showroom render.
+          </h2>
+        </div>
+        <div className="mt-5 md:mt-10 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
           {cards.map((c, i) => (
             <div
               key={c.t}
-              className={`rounded-2xl bg-card p-4 ring-1 ring-white/10 ${i === cards.length - 1 && cards.length % 2 === 1 ? "col-span-2" : ""}`}
+              className={`rounded-2xl bg-card p-4 md:p-5 ring-1 ring-white/10 ${i === cards.length - 1 && cards.length % 2 === 1 ? "col-span-2 md:col-span-1" : ""}`}
             >
-              <div className="text-[13px] font-bold text-ink">{c.t}</div>
-              <div className="mt-1 text-[11px] text-ink-muted">{c.b}</div>
+              <div className="text-[13px] md:text-[14px] font-bold text-ink">{c.t}</div>
+              <div className="mt-1 text-[11px] md:text-[12px] text-ink-muted">{c.b}</div>
             </div>
           ))}
         </div>
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 md:mt-10 flex justify-center">
           <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "trust" }); onOpen(); }}>
             drop the room pic
           </PrimaryCTA>
@@ -1217,26 +1270,26 @@ function TrustSection({ onOpen }: { onOpen: () => void }) {
 
 function FinalCTA({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="px-4 pt-14 pb-28">
-      <div className="mx-auto max-w-md text-center">
-        <h2 className="font-display text-4xl leading-[0.95] font-extrabold lowercase">
+    <section className="px-4 pt-14 pb-28 md:px-8 md:pt-24 md:pb-32">
+      <div className="mx-auto max-w-md md:max-w-3xl text-center">
+        <h2 className="font-display text-4xl md:text-6xl leading-[0.95] font-extrabold lowercase">
           move-in is coming.<br />
           <span className="text-lime">make the room make sense.</span>
         </h2>
-        <p className="mt-4 text-[15px] text-ink-muted">
+        <p className="mt-4 md:mt-6 text-[15px] md:text-[17px] text-ink-muted md:mx-auto md:max-w-xl">
           first design is free. no signup. design the room, build the registry, send the plan.
         </p>
-        <div className="mt-6 flex flex-col gap-3">
+        <div className="mt-6 md:mt-8 flex flex-col md:flex-row md:justify-center md:items-center gap-3 md:gap-4">
           <PrimaryCTA size="lg" onClick={() => { track("hero_cta_clicked", { section: "final" }); onOpen(); }}>
             see my room →
           </PrimaryCTA>
           <SecondaryCTA onClick={() => { track("demo_room_clicked", { section: "final" }); onOpen(); }}>
             use demo room
           </SecondaryCTA>
-          <p className="mt-2 text-[11px] text-ink-dim">
-            3 free designs · dorm registry · $24 once for the full season
-          </p>
         </div>
+        <p className="mt-4 md:mt-6 text-[11px] md:text-[12px] text-ink-dim">
+          3 free designs · dorm registry · $24 once for the full season
+        </p>
       </div>
     </section>
   );
