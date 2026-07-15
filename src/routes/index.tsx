@@ -622,14 +622,25 @@ function MerchantBadge({ name }: { name: string }) {
   return <span className={`rounded-full ring-1 px-1.5 py-0.5 text-[9px] font-bold ${merchantColor(name)}`}>{name}</span>;
 }
 
-function PhoneFrame({ children, step, label }: { children: ReactNode; step: string; label: string }) {
+function PhoneFrame({ children, step, label, tone = "lime" }: { children: ReactNode; step: string; label: string; tone?: "lime" | "lilac" | "peach" }) {
+  const toneMap = {
+    lime: { badge: "bg-lime text-[#0F0F11]", ring: "ring-lime/30", glow: "shadow-[0_30px_80px_-30px_rgba(216,255,79,0.35)]" },
+    lilac: { badge: "bg-lilac text-[#0F0F11]", ring: "ring-lilac/30", glow: "shadow-[0_30px_80px_-30px_rgba(196,181,253,0.35)]" },
+    peach: { badge: "bg-peach text-[#0F0F11]", ring: "ring-peach/30", glow: "shadow-[0_30px_80px_-30px_rgba(255,179,155,0.35)]" },
+  } as const;
+  const t = toneMap[tone];
   return (
     <div className="relative">
-      <div className="absolute -top-3 left-4 z-10 flex items-center gap-1.5 rounded-full bg-bg ring-1 ring-white/15 px-2.5 py-1">
-        <span className="font-mono text-[9px] font-bold text-lime">{step}</span>
-        <span className="text-[10px] font-bold text-ink lowercase">{label}</span>
+      {/* big step numeral watermark */}
+      <div aria-hidden className="pointer-events-none absolute -top-6 -left-1 z-0 font-display text-[88px] leading-none font-extrabold text-white/[0.04] select-none">
+        {step}
       </div>
-      <div className="rounded-[28px] bg-bg-2 ring-1 ring-white/10 p-2.5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)]">
+      {/* step badge */}
+      <div className={`absolute -top-3 left-4 z-20 flex items-center gap-2 rounded-full bg-bg ring-1 ${t.ring} pl-1 pr-3 py-1`}>
+        <span className={`grid h-5 w-5 place-items-center rounded-full font-mono text-[10px] font-extrabold ${t.badge}`}>{step}</span>
+        <span className="text-[10px] font-bold text-ink lowercase tracking-wide">{label}</span>
+      </div>
+      <div className={`relative z-10 rounded-[28px] bg-bg-2 ring-1 ${t.ring} p-2.5 ${t.glow}`}>
         <div className="rounded-[22px] bg-bg ring-1 ring-white/10 overflow-hidden">
           {children}
         </div>
@@ -637,6 +648,19 @@ function PhoneFrame({ children, step, label }: { children: ReactNode; step: stri
     </div>
   );
 }
+
+function StepConnector({ tone }: { tone: "lime" | "lilac" | "peach" }) {
+  const dot = tone === "lime" ? "bg-lime" : tone === "lilac" ? "bg-lilac" : "bg-peach";
+  const text = tone === "lime" ? "text-lime" : tone === "lilac" ? "text-lilac" : "text-peach";
+  return (
+    <div className="flex flex-col items-center gap-1.5 md:hidden" aria-hidden>
+      <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />
+      <span className={`h-8 w-px bg-gradient-to-b from-white/20 to-transparent`} />
+      <span className={`font-mono text-[9px] uppercase tracking-[0.25em] ${text}`}>next ↓</span>
+    </div>
+  );
+}
+
 
 function PlanCard({ mode, setMode, budget, setBudget, zip, setZip }: {
   mode: ShopMode; setMode: (m: ShopMode) => void;
@@ -852,30 +876,33 @@ function RegistryShopSection({ onOpen }: { onOpen: () => void }) {
         </div>
 
         {/* MOBILE stacked */}
-        <div className="mt-10 space-y-8 md:hidden">
-          <PhoneFrame step="01" label="set the plan">
+        <div className="mt-10 flex flex-col gap-4 md:hidden">
+          <PhoneFrame step="01" label="set the plan" tone="lime">
             <PlanCard mode={mode} setMode={setMode} budget={budget} setBudget={setBudget} zip={zip} setZip={setZip} />
           </PhoneFrame>
-          <PhoneFrame step="02" label="build the registry">
+          <StepConnector tone="lilac" />
+          <PhoneFrame step="02" label="build the registry" tone="lilac">
             <BuildCard mode={mode} />
           </PhoneFrame>
-          <PhoneFrame step="03" label="share + claim">
+          <StepConnector tone="peach" />
+          <PhoneFrame step="03" label="share + claim" tone="peach">
             <ShareCardPreview mode={mode} />
           </PhoneFrame>
         </div>
 
         {/* DESKTOP 3-up */}
         <div className="mt-10 hidden md:grid md:grid-cols-3 md:gap-5 lg:gap-7">
-          <PhoneFrame step="01" label="set the plan">
+          <PhoneFrame step="01" label="set the plan" tone="lime">
             <PlanCard mode={mode} setMode={setMode} budget={budget} setBudget={setBudget} zip={zip} setZip={setZip} />
           </PhoneFrame>
-          <PhoneFrame step="02" label="build the registry">
+          <PhoneFrame step="02" label="build the registry" tone="lilac">
             <BuildCard mode={mode} />
           </PhoneFrame>
-          <PhoneFrame step="03" label="share + claim">
+          <PhoneFrame step="03" label="share + claim" tone="peach">
             <ShareCardPreview mode={mode} />
           </PhoneFrame>
         </div>
+
 
 
         {/* benefit points */}
