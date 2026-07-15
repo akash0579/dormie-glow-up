@@ -1158,11 +1158,9 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
               "unlimited designs",
               "hd / no watermark",
               "real-product renders",
-              "full dorm registry",
-              "cross-brand product links",
-              "family claim links",
+              "full shoppable registry — budget, ZIP, one-tap carts, mixed brands, and family claiming",
               "budget tracking",
-              "duplicate-buy prevention",
+
               "dupe finder",
               "restyles until sep 7",
               "$24 once",
