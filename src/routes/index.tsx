@@ -1152,19 +1152,8 @@ function ShareSection({ onOpen }: { onOpen: () => void }) {
               every design comes with a short vertical cut — before, transition, after — sized for reels, tiktok, and stories. no editing app. no timing it. just the post.
             </p>
 
-            {/* proof row */}
-            <div className="mt-6 grid grid-cols-3 gap-2 max-w-md">
-              {[
-                { k: "9:16", v: "vertical-ready" },
-                { k: "~6s", v: "auto-timed cut" },
-                { k: "1 tap", v: "save or post" },
-              ].map((s) => (
-                <div key={s.k} className="rounded-xl bg-white/[0.04] px-3 py-2.5 ring-1 ring-white/10">
-                  <div className="font-display text-lg font-extrabold text-white">{s.k}</div>
-                  <div className="text-[10px] uppercase tracking-wide text-white/50">{s.v}</div>
-                </div>
-              ))}
-            </div>
+
+
 
             {/* format chips */}
             <div className="mt-5 flex flex-wrap items-center gap-1.5">
