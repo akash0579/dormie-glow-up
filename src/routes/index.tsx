@@ -248,7 +248,7 @@ function StepCard({ n, total = "4", title, body, tone = "dark" }: { n: string; t
   const isLilac = tone === "lilac";
   const isCream = tone === "cream";
   return (
-    <div className={`relative rounded-3xl p-5 ring-1 ${isCream ? "bg-cream text-[#0F0F11] ring-lime/40" : isLilac ? "bg-gradient-to-br from-lilac/25 to-card ring-lilac/40" : "bg-card ring-white/10"}`}>
+    <div className={`relative flex h-full flex-col rounded-3xl p-5 ring-1 ${isCream ? "bg-cream text-[#0F0F11] ring-lime/40" : isLilac ? "bg-gradient-to-br from-lilac/25 to-card ring-lilac/40" : "bg-card ring-white/10"}`}>
       <div className="mb-4 flex items-center gap-2">
         <span className={`grid h-8 w-8 place-items-center rounded-full font-mono text-xs font-bold text-[#0F0F11] ${isCream ? "bg-lime" : isLilac ? "bg-lilac" : "bg-lime"}`}>
           {n}
