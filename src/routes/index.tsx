@@ -1240,23 +1240,25 @@ function TrustSection({ onOpen }: { onOpen: () => void }) {
     { t: "first design free", b: "no signup until after the first result." },
   ];
   return (
-    <section className="px-4 py-14 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
-      <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
-          not a fake showroom render.
-        </h2>
-        <div className="mt-5 grid grid-cols-2 gap-3">
+    <section className="px-4 py-14 md:px-8 md:py-20 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <div className="md:text-center md:max-w-2xl md:mx-auto">
+          <h2 className="font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase">
+            not a fake showroom render.
+          </h2>
+        </div>
+        <div className="mt-5 md:mt-10 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
           {cards.map((c, i) => (
             <div
               key={c.t}
-              className={`rounded-2xl bg-card p-4 ring-1 ring-white/10 ${i === cards.length - 1 && cards.length % 2 === 1 ? "col-span-2" : ""}`}
+              className={`rounded-2xl bg-card p-4 md:p-5 ring-1 ring-white/10 ${i === cards.length - 1 && cards.length % 2 === 1 ? "col-span-2 md:col-span-1" : ""}`}
             >
-              <div className="text-[13px] font-bold text-ink">{c.t}</div>
-              <div className="mt-1 text-[11px] text-ink-muted">{c.b}</div>
+              <div className="text-[13px] md:text-[14px] font-bold text-ink">{c.t}</div>
+              <div className="mt-1 text-[11px] md:text-[12px] text-ink-muted">{c.b}</div>
             </div>
           ))}
         </div>
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 md:mt-10 flex justify-center">
           <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "trust" }); onOpen(); }}>
             drop the room pic
           </PrimaryCTA>
@@ -1268,26 +1270,26 @@ function TrustSection({ onOpen }: { onOpen: () => void }) {
 
 function FinalCTA({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="px-4 pt-14 pb-28">
-      <div className="mx-auto max-w-md text-center">
-        <h2 className="font-display text-4xl leading-[0.95] font-extrabold lowercase">
+    <section className="px-4 pt-14 pb-28 md:px-8 md:pt-24 md:pb-32">
+      <div className="mx-auto max-w-md md:max-w-3xl text-center">
+        <h2 className="font-display text-4xl md:text-6xl leading-[0.95] font-extrabold lowercase">
           move-in is coming.<br />
           <span className="text-lime">make the room make sense.</span>
         </h2>
-        <p className="mt-4 text-[15px] text-ink-muted">
+        <p className="mt-4 md:mt-6 text-[15px] md:text-[17px] text-ink-muted md:mx-auto md:max-w-xl">
           first design is free. no signup. design the room, build the registry, send the plan.
         </p>
-        <div className="mt-6 flex flex-col gap-3">
+        <div className="mt-6 md:mt-8 flex flex-col md:flex-row md:justify-center md:items-center gap-3 md:gap-4">
           <PrimaryCTA size="lg" onClick={() => { track("hero_cta_clicked", { section: "final" }); onOpen(); }}>
             see my room →
           </PrimaryCTA>
           <SecondaryCTA onClick={() => { track("demo_room_clicked", { section: "final" }); onOpen(); }}>
             use demo room
           </SecondaryCTA>
-          <p className="mt-2 text-[11px] text-ink-dim">
-            3 free designs · dorm registry · $24 once for the full season
-          </p>
         </div>
+        <p className="mt-4 md:mt-6 text-[11px] md:text-[12px] text-ink-dim">
+          3 free designs · dorm registry · $24 once for the full season
+        </p>
       </div>
     </section>
   );
