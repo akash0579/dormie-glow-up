@@ -1206,26 +1206,26 @@ function TrustSection({ onOpen }: { onOpen: () => void }) {
 
 function FinalCTA({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="px-4 pt-14 pb-28">
-      <div className="mx-auto max-w-md text-center">
-        <h2 className="font-display text-4xl leading-[0.95] font-extrabold lowercase">
+    <section className="px-4 md:px-8 pt-14 md:pt-24 pb-28 md:pb-32">
+      <div className="mx-auto max-w-md md:max-w-4xl text-center">
+        <h2 className="font-display text-4xl md:text-6xl leading-[0.95] font-extrabold lowercase">
           move-in is coming.<br />
           <span className="text-lime">make the room make sense.</span>
         </h2>
-        <p className="mt-4 text-[15px] text-ink-muted">
-          first design is free. no signup. design the room, build the registry, send the plan.
+        <p className="mt-4 md:mt-6 text-[15px] md:text-lg text-ink-muted md:max-w-2xl md:mx-auto">
+          first design is free. no signup. design the room, build the registry, and shop the plan.
         </p>
-        <div className="mt-6 flex flex-col gap-3">
+        <div className="mt-6 md:mt-8 flex flex-col md:flex-row md:justify-center gap-3">
           <PrimaryCTA size="lg" onClick={() => { track("hero_cta_clicked", { section: "final" }); onOpen(); }}>
             see my room →
           </PrimaryCTA>
           <SecondaryCTA onClick={() => { track("demo_room_clicked", { section: "final" }); onOpen(); }}>
             use demo room
           </SecondaryCTA>
-          <p className="mt-2 text-[11px] text-ink-dim">
-            3 free designs · dorm registry · $24 once for the full season
-          </p>
         </div>
+        <p className="mt-4 md:mt-5 text-[11px] md:text-[12px] text-ink-dim">
+          3 free designs · seasonal pass $36 · yearly pass $72
+        </p>
       </div>
     </section>
   );
