@@ -1252,7 +1252,8 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
               perMonth="$6 / month, billed once"
               badge="most save with this"
               features={[
-                { bold: "unlimited designs, all year", rest: "tweaks, re-generations, and full vibe swaps never count" },
+                { bold: "up to 15 uploads", rest: "capture every angle of your dorm, common area, and future apartment" },
+                { bold: "unlimited design generations", rest: "tweaks, re-generations, and full vibe swaps never count" },
                 { bold: "every vibe + every season", rest: "move-in look, the january reset, spring refresh — same pass" },
                 { bold: "full shoppable registry", rest: "real products, budget + ZIP filters, one-tap add to cart" },
                 { bold: "priority new features", rest: "early access to new vibes, room types, and shopping partners" },
