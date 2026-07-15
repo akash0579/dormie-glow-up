@@ -655,11 +655,12 @@ function StepConnector({ tone }: { tone: "lime" | "lilac" | "peach" }) {
   return (
     <div className="flex flex-col items-center gap-1.5 md:hidden" aria-hidden>
       <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />
-      <span className={`h-8 w-px bg-gradient-to-b from-white/20 to-transparent`} />
-      <span className={`font-mono text-[9px] uppercase tracking-[0.25em] ${text}`}>next ↓</span>
+      <span className="h-8 w-px bg-gradient-to-b from-white/20 to-transparent" />
+      <span className={`font-mono text-[11px] ${text}`}>↓</span>
     </div>
   );
 }
+
 
 
 function PlanCard({ mode, setMode, budget, setBudget, zip, setZip }: {
