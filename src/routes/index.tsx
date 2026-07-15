@@ -90,45 +90,36 @@ function SecondaryCTA({
   );
 }
 
-// --- Before/After slider -------------------------------------------------
+// --- Before/After tap reveal --------------------------------------------
 function HeroRevealCard({ onCTA }: { onCTA: () => void }) {
-  const [pos, setPos] = useState(20);
-  const wrapRef = useRef<HTMLDivElement>(null);
+  const [mode, setMode] = useState<"before" | "after">("after");
+  const [autoplay, setAutoplay] = useState(true);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) { setPos(52); return; }
-    const start = performance.now();
-    const dur = 2400;
-    let raf = 0;
-    const tick = (t: number) => {
-      const p = Math.min(1, (t - start) / dur);
-      // ease: 20 -> 80 -> 52
-      const eased = p < 0.5 ? 20 + (80 - 20) * (p / 0.5) : 80 + (52 - 80) * ((p - 0.5) / 0.5);
-      setPos(eased);
-      if (p < 1) raf = requestAnimationFrame(tick);
+    if (reduce || !autoplay) return;
+    let cancelled = false;
+    const loop = async () => {
+      // brief tease: after -> before -> after
+      await new Promise((r) => setTimeout(r, 1400));
+      if (cancelled) return;
+      setMode("before");
+      await new Promise((r) => setTimeout(r, 1400));
+      if (cancelled) return;
+      setMode("after");
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    loop();
+    return () => { cancelled = true; };
+  }, [autoplay]);
 
-  const move = (clientX: number) => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const p = ((clientX - r.left) / r.width) * 100;
-    setPos(Math.max(4, Math.min(96, p)));
+  const toggle = (next: "before" | "after") => {
+    setAutoplay(false);
+    setMode(next);
   };
 
   return (
     <div className="relative rounded-[28px] bg-cream p-3 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)] ring-1 ring-white/10">
-      <div
-        ref={wrapRef}
-        onMouseMove={(e) => e.buttons === 1 && move(e.clientX)}
-        onTouchMove={(e) => move(e.touches[0].clientX)}
-        onMouseDown={(e) => move(e.clientX)}
-        className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl select-none touch-none"
-      >
+      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl select-none">
         {/* After (base) */}
         <img
           src={dormAfter}
@@ -137,51 +128,59 @@ function HeroRevealCard({ onCTA }: { onCTA: () => void }) {
           width={768}
           height={1024}
         />
-        {/* Before (clipped) */}
-        <div
-          className="absolute inset-0"
-          style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
-        >
-          <img
-            src={dormBefore}
-            alt="Plain dorm room before dormie"
-            className="absolute inset-0 h-full w-full object-cover"
-            width={768}
-            height={1024}
-          />
-        </div>
+        {/* Before (fades in when selected) */}
+        <img
+          src={dormBefore}
+          alt="Plain dorm room before dormie"
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+            mode === "before" ? "opacity-100" : "opacity-0"
+          }`}
+          width={768}
+          height={1024}
+        />
 
-        {/* labels */}
+        {/* subtle sweep on transition */}
+        <div
+          key={mode}
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/30 via-white/0 to-transparent animate-[sweep_0.6s_ease-out]"
+          style={{ mixBlendMode: "overlay" }}
+        />
+
+        {/* status chips */}
         <div className="absolute left-3 top-3">
-          <StickerChip tone="cream">BEFORE</StickerChip>
+          <StickerChip tone={mode === "before" ? "cream" : "dark"}>
+            {mode === "before" ? "BEFORE" : "AFTER"}
+          </StickerChip>
         </div>
         <div className="absolute right-3 top-3">
-          <StickerChip tone="dark">AFTER</StickerChip>
+          <StickerChip tone="lime" float>to this ✦</StickerChip>
         </div>
-
-        {/* floating chips */}
         <div className="absolute left-3 top-14">
           <StickerChip tone="lilac" float>no nails · no paint</StickerChip>
         </div>
-        <div className="absolute right-3 top-14">
-          <StickerChip tone="lime" float>to this ✦</StickerChip>
-        </div>
 
-        {/* drag line */}
-        <div
-          className="pointer-events-none absolute inset-y-0 w-[2px] bg-white/90 shadow-[0_0_20px_rgba(255,255,255,0.6)]"
-          style={{ left: `${pos}%` }}
-        />
-        <div
-          className="pointer-events-none absolute top-1/2 -translate-x-1/2 -translate-y-1/2 grid h-10 w-10 place-items-center rounded-full bg-white text-[#0F0F11] shadow-lg"
-          style={{ left: `${pos}%` }}
-        >
-          <span className="text-sm">↔</span>
-        </div>
-
-        {/* drag hint */}
-        <div className="absolute bottom-3 left-3">
-          <StickerChip tone="cream" className="font-mono">drag the line ↔</StickerChip>
+        {/* segmented toggle — tap-only, no horizontal drag */}
+        <div className="absolute inset-x-3 bottom-3 flex justify-center">
+          <div className="inline-flex rounded-full bg-black/70 backdrop-blur p-1 ring-1 ring-white/15">
+            <button
+              type="button"
+              onClick={() => toggle("before")}
+              className={`px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition ${
+                mode === "before" ? "bg-cream text-[#0F0F11]" : "text-white/70"
+              }`}
+            >
+              before
+            </button>
+            <button
+              type="button"
+              onClick={() => toggle("after")}
+              className={`px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition ${
+                mode === "after" ? "bg-lime text-[#0F0F11]" : "text-white/70"
+              }`}
+            >
+              after
+            </button>
+          </div>
         </div>
       </div>
 
@@ -207,6 +206,7 @@ function HeroRevealCard({ onCTA }: { onCTA: () => void }) {
     </div>
   );
 }
+
 
 // --- vibe / step / share / plan cards -----------------------------------
 type Vibe = { key: string; title: string; sub: string; grad: string };
@@ -391,42 +391,51 @@ function Marquee() {
 
 function Hero({ onOpen }: { onOpen: () => void }) {
   return (
-    <section className="relative px-4 pt-6 pb-10 grain">
+    <section className="relative px-4 pt-5 pb-10 grain">
       <div className="mx-auto max-w-md">
         <div className="flex justify-center">
           <StickerChip tone="dark" className="font-mono">back to school szn · 39 days out</StickerChip>
         </div>
-        <h1 className="mt-4 text-center font-display text-[42px] leading-[0.95] font-extrabold tracking-tight lowercase">
+        <h1 className="mt-3 text-center font-display text-[40px] leading-[0.95] font-extrabold tracking-tight lowercase">
           your dorm,<br />
           <span className="text-lime">but it ate.</span>
         </h1>
-        <p className="mt-3 text-center text-[15px] leading-snug text-ink-muted">
+        <p className="mt-2 text-center text-[14px] leading-snug text-ink-muted">
           one pic of your actual room → styled around the furniture you're stuck with. first design is free. no signup.
         </p>
 
-        <div className="mt-4 flex flex-wrap justify-center gap-1.5">
+        <div className="mt-3 flex flex-wrap justify-center gap-1.5">
           <StickerChip tone="lilac">budget + ZIP</StickerChip>
           <StickerChip tone="lime">one-tap or mixed brands</StickerChip>
           <StickerChip tone="cream">room → registry → cart</StickerChip>
         </div>
 
-        <div className="mt-6">
-          <HeroRevealCard onCTA={onOpen} />
-        </div>
-
-        <div className="mt-6 flex flex-col items-stretch gap-3">
+        <div className="mt-4 flex flex-col items-stretch gap-2">
           <PrimaryCTA size="lg" onClick={() => { track("hero_cta_clicked"); onOpen(); }}>
             see my room →
           </PrimaryCTA>
-          <SecondaryCTA onClick={() => { track("demo_room_clicked"); onOpen(); }}>
-            use demo room
-          </SecondaryCTA>
-          <p className="text-center text-[12px] text-ink-muted">
-            then turn the room into a budgeted registry with real products, one-tap carts, and family claiming.
-          </p>
+          <div className="flex items-center justify-center gap-3 text-[11px] text-ink-dim">
+            <button
+              onClick={() => { track("demo_room_clicked"); onOpen(); }}
+              className="underline underline-offset-2 hover:text-ink"
+            >
+              use demo room
+            </button>
+            <span>·</span>
+            <span>no signup</span>
+          </div>
         </div>
+
+        <div className="mt-5">
+          <HeroRevealCard onCTA={onOpen} />
+        </div>
+
+        <p className="mt-4 text-center text-[12px] text-ink-muted">
+          then turn the room into a budgeted registry with real products, one-tap carts, and family claiming.
+        </p>
       </div>
     </section>
+
   );
 }
 
