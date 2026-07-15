@@ -1156,6 +1156,20 @@ function PricingSection({ onOpen }: { onOpen: () => void }) {
           </p>
         </div>
 
+        {/* free tier reminder */}
+        <div className="mt-6 md:mt-8 rounded-2xl bg-gradient-to-br from-lime/15 to-lime/[0.04] ring-1 ring-lime/30 p-4 md:p-5">
+          <div className="flex items-start gap-3">
+            <span className="grid h-8 w-8 flex-none place-items-center rounded-full bg-lime font-mono text-sm font-extrabold text-[#0F0F11]">3</span>
+            <div className="min-w-0">
+              <div className="text-[14px] md:text-[15px] font-bold text-ink lowercase">3 designs, free. no card, no catch.</div>
+              <p className="mt-1 text-[12.5px] md:text-[13px] text-ink-muted leading-relaxed">
+                the <b className="text-ink font-semibold">first one skips signup entirely</b> — snap the room, see the design. the next two are free after a quick signup. share with a friend and unlock more.
+              </p>
+            </div>
+          </div>
+        </div>
+
+
         {/* toggle */}
         <div className="mt-5 md:mt-8 md:mx-auto md:max-w-sm relative flex rounded-full bg-white/[0.05] ring-1 ring-white/10 p-1">
           <button
