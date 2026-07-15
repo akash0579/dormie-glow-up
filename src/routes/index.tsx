@@ -398,10 +398,10 @@ function Hero({ onOpen }: { onOpen: () => void }) {
         </div>
         <h1 className="mt-3 text-center font-display text-[40px] leading-[0.95] font-extrabold tracking-tight lowercase">
           your dorm,<br />
-          <span className="text-lime">but it ate.</span>
+          <span className="text-lime">but make it iconic.</span>
         </h1>
         <p className="mt-2 text-center text-[14px] leading-snug text-ink-muted">
-          one pic of your actual room → styled around the furniture you're stuck with. first design is free. no signup.
+          snap your assigned room → get a full design that works around the bolted-down furniture, on your budget, with a shoppable registry ready to send. first look free, no signup.
         </p>
 
         <div className="mt-3 flex flex-wrap justify-center gap-1.5">
