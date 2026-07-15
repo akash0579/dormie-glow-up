@@ -876,30 +876,33 @@ function RegistryShopSection({ onOpen }: { onOpen: () => void }) {
         </div>
 
         {/* MOBILE stacked */}
-        <div className="mt-10 space-y-8 md:hidden">
-          <PhoneFrame step="01" label="set the plan">
+        <div className="mt-10 flex flex-col gap-4 md:hidden">
+          <PhoneFrame step="01" label="set the plan" tone="lime">
             <PlanCard mode={mode} setMode={setMode} budget={budget} setBudget={setBudget} zip={zip} setZip={setZip} />
           </PhoneFrame>
-          <PhoneFrame step="02" label="build the registry">
+          <StepConnector tone="lilac" />
+          <PhoneFrame step="02" label="build the registry" tone="lilac">
             <BuildCard mode={mode} />
           </PhoneFrame>
-          <PhoneFrame step="03" label="share + claim">
+          <StepConnector tone="peach" />
+          <PhoneFrame step="03" label="share + claim" tone="peach">
             <ShareCardPreview mode={mode} />
           </PhoneFrame>
         </div>
 
         {/* DESKTOP 3-up */}
         <div className="mt-10 hidden md:grid md:grid-cols-3 md:gap-5 lg:gap-7">
-          <PhoneFrame step="01" label="set the plan">
+          <PhoneFrame step="01" label="set the plan" tone="lime">
             <PlanCard mode={mode} setMode={setMode} budget={budget} setBudget={setBudget} zip={zip} setZip={setZip} />
           </PhoneFrame>
-          <PhoneFrame step="02" label="build the registry">
+          <PhoneFrame step="02" label="build the registry" tone="lilac">
             <BuildCard mode={mode} />
           </PhoneFrame>
-          <PhoneFrame step="03" label="share + claim">
+          <PhoneFrame step="03" label="share + claim" tone="peach">
             <ShareCardPreview mode={mode} />
           </PhoneFrame>
         </div>
+
 
 
         {/* benefit points */}
