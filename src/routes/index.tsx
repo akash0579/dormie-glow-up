@@ -1226,7 +1226,7 @@ function Landing() {
 
       <ShareSection onOpen={open} />
       <RoommateSection onOpen={open} />
-      <ParentSection onOpen={open} />
+      
       <PricingSection onOpen={open} />
       <TrustSection onOpen={open} />
       <FinalCTA onOpen={open} />
