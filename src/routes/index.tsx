@@ -1014,54 +1014,6 @@ function RoommateSection({ onOpen }: { onOpen: () => void }) {
 }
 
 
-function FreeVsPassCard({
-  kind,
-  title,
-  price,
-  features,
-  ctaLabel,
-  onClick,
-}: {
-  kind: "free" | "pass";
-  title: string;
-  price: string;
-  features: string[];
-  ctaLabel: string;
-  onClick: () => void;
-}) {
-  const isPass = kind === "pass";
-  return (
-    <div
-      className={`rounded-3xl p-5 ring-1 ${
-        isPass ? "bg-gradient-to-b from-lilac/20 to-card ring-lilac/40" : "bg-card ring-white/10"
-      }`}
-    >
-      <div className="flex items-center justify-between">
-        <div className="text-lg font-bold text-ink lowercase">{title}</div>
-        {isPass && <span className="rounded-full bg-lilac px-2.5 py-0.5 text-[10px] font-bold text-[#0F0F11]">season pass</span>}
-      </div>
-      <div className={`mt-2 font-display text-3xl font-extrabold ${isPass ? "text-lilac" : "text-lime"}`}>
-        {price}
-      </div>
-      <ul className="mt-4 space-y-2 text-[13px] text-ink-muted">
-        {features.map((f) => (
-          <li key={f} className="flex gap-2">
-            <span className={isPass ? "text-lilac" : "text-lime"}>✓</span>
-            <span>{f}</span>
-          </li>
-        ))}
-      </ul>
-      <button
-        onClick={onClick}
-        className={`mt-5 w-full rounded-full py-3 text-sm font-bold active:scale-[0.98] transition ${
-          isPass ? "bg-lilac text-[#0F0F11]" : "bg-lime text-[#0F0F11]"
-        }`}
-      >
-        {ctaLabel}
-      </button>
-    </div>
-  );
-}
 
 function PassCard({
   variant,
