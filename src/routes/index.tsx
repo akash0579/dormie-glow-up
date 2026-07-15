@@ -1176,26 +1176,25 @@ function TrustSection({ onOpen }: { onOpen: () => void }) {
     { t: "budget first", b: "choose a spend range before the list gets out of hand." },
     { t: "ZIP-aware", b: "add where you're moving and we'll prioritize products that can ship there." },
     { t: "no app install", b: "works on mobile web." },
-    { t: "first design free", b: "no signup until after the first result." },
   ];
   return (
-    <section className="px-4 py-14 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
-      <div className="mx-auto max-w-md">
-        <h2 className="font-display text-3xl leading-tight font-extrabold lowercase">
+    <section className="px-4 md:px-8 py-14 md:py-24 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
+      <div className="mx-auto max-w-md md:max-w-6xl">
+        <h2 className="font-display text-3xl md:text-5xl leading-tight font-extrabold lowercase md:max-w-3xl">
           not a fake showroom render.
         </h2>
-        <div className="mt-5 grid grid-cols-2 gap-3">
-          {cards.map((c, i) => (
+        <div className="mt-5 md:mt-10 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
+          {cards.map((c) => (
             <div
               key={c.t}
-              className={`rounded-2xl bg-card p-4 ring-1 ring-white/10 ${i === cards.length - 1 && cards.length % 2 === 1 ? "col-span-2" : ""}`}
+              className="rounded-2xl bg-card p-4 md:p-6 ring-1 ring-white/10"
             >
-              <div className="text-[13px] font-bold text-ink">{c.t}</div>
-              <div className="mt-1 text-[11px] text-ink-muted">{c.b}</div>
+              <div className="text-[13px] md:text-base font-bold text-ink">{c.t}</div>
+              <div className="mt-1 md:mt-2 text-[11px] md:text-[13px] text-ink-muted">{c.b}</div>
             </div>
           ))}
         </div>
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 md:mt-10 flex justify-center">
           <PrimaryCTA onClick={() => { track("hero_cta_clicked", { section: "trust" }); onOpen(); }}>
             drop the room pic
           </PrimaryCTA>
