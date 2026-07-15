@@ -1187,7 +1187,7 @@ function ShareSection({ onOpen }: { onOpen: () => void }) {
 
           {/* RIGHT — reel */}
           <div
-            className="relative cursor-pointer md:justify-self-end"
+            className="relative mx-auto w-full max-w-[320px] cursor-pointer md:mx-0 md:justify-self-end"
             onClick={() => { setPlaying((p) => { const nxt = !p; track(nxt ? "brag_reel_played" : "brag_reel_paused"); return nxt; }); }}
           >
             <BragReel playing={playing} onToggle={() => setPlaying((p) => !p)} />
