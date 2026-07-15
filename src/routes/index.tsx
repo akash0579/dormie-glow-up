@@ -817,35 +817,8 @@ function RegistryShopSection({ onOpen }: { onOpen: () => void }) {
   const [budget, setBudget] = useState("$300");
   const [zip, setZip] = useState("78705");
   const [mode, setMode] = useState<ShopMode>("mixed");
-  const [active, setActive] = useState(0);
-  const scrollerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { track("combined_registry_section_viewed"); }, []);
-
-  useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const onScroll = () => {
-      const w = el.clientWidth;
-      const idx = Math.round(el.scrollLeft / w);
-      setActive(idx);
-    };
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const goto = (idx: number) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    el.scrollTo({ left: idx * el.clientWidth, behavior: "smooth" });
-    track("registry_step_selected", { step: idx });
-  };
-
-  const steps = [
-    { step: "01", label: "set the plan" },
-    { step: "02", label: "build the registry" },
-    { step: "03", label: "share + claim" },
-  ];
 
   return (
     <section className="px-4 py-14">
@@ -869,37 +842,17 @@ function RegistryShopSection({ onOpen }: { onOpen: () => void }) {
           </div>
         </div>
 
-        {/* MOBILE swipe carousel */}
-        <div className="mt-8 md:hidden">
-          <div
-            ref={scrollerRef}
-            className="-mx-4 flex snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
-            {[
-              <PlanCard key="plan" mode={mode} setMode={setMode} budget={budget} setBudget={setBudget} zip={zip} setZip={setZip} />,
-              <BuildCard key="build" mode={mode} />,
-              <ShareCardPreview key="share" mode={mode} />,
-            ].map((node, i) => (
-              <div key={i} className="w-full shrink-0 snap-center px-4">
-                <PhoneFrame step={steps[i].step} label={steps[i].label}>{node}</PhoneFrame>
-              </div>
-            ))}
-          </div>
-
-          {/* dots + hint */}
-          <div className="mt-4 flex items-center justify-center gap-2">
-            {steps.map((s, i) => (
-              <button
-                key={s.step}
-                onClick={() => goto(i)}
-                aria-label={`go to ${s.label}`}
-                className={`h-1.5 rounded-full transition-all ${active === i ? "w-6 bg-lime" : "w-1.5 bg-white/20"}`}
-              />
-            ))}
-          </div>
-          <p className="mt-2 text-center font-mono text-[9px] uppercase tracking-widest text-ink-dim">
-            swipe → {steps[active].label}
-          </p>
+        {/* MOBILE stacked */}
+        <div className="mt-10 space-y-8 md:hidden">
+          <PhoneFrame step="01" label="set the plan">
+            <PlanCard mode={mode} setMode={setMode} budget={budget} setBudget={setBudget} zip={zip} setZip={setZip} />
+          </PhoneFrame>
+          <PhoneFrame step="02" label="build the registry">
+            <BuildCard mode={mode} />
+          </PhoneFrame>
+          <PhoneFrame step="03" label="share + claim">
+            <ShareCardPreview mode={mode} />
+          </PhoneFrame>
         </div>
 
         {/* DESKTOP 3-up */}
@@ -914,6 +867,7 @@ function RegistryShopSection({ onOpen }: { onOpen: () => void }) {
             <ShareCardPreview mode={mode} />
           </PhoneFrame>
         </div>
+
 
         {/* benefit points */}
         <ul className="mt-8 grid gap-2.5 md:grid-cols-3 md:gap-4">
