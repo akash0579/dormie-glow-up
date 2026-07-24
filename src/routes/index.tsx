@@ -389,7 +389,49 @@ function Marquee() {
   );
 }
 
+function DormKartModule({ onOpen }: { onOpen: () => void }) {
+  return (
+    <div className="mt-4 md:mt-6 md:max-w-md rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-3.5 md:p-4">
+      <div className="flex items-center gap-2">
+        <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-lime/15 text-lime">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+        </span>
+        <div className="font-display text-[15px] md:text-[16px] font-bold lowercase text-ink">then build your dorm kart.</div>
+      </div>
+      <p className="mt-1.5 text-[12px] md:text-[12.5px] leading-snug text-ink-muted">
+        shop the room with Amazon one-tap, Walmart one-tap, or mixed brands — then share the registry so family can claim what they're covering.
+      </p>
+
+      <div className="mt-3 flex flex-wrap gap-1.5">
+        <span className="inline-flex items-center gap-1 rounded-full border border-lime/30 bg-lime/10 px-2 py-[3px] text-[10.5px] font-mono uppercase tracking-wider text-lime">amazon one-tap</span>
+        <span className="inline-flex items-center gap-1 rounded-full border border-lime/30 bg-lime/10 px-2 py-[3px] text-[10.5px] font-mono uppercase tracking-wider text-lime">walmart one-tap</span>
+        <span className="inline-flex items-center gap-1 rounded-full border border-lime/30 bg-lime/10 px-2 py-[3px] text-[10.5px] font-mono uppercase tracking-wider text-lime">mixed brands</span>
+        <span className="inline-flex items-center gap-1 rounded-full border border-lilac/40 bg-lilac/15 px-2 py-[3px] text-[10.5px] font-mono uppercase tracking-wider text-lilac">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+          shareable registry
+        </span>
+      </div>
+
+      <div className="mt-3 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-ink-dim">
+        <span className="text-ink-muted">design the room</span>
+        <span className="text-lime">→</span>
+        <span className="text-lime">build the kart</span>
+        <span className="text-lilac">→</span>
+        <span className="text-lilac">share the registry</span>
+      </div>
+
+      <button
+        onClick={() => { track("dorm_kart_learn_more_clicked"); onOpen(); }}
+        className="mt-2.5 text-[11px] text-ink-dim hover:text-ink underline underline-offset-2"
+      >
+        see how Dorm Karts work →
+      </button>
+    </div>
+  );
+}
+
 function Hero({ onOpen }: { onOpen: () => void }) {
+
   return (
     <section className="relative px-4 pt-5 pb-10 md:px-8 md:pt-10 md:pb-20 grain">
       <div className="mx-auto max-w-md md:max-w-6xl">
@@ -429,9 +471,7 @@ function Hero({ onOpen }: { onOpen: () => void }) {
               </div>
             </div>
 
-            <p className="hidden md:block mt-6 text-[13px] text-ink-muted md:max-w-md">
-              then turn the room into a budgeted registry with real products, one-tap carts, and family claiming.
-            </p>
+            <DormKartModule onOpen={onOpen} />
           </div>
 
           {/* RIGHT: reveal card */}
