@@ -431,6 +431,20 @@ function DormKartModule({ onOpen }: { onOpen: () => void }) {
             shop the room with Amazon one-tap, Walmart one-tap, or mixed brands — then share the registry so family can claim what they're covering.
           </p>
 
+          {/* meta row — budget + ZIP */}
+          <div className="mt-3 flex items-center gap-2 font-mono text-[10.5px]">
+            <span className="inline-flex items-center gap-1 rounded-md bg-black text-cream px-2 py-[3px]">
+              <span className="text-lime font-bold">$</span>
+              <span className="uppercase tracking-[0.14em] text-cream/70">budget</span>
+              <span className="font-bold text-cream">300</span>
+            </span>
+            <span className="inline-flex items-center gap-1 rounded-md bg-white text-black ring-1 ring-black/15 px-2 py-[3px]">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#CC0000]"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              <span className="uppercase tracking-[0.14em] text-black/60">zip</span>
+              <span className="font-bold">02138</span>
+            </span>
+          </div>
+
           {/* dashed divider */}
           <div className="mt-3 border-t border-dashed border-black/25" />
 
