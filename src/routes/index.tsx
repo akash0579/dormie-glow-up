@@ -391,44 +391,113 @@ function Marquee() {
 
 function DormKartModule({ onOpen }: { onOpen: () => void }) {
   return (
-    <div className="mt-4 md:mt-6 md:max-w-md rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-3.5 md:p-4">
-      <div className="flex items-center gap-2">
-        <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-lime/15 text-lime">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
-        </span>
-        <div className="font-display text-[15px] md:text-[16px] font-bold lowercase text-ink">then build your dorm kart.</div>
-      </div>
-      <p className="mt-1.5 text-[12px] md:text-[12.5px] leading-snug text-ink-muted">
-        shop the room with Amazon one-tap, Walmart one-tap, or mixed brands — then share the registry so family can claim what they're covering.
-      </p>
-
-      <div className="mt-3 flex flex-wrap gap-1.5">
-        <span className="inline-flex items-center gap-1 rounded-full border border-lime/30 bg-lime/10 px-2 py-[3px] text-[10.5px] font-mono uppercase tracking-wider text-lime">amazon one-tap</span>
-        <span className="inline-flex items-center gap-1 rounded-full border border-lime/30 bg-lime/10 px-2 py-[3px] text-[10.5px] font-mono uppercase tracking-wider text-lime">walmart one-tap</span>
-        <span className="inline-flex items-center gap-1 rounded-full border border-lime/30 bg-lime/10 px-2 py-[3px] text-[10.5px] font-mono uppercase tracking-wider text-lime">mixed brands</span>
-        <span className="inline-flex items-center gap-1 rounded-full border border-lilac/40 bg-lilac/15 px-2 py-[3px] text-[10.5px] font-mono uppercase tracking-wider text-lilac">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
-          shareable registry
-        </span>
-      </div>
-
-      <div className="mt-3 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-ink-dim">
-        <span className="text-ink-muted">design the room</span>
-        <span className="text-lime">→</span>
-        <span className="text-lime">build the kart</span>
-        <span className="text-lilac">→</span>
-        <span className="text-lilac">share the registry</span>
-      </div>
-
-      <button
-        onClick={() => { track("dorm_kart_learn_more_clicked"); onOpen(); }}
-        className="mt-2.5 text-[11px] text-ink-dim hover:text-ink underline underline-offset-2"
+    <div className="mt-4 md:mt-6 md:max-w-md relative">
+      {/* receipt body */}
+      <div
+        className="relative bg-cream text-ink-black shadow-[0_20px_50px_-20px_rgba(0,0,0,0.6)] rotate-[-0.6deg]"
+        style={{
+          // scalloped/perforated top + bottom edges via radial-gradient masks
+          WebkitMaskImage:
+            "radial-gradient(circle at 8px 6px, transparent 5px, black 5.5px), radial-gradient(circle at 8px calc(100% - 6px), transparent 5px, black 5.5px)",
+          WebkitMaskComposite: "source-in",
+          maskImage:
+            "radial-gradient(circle at 8px 6px, transparent 5px, black 5.5px), radial-gradient(circle at 8px calc(100% - 6px), transparent 5px, black 5.5px)",
+          maskRepeat: "repeat-x, repeat-x",
+          maskSize: "16px 100%, 16px 100%",
+          WebkitMaskRepeat: "repeat-x, repeat-x",
+          WebkitMaskSize: "16px 100%, 16px 100%",
+        }}
       >
-        see how Dorm Karts work →
-      </button>
+        <div className="px-4 pt-4 pb-4 md:px-5 md:pt-5 md:pb-5">
+          {/* header row: brand + order # */}
+          <div className="flex items-center justify-between font-mono text-[9.5px] uppercase tracking-[0.18em] text-ink-black/50">
+            <span className="flex items-center gap-1.5">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-lime-600 animate-pulse" />
+              dormtok · kart preview
+            </span>
+            <span>no. 000-{new Date().getFullYear()}</span>
+          </div>
+
+          {/* headline */}
+          <div className="mt-2 flex items-start gap-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" className="mt-[3px] shrink-0 text-ink-black"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+            <h3 className="font-display text-[19px] md:text-[21px] leading-[1.05] font-extrabold lowercase">
+              then build your <span className="bg-lime px-1.5 -mx-0.5 rounded-sm">dorm kart.</span>
+            </h3>
+          </div>
+
+          {/* body */}
+          <p className="mt-2 text-[12px] md:text-[12.5px] leading-snug text-ink-black/70">
+            shop the room with Amazon one-tap, Walmart one-tap, or mixed brands — then share the registry so family can claim what they're covering.
+          </p>
+
+          {/* dashed divider */}
+          <div className="mt-3 border-t border-dashed border-ink-black/25" />
+
+          {/* line items — receipt style */}
+          <ul className="mt-2 space-y-1 font-mono text-[11px] text-ink-black/80">
+            <li className="flex items-baseline gap-2">
+              <span className="uppercase tracking-wide">amazon one-tap</span>
+              <span className="flex-1 border-b border-dotted border-ink-black/30 translate-y-[-3px]" />
+              <span className="text-lime-700 font-bold">✓</span>
+            </li>
+            <li className="flex items-baseline gap-2">
+              <span className="uppercase tracking-wide">walmart one-tap</span>
+              <span className="flex-1 border-b border-dotted border-ink-black/30 translate-y-[-3px]" />
+              <span className="text-lime-700 font-bold">✓</span>
+            </li>
+            <li className="flex items-baseline gap-2">
+              <span className="uppercase tracking-wide">mixed brands</span>
+              <span className="flex-1 border-b border-dotted border-ink-black/30 translate-y-[-3px]" />
+              <span className="text-lime-700 font-bold">✓</span>
+            </li>
+          </ul>
+
+          {/* dashed divider */}
+          <div className="mt-2.5 border-t border-dashed border-ink-black/25" />
+
+          {/* total row — shareable registry as "the total" */}
+          <div className="mt-2 flex items-center justify-between">
+            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-black/60">total</span>
+            <span className="inline-flex items-center gap-1 rounded-md bg-lilac text-ink-black px-2 py-[3px] font-mono text-[10.5px] uppercase tracking-wider font-bold">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+              shareable registry
+            </span>
+          </div>
+
+          {/* flow strip */}
+          <div className="mt-3 rounded-md bg-ink-black text-cream px-2.5 py-2 flex items-center justify-between font-mono text-[9.5px] uppercase tracking-[0.14em]">
+            <span>design the room</span>
+            <span className="text-lime">→</span>
+            <span>build the kart</span>
+            <span className="text-lilac">→</span>
+            <span>share the registry</span>
+          </div>
+
+          {/* footer — barcode + cta */}
+          <div className="mt-3 flex items-end justify-between gap-3">
+            <div aria-hidden className="flex items-end gap-[2px] h-6">
+              {[3,5,2,6,3,4,2,5,3,6,2,4,3,5,2,4,6,3,5,2,4].map((h,i)=>(
+                <span key={i} className="block w-[2px] bg-ink-black" style={{ height: `${h*3+6}px`, opacity: i%3===0?1:0.75 }} />
+              ))}
+            </div>
+            <button
+              onClick={() => { track("dorm_kart_learn_more_clicked"); onOpen(); }}
+              className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-black underline underline-offset-4 decoration-2 decoration-lime hover:decoration-lilac"
+            >
+              see how it works →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* tape accent */}
+      <div aria-hidden className="absolute -top-2 left-6 h-4 w-16 bg-lime/70 rotate-[-6deg] shadow-[0_2px_6px_rgba(0,0,0,0.25)]" />
+      <div aria-hidden className="absolute -top-1.5 right-8 h-3.5 w-10 bg-lilac/70 rotate-[8deg] shadow-[0_2px_6px_rgba(0,0,0,0.25)]" />
     </div>
   );
 }
+
 
 function Hero({ onOpen }: { onOpen: () => void }) {
 
