@@ -429,9 +429,7 @@ function Hero({ onOpen }: { onOpen: () => void }) {
               </div>
             </div>
 
-            <p className="hidden md:block mt-6 text-[13px] text-ink-muted md:max-w-md">
-              then turn the room into a budgeted registry with real products, one-tap carts, and family claiming.
-            </p>
+            <DormKartModule onOpen={onOpen} />
           </div>
 
           {/* RIGHT: reveal card */}
