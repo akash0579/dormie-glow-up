@@ -435,36 +435,35 @@ function DormKartModule({ onOpen }: { onOpen: () => void }) {
           <div className="mt-3 border-t border-dashed border-black/25" />
 
           {/* line items — receipt style */}
-          <ul className="mt-2 space-y-1.5 font-mono text-[11px] text-black/80">
+          <ul className="mt-2 space-y-2 font-mono text-[11px] text-black/80">
             <li className="flex items-center gap-2">
-              <span className="inline-flex items-center justify-center h-5 w-12 rounded bg-black/[0.04] ring-1 ring-black/10">
-                <AmazonMark size={12} />
+              <span className="inline-flex items-center justify-center h-6 px-2 rounded bg-white ring-1 ring-black/10">
+                <AmazonMark size={11} dark />
               </span>
               <span className="uppercase tracking-wide">one-tap</span>
               <span className="flex-1 border-b border-dotted border-black/30" />
               <span className="text-black font-bold">✓</span>
             </li>
             <li className="flex items-center gap-2">
-              <span className="inline-flex items-center justify-center h-5 w-12 rounded bg-black/[0.04] ring-1 ring-black/10">
-                <WalmartMark size={12} />
+              <span className="inline-flex items-center justify-center h-6 px-2 rounded bg-white ring-1 ring-black/10">
+                <WalmartMark size={11} dark />
               </span>
               <span className="uppercase tracking-wide">one-tap</span>
               <span className="flex-1 border-b border-dotted border-black/30" />
               <span className="text-black font-bold">✓</span>
             </li>
-            <li className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1 h-5 px-1.5 rounded bg-black/[0.04] ring-1 ring-black/10">
-                <AmazonMark size={10} />
-                <span className="text-black/30">·</span>
-                <WalmartMark size={10} />
-                <span className="text-black/30">·</span>
-                <TargetMark size={10} />
-                <span className="text-black/30">·</span>
-                <IkeaMark size={9} />
-              </span>
-              <span className="uppercase tracking-wide">mixed brands</span>
-              <span className="flex-1 border-b border-dotted border-black/30" />
-              <span className="text-black font-bold">✓</span>
+            <li className="flex flex-col gap-1.5">
+              <div className="flex items-center gap-2">
+                <span className="uppercase tracking-wide">mixed brands</span>
+                <span className="flex-1 border-b border-dotted border-black/30" />
+                <span className="text-black font-bold">✓</span>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5 pl-1">
+                <span className="inline-flex items-center h-5 px-1.5 rounded bg-white ring-1 ring-black/10"><AmazonMark size={9} dark /></span>
+                <span className="inline-flex items-center h-5 px-1.5 rounded bg-white ring-1 ring-black/10"><WalmartMark size={9} dark /></span>
+                <span className="inline-flex items-center h-5 px-1.5 rounded bg-white ring-1 ring-black/10"><TargetMark size={9} dark /></span>
+                <span className="inline-flex items-center h-5 px-1 rounded bg-white ring-1 ring-black/10"><IkeaMark size={8} /></span>
+              </div>
             </li>
           </ul>
 
@@ -737,11 +736,12 @@ const SHARE_ITEMS: Array<{ id: string; name: string; merchant: string; price: nu
   { id: "bins", name: "under-bed storage bins", merchant: "IKEA", price: 26 },
 ];
 
-function AmazonMark({ size = 13 }: { size?: number }) {
+function AmazonMark({ size = 13, dark = false }: { size?: number; dark?: boolean }) {
+  const textColor = dark ? "text-black" : "text-white";
   return (
     <span className="inline-flex flex-col leading-none">
       <span style={{ fontFamily: "'Amazon Ember', 'Helvetica Neue', system-ui, sans-serif", letterSpacing: "-0.02em" }}
-            className="font-bold text-white" >
+            className={`font-bold ${textColor}`} >
         <span style={{ fontSize: size }}>amazon</span>
       </span>
       <svg viewBox="0 0 60 10" className="mt-[1px]" style={{ width: size * 3.6, height: size * 0.5 }} aria-hidden>
@@ -752,10 +752,11 @@ function AmazonMark({ size = 13 }: { size?: number }) {
   );
 }
 
-function WalmartMark({ size = 13 }: { size?: number }) {
+function WalmartMark({ size = 13, dark = false }: { size?: number; dark?: boolean }) {
+  const textColor = dark ? "text-[#0071DC]" : "text-white";
   return (
     <span className="inline-flex items-center gap-1">
-      <span className="font-bold text-white" style={{ fontSize: size, letterSpacing: "-0.01em" }}>Walmart</span>
+      <span className={`font-bold ${textColor}`} style={{ fontSize: size, letterSpacing: "-0.01em" }}>Walmart</span>
       <svg viewBox="0 0 20 20" style={{ width: size * 0.9, height: size * 0.9 }} aria-hidden>
         {[0, 30, 60, 90, 120, 150].map((a) => (
           <rect key={a} x="9.2" y="2.5" width="1.6" height="6" rx="0.8" fill="#FFC220" transform={`rotate(${a} 10 10)`} />
@@ -765,7 +766,8 @@ function WalmartMark({ size = 13 }: { size?: number }) {
   );
 }
 
-function TargetMark({ size = 13 }: { size?: number }) {
+function TargetMark({ size = 13, dark = false }: { size?: number; dark?: boolean }) {
+  const textColor = dark ? "text-[#CC0000]" : "text-white";
   return (
     <span className="inline-flex items-center gap-1">
       <svg viewBox="0 0 20 20" style={{ width: size * 1.05, height: size * 1.05 }} aria-hidden>
@@ -773,12 +775,12 @@ function TargetMark({ size = 13 }: { size?: number }) {
         <circle cx="10" cy="10" r="5.8" fill="#fff" />
         <circle cx="10" cy="10" r="2.6" fill="#CC0000" />
       </svg>
-      <span className="font-bold text-white" style={{ fontSize: size, letterSpacing: "-0.01em" }}>Target</span>
+      <span className={`font-bold ${textColor}`} style={{ fontSize: size, letterSpacing: "-0.01em" }}>Target</span>
     </span>
   );
 }
 
-function IkeaMark({ size = 13 }: { size?: number }) {
+function IkeaMark({ size = 13 }: { size?: number; dark?: boolean }) {
   return (
     <span
       className="inline-flex items-center justify-center rounded-[3px] bg-[#FFDA1A] px-1.5"
