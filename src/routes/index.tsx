@@ -435,36 +435,35 @@ function DormKartModule({ onOpen }: { onOpen: () => void }) {
           <div className="mt-3 border-t border-dashed border-black/25" />
 
           {/* line items — receipt style */}
-          <ul className="mt-2 space-y-1.5 font-mono text-[11px] text-black/80">
+          <ul className="mt-2 space-y-2 font-mono text-[11px] text-black/80">
             <li className="flex items-center gap-2">
-              <span className="inline-flex items-center justify-center h-5 w-12 rounded bg-black/[0.04] ring-1 ring-black/10">
-                <AmazonMark size={12} />
+              <span className="inline-flex items-center justify-center h-6 px-2 rounded bg-white ring-1 ring-black/10">
+                <AmazonMark size={11} dark />
               </span>
               <span className="uppercase tracking-wide">one-tap</span>
               <span className="flex-1 border-b border-dotted border-black/30" />
               <span className="text-black font-bold">✓</span>
             </li>
             <li className="flex items-center gap-2">
-              <span className="inline-flex items-center justify-center h-5 w-12 rounded bg-black/[0.04] ring-1 ring-black/10">
-                <WalmartMark size={12} />
+              <span className="inline-flex items-center justify-center h-6 px-2 rounded bg-white ring-1 ring-black/10">
+                <WalmartMark size={11} dark />
               </span>
               <span className="uppercase tracking-wide">one-tap</span>
               <span className="flex-1 border-b border-dotted border-black/30" />
               <span className="text-black font-bold">✓</span>
             </li>
-            <li className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1 h-5 px-1.5 rounded bg-black/[0.04] ring-1 ring-black/10">
-                <AmazonMark size={10} />
-                <span className="text-black/30">·</span>
-                <WalmartMark size={10} />
-                <span className="text-black/30">·</span>
-                <TargetMark size={10} />
-                <span className="text-black/30">·</span>
-                <IkeaMark size={9} />
-              </span>
-              <span className="uppercase tracking-wide">mixed brands</span>
-              <span className="flex-1 border-b border-dotted border-black/30" />
-              <span className="text-black font-bold">✓</span>
+            <li className="flex flex-col gap-1.5">
+              <div className="flex items-center gap-2">
+                <span className="uppercase tracking-wide">mixed brands</span>
+                <span className="flex-1 border-b border-dotted border-black/30" />
+                <span className="text-black font-bold">✓</span>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5 pl-1">
+                <span className="inline-flex items-center h-5 px-1.5 rounded bg-white ring-1 ring-black/10"><AmazonMark size={9} dark /></span>
+                <span className="inline-flex items-center h-5 px-1.5 rounded bg-white ring-1 ring-black/10"><WalmartMark size={9} dark /></span>
+                <span className="inline-flex items-center h-5 px-1.5 rounded bg-white ring-1 ring-black/10"><TargetMark size={9} dark /></span>
+                <span className="inline-flex items-center h-5 px-1 rounded bg-white ring-1 ring-black/10"><IkeaMark size={8} /></span>
+              </div>
             </li>
           </ul>
 
