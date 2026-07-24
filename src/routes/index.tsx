@@ -737,11 +737,12 @@ const SHARE_ITEMS: Array<{ id: string; name: string; merchant: string; price: nu
   { id: "bins", name: "under-bed storage bins", merchant: "IKEA", price: 26 },
 ];
 
-function AmazonMark({ size = 13 }: { size?: number }) {
+function AmazonMark({ size = 13, dark = false }: { size?: number; dark?: boolean }) {
+  const textColor = dark ? "text-black" : "text-white";
   return (
     <span className="inline-flex flex-col leading-none">
       <span style={{ fontFamily: "'Amazon Ember', 'Helvetica Neue', system-ui, sans-serif", letterSpacing: "-0.02em" }}
-            className="font-bold text-white" >
+            className={`font-bold ${textColor}`} >
         <span style={{ fontSize: size }}>amazon</span>
       </span>
       <svg viewBox="0 0 60 10" className="mt-[1px]" style={{ width: size * 3.6, height: size * 0.5 }} aria-hidden>
@@ -752,10 +753,11 @@ function AmazonMark({ size = 13 }: { size?: number }) {
   );
 }
 
-function WalmartMark({ size = 13 }: { size?: number }) {
+function WalmartMark({ size = 13, dark = false }: { size?: number; dark?: boolean }) {
+  const textColor = dark ? "text-[#0071DC]" : "text-white";
   return (
     <span className="inline-flex items-center gap-1">
-      <span className="font-bold text-white" style={{ fontSize: size, letterSpacing: "-0.01em" }}>Walmart</span>
+      <span className={`font-bold ${textColor}`} style={{ fontSize: size, letterSpacing: "-0.01em" }}>Walmart</span>
       <svg viewBox="0 0 20 20" style={{ width: size * 0.9, height: size * 0.9 }} aria-hidden>
         {[0, 30, 60, 90, 120, 150].map((a) => (
           <rect key={a} x="9.2" y="2.5" width="1.6" height="6" rx="0.8" fill="#FFC220" transform={`rotate(${a} 10 10)`} />
@@ -765,7 +767,8 @@ function WalmartMark({ size = 13 }: { size?: number }) {
   );
 }
 
-function TargetMark({ size = 13 }: { size?: number }) {
+function TargetMark({ size = 13, dark = false }: { size?: number; dark?: boolean }) {
+  const textColor = dark ? "text-[#CC0000]" : "text-white";
   return (
     <span className="inline-flex items-center gap-1">
       <svg viewBox="0 0 20 20" style={{ width: size * 1.05, height: size * 1.05 }} aria-hidden>
@@ -773,12 +776,12 @@ function TargetMark({ size = 13 }: { size?: number }) {
         <circle cx="10" cy="10" r="5.8" fill="#fff" />
         <circle cx="10" cy="10" r="2.6" fill="#CC0000" />
       </svg>
-      <span className="font-bold text-white" style={{ fontSize: size, letterSpacing: "-0.01em" }}>Target</span>
+      <span className={`font-bold ${textColor}`} style={{ fontSize: size, letterSpacing: "-0.01em" }}>Target</span>
     </span>
   );
 }
 
-function IkeaMark({ size = 13 }: { size?: number }) {
+function IkeaMark({ size = 13 }: { size?: number; dark?: boolean }) {
   return (
     <span
       className="inline-flex items-center justify-center rounded-[3px] bg-[#FFDA1A] px-1.5"
